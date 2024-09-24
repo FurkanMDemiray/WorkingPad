@@ -13,10 +13,12 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var projectLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var seeAllLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        configureTableView()
     }
 
     private func configureUI() {
@@ -27,14 +29,11 @@ class HomeViewController: UIViewController {
         timerCardView.layer.shadowRadius = 2
     }
 
-    private func configureTablaView() {
+    private func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UINib(nibName: Constants.projectTableViewCell, bundle: nil), forCellReuseIdentifier: Constants.projectTableViewCell)
-    }
-
-
-    @IBAction func seeAllButtonClicked(_ sender: Any) {
+        tableView.separatorStyle = .none
+        tableView.register(UINib(nibName: Constants.projectCell, bundle: nil), forCellReuseIdentifier: Constants.projectCell)
     }
 
 }
@@ -45,14 +44,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.projectCell, for: indexPath) as! ProjectCell
+        return cell
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 0
+        return tableView.frame.height / CGFloat(self.tableView(tableView, numberOfRowsInSection: 0))
     }
 }
 
 enum Constants {
-    static let projectTableViewCell = "ProjectTableViewCell"
+    static let projectCell = "ProjectCell"
 }
