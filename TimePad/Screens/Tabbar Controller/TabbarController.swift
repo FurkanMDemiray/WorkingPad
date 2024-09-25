@@ -8,16 +8,19 @@
 import Foundation
 import UIKit
 
-class TabbarController: UITabBarController {
+final class TabbarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let homeVC = HomeViewController()
+        let homeVC = HomeVC()
         let homeNav = UINavigationController(rootViewController: homeVC)
         homeNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
 
+        let timerVC = TimerVC()
+        let timerNav = UINavigationController(rootViewController: timerVC)
+        timerNav.tabBarItem = UITabBarItem(title: "Timer", image: UIImage(systemName: "timer"), tag: 1)
 
-        viewControllers = [homeNav]
+        viewControllers = [homeNav, timerNav]
     }
 }

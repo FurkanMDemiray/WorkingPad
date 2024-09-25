@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+final class HomeVC: UIViewController {
 
     @IBOutlet weak var timerCardView: UIView!
     @IBOutlet weak var timerLabel: UILabel!
@@ -27,6 +27,10 @@ class HomeViewController: UIViewController {
         timerCardView.layer.shadowOffset = CGSize(width: 0, height: 1)
         timerCardView.layer.shadowOpacity = 0.2
         timerCardView.layer.shadowRadius = 2
+
+        let tapMesture = UITapGestureRecognizer(target: self, action: #selector(seeAllTapped))
+        seeAllLabel.isUserInteractionEnabled = true
+        seeAllLabel.addGestureRecognizer(tapMesture)
     }
 
     private func configureTableView() {
@@ -36,9 +40,14 @@ class HomeViewController: UIViewController {
         tableView.register(UINib(nibName: Constants.projectCell, bundle: nil), forCellReuseIdentifier: Constants.projectCell)
     }
 
+    //MARK: - Actions
+    @objc private func seeAllTapped() {
+        print("See all tapped")
+    }
+
 }
 
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
+extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }
