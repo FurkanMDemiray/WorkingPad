@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class TimerView: UIView {
+class TimerView: UIView {
 
     private var timerLabel: UILabel!
     private var shapeLayer: CAShapeLayer!
@@ -16,10 +16,12 @@ final class TimerView: UIView {
     private var timer: Timer?
     private var remainingTime: TimeInterval
     private var totalTime: TimeInterval
+    private var isPaused = false
 
-    init(frame: CGRect, totalTime: TimeInterval) {
-        self.totalTime = totalTime
-        self.remainingTime = totalTime
+    init(frame: CGRect, hours: Int, minutes: Int, seconds: Int) {
+        // Toplam süreyi saniye cinsinden hesapla
+        self.totalTime = TimeInterval(hours * 3600 + minutes * 60 + seconds)
+        self.remainingTime = self.totalTime
         super.init(frame: frame)
         setupView()
     }
@@ -29,7 +31,6 @@ final class TimerView: UIView {
     }
 
     private func setupView() {
-        // View'in ortası
         let circularPathCenter = CGPoint(x: bounds.midX, y: bounds.midY)
 
         // Track layer (arkaplan çemberi)
@@ -45,7 +46,7 @@ final class TimerView: UIView {
         // Animasyonlu çember (progress bar)
         shapeLayer = CAShapeLayer()
         shapeLayer.path = circularPath.cgPath
-        shapeLayer.strokeColor = UIColor.red.cgColor
+        shapeLayer.strokeColor = UIColor.hexStringToUIColor(hex: "b98ce7").cgColor
         shapeLayer.lineWidth = 10
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineCap = .round
@@ -56,15 +57,23 @@ final class TimerView: UIView {
         timerLabel = UILabel()
         timerLabel.textAlignment = .center
         timerLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        timerLabel.text = "\(Int(remainingTime))"
+        timerLabel.text = timeString(from: remainingTime)
+        timerLabel.textColor = .white
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(timerLabel)
 
-        // Label'i merkeze yerleştirme
         NSLayoutConstraint.activate([
             timerLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             timerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
             ])
+    }
+
+    // Zamanı saat:dakika:saniye formatına çeviren fonksiyon
+    private func timeString(from time: TimeInterval) -> String {
+        let hours = Int(time) / 3600
+        let minutes = Int(time) % 3600 / 60
+        let seconds = Int(time) % 60
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
 
     func startTimer() {
@@ -79,10 +88,27 @@ final class TimerView: UIView {
         shapeLayer.add(basicAnimation, forKey: "basicAnimation")
     }
 
+    func pauseTimer() {
+        if !isPaused {
+            timer?.invalidate() // Timer'ı durdur
+            isPaused = true
+        } else {
+            startTimer() // Timer'ı tekrar başlat
+            isPaused = false
+        }
+    }
+
+    func quitTimer() {
+        timer?.invalidate() // Timer'ı tamamen durdur
+        remainingTime = totalTime
+        timerLabel.text = timeString(from: remainingTime)
+        shapeLayer.strokeEnd = 1 // Çemberi sıfırla
+    }
+
     @objc private func updateTimer() {
         if remainingTime > 0 {
             remainingTime -= 1
-            timerLabel.text = "\(Int(remainingTime))"
+            timerLabel.text = timeString(from: remainingTime) // Label'i güncelle
         } else {
             timer?.invalidate()
         }
