@@ -21,6 +21,10 @@ final class TabbarController: UITabBarController {
         let timerNav = UINavigationController(rootViewController: timerVC)
         timerNav.tabBarItem = UITabBarItem(title: "Timer", image: UIImage(systemName: "timer"), tag: 1)
 
-        viewControllers = [homeNav, timerNav]
+        let addWorkVC = AddWorkVC()
+        let addWorkNav = UINavigationController(rootViewController: addWorkVC)
+        addWorkNav.tabBarItem = UITabBarItem(title: "Add Work", image: UIImage(systemName: "plus"), tag: 2)
+
+        viewControllers = [homeNav, timerNav, addWorkNav]
     }
 }

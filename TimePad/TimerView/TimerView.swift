@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class TimerView: UIView {
+final class TimerView: UIView {
 
     private var timerLabel: UILabel!
     private var shapeLayer: CAShapeLayer!
@@ -53,7 +53,6 @@ class TimerView: UIView {
         shapeLayer.strokeEnd = 1
         layer.addSublayer(shapeLayer)
 
-        // Zamanı gösteren label
         timerLabel = UILabel()
         timerLabel.textAlignment = .center
         timerLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
@@ -68,7 +67,6 @@ class TimerView: UIView {
             ])
     }
 
-    // Zamanı saat:dakika:saniye formatına çeviren fonksiyon
     private func timeString(from time: TimeInterval) -> String {
         let hours = Int(time) / 3600
         let minutes = Int(time) % 3600 / 60

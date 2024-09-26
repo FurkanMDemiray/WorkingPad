@@ -9,11 +9,11 @@ import UIKit
 
 final class HomeVC: UIViewController {
 
-    @IBOutlet weak var timerCardView: UIView!
-    @IBOutlet weak var timerLabel: UILabel!
-    @IBOutlet weak var projectLabel: UILabel!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var seeAllLabel: UILabel!
+    @IBOutlet private weak var timerCardView: UIView!
+    @IBOutlet private weak var timerLabel: UILabel!
+    @IBOutlet private weak var projectLabel: UILabel!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var seeAllLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +62,6 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-enum Constants {
+private enum Constants {
     static let projectCell = "ProjectCell"
 }
