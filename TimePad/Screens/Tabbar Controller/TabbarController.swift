@@ -25,6 +25,9 @@ final class TabbarController: UITabBarController {
         let addWorkNav = UINavigationController(rootViewController: addWorkVC)
         addWorkNav.tabBarItem = UITabBarItem(title: "Add Work", image: UIImage(systemName: "plus"), tag: 2)
 
+        let addWorkViewModel = AddWorkVM()
+        addWorkVC.viewModel = addWorkViewModel
+
         viewControllers = [homeNav, timerNav, addWorkNav]
     }
 }

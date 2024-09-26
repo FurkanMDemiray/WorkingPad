@@ -25,6 +25,7 @@ final class AddWorkVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
+        viewModel.fetchWorkModels()
     }
 
     private func addGestureToImages() {
@@ -37,15 +38,24 @@ final class AddWorkVC: UIViewController {
 
     @objc private func imageTapped(sender: UITapGestureRecognizer) {
 
-        
+
     }
 
+    @IBAction private func saveButtonClicked(_ sender: Any) {
+        let hour = Calendar.current.component(.hour, from: timePicker.date)
+        let minute = Calendar.current.component(.minute, from: timePicker.date)
+        let type = "Personal"
+        let model = WorkModel(title: workTitleText.text ?? "", hour: hour, minute: minute, type: type)
+        viewModel.didSave(model: model)
+    }
 }
 
 extension AddWorkVC: AddWorkVMDelegate {
-    func showAlert() {
-        self.showAlert(title: "Error", message: "Please fill the title field", actionTitle: "OK")
+    func showSuccesAlert() {
+        self.showAlert(title: "Success", message: "Work added successfully", actionTitle: "OK")
     }
 
-
+    func showErrorAlert() {
+        self.showAlert(title: "Error", message: "Please fill the title field", actionTitle: "OK")
+    }
 }

@@ -8,8 +8,8 @@
 import Foundation
 
 struct WorkModel {
-    var title: String
-    var hour: Int
-    var minute: Int
-    var type: String
+    var title: String?
+    var hour: Int?
+    var minute: Int?
+    var type: String?
 }
