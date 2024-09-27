@@ -12,7 +12,6 @@ protocol AddWorkVMProtocol {
     var delegate: AddWorkVMDelegate? { get set }
     func didSave(model: WorkModel)
     func fetchWorkModels()
-
 }
 
 protocol AddWorkVMDelegate: AnyObject {
@@ -38,7 +37,6 @@ final class AddWorkVM {
         let workModels = coreDataManager.fetchWorks().map { WorkModel(title: $0.title, hour: Int($0.hour), minute: Int($0.minute), type: $0.type) }
         print(workModels)
     }
-
 
 }
 

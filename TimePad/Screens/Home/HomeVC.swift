@@ -14,11 +14,23 @@ final class HomeVC: UIViewController {
     @IBOutlet private weak var projectLabel: UILabel!
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var seeAllLabel: UILabel!
+    @IBOutlet private weak var playImage: UIImageView!
+
+    var viewModel: HomeVMProtocol! {
+        didSet {
+            viewModel.delegate = self
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         configureTableView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.didFetchWorkModels()
     }
 
     private func configureUI() {
@@ -49,16 +61,41 @@ final class HomeVC: UIViewController {
 
 extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return viewModel.getWorkModels.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.projectCell, for: indexPath) as! ProjectCell
+        cell.configure(with: viewModel.getWorkModels[indexPath.row])
         return cell
     }
 
+    // delete cell
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            self.showAreYouSureAlert(
+                title: "Are you sure?",
+                message: "Do you want to delete this work?",
+                actionTitle: "Delete",
+                completion: { [weak self] in
+                    guard let self else { return }
+                    viewModel.deleteWordModel(at: indexPath.row)
+                })
+        }
+    }
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.frame.height / CGFloat(self.tableView(tableView, numberOfRowsInSection: 0))
+        if viewModel.getWorkModels.count >= 4 {
+            return tableView.frame.height / CGFloat(self.tableView(tableView, numberOfRowsInSection: 0))
+        } else {
+            return tableView.frame.height / 4
+        }
+    }
+}
+
+extension HomeVC: HomeVMDelegate {
+    func updateTablaView() {
+        tableView.reloadData()
     }
 }
 

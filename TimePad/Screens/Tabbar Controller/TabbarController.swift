@@ -17,17 +17,16 @@ final class TabbarController: UITabBarController {
         let homeNav = UINavigationController(rootViewController: homeVC)
         homeNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
 
-        let timerVC = TimerVC()
-        let timerNav = UINavigationController(rootViewController: timerVC)
-        timerNav.tabBarItem = UITabBarItem(title: "Timer", image: UIImage(systemName: "timer"), tag: 1)
-
         let addWorkVC = AddWorkVC()
         let addWorkNav = UINavigationController(rootViewController: addWorkVC)
-        addWorkNav.tabBarItem = UITabBarItem(title: "Add Work", image: UIImage(systemName: "plus"), tag: 2)
+        addWorkNav.tabBarItem = UITabBarItem(title: "Add Work", image: UIImage(systemName: "plus"), tag: 1)
+
+        let homeViewModel = HomeVM()
+        homeVC.viewModel = homeViewModel
 
         let addWorkViewModel = AddWorkVM()
         addWorkVC.viewModel = addWorkViewModel
 
-        viewControllers = [homeNav, timerNav, addWorkNav]
+        viewControllers = [homeNav, addWorkNav]
     }
 }

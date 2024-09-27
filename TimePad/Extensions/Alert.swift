@@ -14,4 +14,14 @@ extension UIViewController {
         alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
+
+    // are you sure alert
+    func showAreYouSureAlert(title: String, message: String, actionTitle: String, completion: @escaping () -> Void) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: actionTitle, style: .destructive, handler: { _ in
+            completion()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 }
