@@ -9,6 +9,7 @@ import UIKit
 
 final class HomeVC: UIViewController {
 
+//MARK: Outlets
     @IBOutlet private weak var timerCardView: UIView!
     @IBOutlet private weak var timerLabel: UILabel!
     @IBOutlet private weak var projectLabel: UILabel!
@@ -22,6 +23,7 @@ final class HomeVC: UIViewController {
         }
     }
 
+//MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -33,6 +35,7 @@ final class HomeVC: UIViewController {
         viewModel.didFetchWorkModels()
     }
 
+//MARK: Configures
     private func configureUI() {
         timerCardView.layer.cornerRadius = 10
         timerCardView.layer.shadowColor = UIColor.black.cgColor
@@ -74,9 +77,9 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             self.showAreYouSureAlert(
-                title: "Are you sure?",
-                message: "Do you want to delete this work?",
-                actionTitle: "Delete",
+                title: Constants.areYouSureAlertActionTitle,
+                message: Constants.areYouSureAlertMessage,
+                actionTitle: Constants.areYouSureAlertActionTitle,
                 completion: { [weak self] in
                     guard let self else { return }
                     viewModel.deleteWordModel(at: indexPath.row)
@@ -101,4 +104,7 @@ extension HomeVC: HomeVMDelegate {
 
 private enum Constants {
     static let projectCell = "ProjectCell"
+    static let areYouSureAlertTitle = "Are you sure?"
+    static let areYouSureAlertMessage = "Do you want to delete this work?"
+    static let areYouSureAlertActionTitle = "Delete"
 }

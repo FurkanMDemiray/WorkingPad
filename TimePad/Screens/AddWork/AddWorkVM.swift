@@ -10,6 +10,9 @@ import CoreData
 
 protocol AddWorkVMProtocol {
     var delegate: AddWorkVMDelegate? { get set }
+    var getSelectedType: String? { get set }
+    var getIsTypeSelected: Bool { get set }
+
     func didSave(model: WorkModel)
     func fetchWorkModels()
 }
@@ -17,12 +20,15 @@ protocol AddWorkVMProtocol {
 protocol AddWorkVMDelegate: AnyObject {
     func showErrorAlert()
     func showSuccesAlert()
+    func showSelectTypeAlert()
 }
 
 final class AddWorkVM {
     weak var delegate: AddWorkVMDelegate?
     let coreDataManager = CoreDataManager.shared
 
+    private var selectedType: String?
+    private var isTypeSelected: Bool = false
 
     private func saveWorkModel(model: WorkModel) {
         guard let title = model.title, !title.isEmpty else {
@@ -41,7 +47,29 @@ final class AddWorkVM {
 }
 
 extension AddWorkVM: AddWorkVMProtocol {
+    var getIsTypeSelected: Bool {
+        get {
+            return isTypeSelected
+        }
+        set {
+            isTypeSelected = newValue
+        }
+    }
+
+    var getSelectedType: String? {
+        get {
+            return selectedType
+        }
+        set {
+            selectedType = newValue
+        }
+    }
+
     func didSave(model: WorkModel) {
+        if selectedType == nil {
+            delegate?.showSelectTypeAlert()
+            return
+        }
         saveWorkModel(model: model)
         delegate?.showSuccesAlert()
     }

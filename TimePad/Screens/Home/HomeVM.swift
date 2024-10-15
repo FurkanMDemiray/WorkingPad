@@ -20,6 +20,7 @@ protocol HomeVMDelegate: AnyObject {
 }
 
 final class HomeVM {
+
     weak var delegate: HomeVMDelegate?
     private let coreDataManager = CoreDataManager.shared
     private var workModels: [WorkModel] = []
@@ -31,13 +32,14 @@ final class HomeVM {
 }
 
 extension HomeVM: HomeVMProtocol {
+
     func deleteWordModel(at index: Int) {
         let work = coreDataManager.fetchWorks()[index]
         coreDataManager.context.delete(work)
         coreDataManager.saveContext()
         fetchWorkModels()
     }
-    
+
     var getWorkModels: [WorkModel] {
         workModels
     }
