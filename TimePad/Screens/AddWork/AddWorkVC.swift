@@ -42,7 +42,6 @@ final class AddWorkVC: UIViewController {
         // clear other images except the selected one
         for img in [workoutImage, workImage, readingImage, codingImage] {
             if img != image {
-                // make animation
                 UIView.animate(withDuration: 0.2) {
                     img?.isHidden = true
                 }
@@ -61,10 +60,11 @@ final class AddWorkVC: UIViewController {
     private func handleImageSelection(for type: String, selectedImage: UIImageView) {
         if viewModel.getIsTypeSelected {
             returnImageToOriginalState()
-            viewModel.getSelectedType = type
+            viewModel.getSelectedType = nil
             viewModel.getIsTypeSelected = false
         } else {
             deselectOtherImages(image: selectedImage)
+            viewModel.getSelectedType = type
             viewModel.getIsTypeSelected = true
         }
     }
@@ -110,15 +110,14 @@ extension AddWorkVC: AddWorkVMDelegate {
 }
 
 private enum Constants {
-    static let workout = "workout"
-    static let work = "work"
-    static let reading = "reading"
-    static let coding = "coding"
+    static let workout = "Workout"
+    static let work = "Work"
+    static let reading = "Reading"
+    static let coding = "Coding"
     static let successTitle = "Success"
     static let errorTitle = "Error"
     static let ok = "OK"
     static let successMessage = "Work added successfully"
     static let errorMessage = "Please fill the title field"
     static let selectTypeErrorMessage = "Please select a type"
-
 }
