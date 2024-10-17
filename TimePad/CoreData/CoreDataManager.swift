@@ -37,11 +37,13 @@ final class CoreDataManager {
         }
     }
 
-    func createWork(title: String, hour: Int, minute: Int, type: String) {
+    func createWork(id: String, title: String, hour: Int, minute: Int, seconds: Int, type: String) {
         let work = Work(context: context)
+        work.id = id
         work.title = title
         work.hour = Int16(hour)
         work.minute = Int16(minute)
+        work.seconds = Int16(seconds)
         work.type = type
         saveContext()
     }
@@ -57,12 +59,26 @@ final class CoreDataManager {
         }
     }
 
-    func updateWork(work: Work, newTitle: String, newHour: Int, newMinute: Int, newType: String) {
-        work.title = newTitle
-        work.hour = Int16(newHour)
-        work.minute = Int16(newMinute)
-        work.type = newType
-        saveContext()
+    func updateWork(by id: String, newTitle: String, newHour: Int, newMinute: Int, newSeconds: Int, newType: String) {
+        let fetchRequest: NSFetchRequest<Work> = Work.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+
+        do {
+            let works = try context.fetch(fetchRequest)
+            if let workToUpdate = works.first {
+                workToUpdate.title = newTitle
+                workToUpdate.hour = Int16(newHour)
+                workToUpdate.minute = Int16(newMinute)
+                workToUpdate.seconds = Int16(newSeconds)
+                workToUpdate.type = newType
+                saveContext()
+                print("Work updated successfully")
+            } else {
+                print("No work found with this id")
+            }
+        } catch let error {
+            print("Update error: \(error)")
+        }
     }
 
     func deleteWork(work: Work) {

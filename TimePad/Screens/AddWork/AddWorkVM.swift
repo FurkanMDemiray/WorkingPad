@@ -35,12 +35,15 @@ final class AddWorkVM {
             delegate?.showErrorAlert()
             return
         }
+
         guard let hour = model.hour, let minute = model.minute else { return }
-        coreDataManager.createWork(title: title, hour: hour, minute: minute, type: model.type ?? "Personal")
+        let id = UUID()
+        print("id: \(id.uuidString)")
+        coreDataManager.createWork(id: id.uuidString, title: title, hour: hour, minute: minute, seconds: 0, type: model.type ?? "Personal")
     }
 
     func fetchWorkModels() {
-        let workModels = coreDataManager.fetchWorks().map { WorkModel(title: $0.title, hour: Int($0.hour), minute: Int($0.minute), type: $0.type) }
+        let workModels = coreDataManager.fetchWorks()
         print(workModels)
     }
 

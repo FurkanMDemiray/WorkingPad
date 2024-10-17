@@ -12,12 +12,24 @@ final class TimerVC: UIViewController {
     private var timerView: TimerView!
     var workModel: WorkModel!
     static let pauseButton = UIButton(type: .system)
+    private let coreDataManager = CoreDataManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
         addTimer()
         addButtons()
         view.backgroundColor = UIColor.hexStringToUIColor(hex: "060417")
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timerView.setLastWorkModel()
+        print(workModel)
+        updateWorkModel(id: workModel.id!, hour: timerView.lastHour!, minute: timerView.lastMinute!, seconds: timerView.lastSeconds!)
+    }
+
+    private func updateWorkModel(id: String, hour: Int, minute: Int, seconds: Int) {
+        coreDataManager.updateWork(by: id, newTitle: workModel.title!, newHour: hour, newMinute: minute, newSeconds: seconds, newType: workModel.type!)
     }
 
     private func addTimer() {
@@ -32,7 +44,7 @@ final class TimerVC: UIViewController {
             ),
             hours: hour,
             minutes: minute,
-            seconds: 0
+            seconds: workModel.seconds ?? 0
         )
 
         view.addSubview(timerView)
@@ -49,7 +61,6 @@ final class TimerVC: UIViewController {
     }
 
     private func addButtons() {
-
         TimerVC.pauseButton.setTitle("Pause", for: .normal)
         TimerVC.pauseButton.setTitleColor(.white, for: .normal)
         TimerVC.pauseButton.backgroundColor = UIColor.hexStringToUIColor(hex: "2de092")
@@ -64,7 +75,7 @@ final class TimerVC: UIViewController {
         quitButton.backgroundColor = UIColor.hexStringToUIColor(hex: "3d4aba")
         quitButton.layer.cornerRadius = 32
         quitButton.layer.masksToBounds = true
-        quitButton.addTarget(self, action: #selector(quitTapped), for: .touchUpInside)
+        quitButton.addTarget(self, action: #selector(resetTapped), for: .touchUpInside)
         view.addSubview(quitButton)
 
         TimerVC.pauseButton.translatesAutoresizingMaskIntoConstraints = false
@@ -87,8 +98,8 @@ final class TimerVC: UIViewController {
         timerView.pauseTimer()
     }
 
-    @objc private func quitTapped() {
-        timerView.quitTimer()
+    @objc private func resetTapped() {
+        timerView.resetTimer()
     }
 }
 

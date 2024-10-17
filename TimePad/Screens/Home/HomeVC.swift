@@ -56,8 +56,7 @@ final class HomeVC: UIViewController {
     }
 
     //MARK: Navigate
-    private func navigateToTimerVC(at index: Int)
-    {
+    private func navigateToTimerVC(at index: Int) {
         let timerVC = TimerVC()
         timerVC.workModel = viewModel.getWorkModels[index]
         navigationController?.pushViewController(timerVC, animated: true)
@@ -104,6 +103,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         navigateToTimerVC(at: indexPath.row)
+        viewModel.getLastClickedWork(lastWork: viewModel.getWorkModels[indexPath.row])
     }
 }
 

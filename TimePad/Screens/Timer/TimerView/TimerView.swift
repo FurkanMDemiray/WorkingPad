@@ -17,6 +17,9 @@ final class TimerView: UIView {
     private var remainingTime: TimeInterval
     private var totalTime: TimeInterval
     private var isPaused = false
+    var lastHour: Int?
+    var lastMinute: Int?
+    var lastSeconds: Int?
 
     init(frame: CGRect, hours: Int, minutes: Int, seconds: Int) {
         // Toplam süreyi saniye cinsinden hesapla
@@ -88,6 +91,7 @@ final class TimerView: UIView {
 
     func pauseTimer() {
         if !isPaused {
+            setLastWorkModel()
             timer?.invalidate() // Timer'ı durdur
             isPaused = true
             TimerVC.pauseButton.setTitle("Resume", for: .normal)
@@ -98,12 +102,21 @@ final class TimerView: UIView {
         }
     }
 
-    func quitTimer() {
+    func resetTimer() {
         timer?.invalidate() // Timer'ı tamamen durdur
         remainingTime = totalTime
         timerLabel.text = timeString(from: remainingTime)
         shapeLayer.strokeEnd = 1 // Çemberi sıfırla
         pauseTimer()
+    }
+
+    func setLastWorkModel() {
+        //lastWorkModelStatus?.hour = Int(remainingTime) / 3600
+        //lastWorkModelStatus?.minute = Int(remainingTime) % 3600 / 60,
+        lastHour = Int(remainingTime) / 3600
+        lastMinute = Int(remainingTime) % 3600 / 60
+        lastSeconds = Int(remainingTime) % 60
+        print(lastHour, lastMinute, lastSeconds)
     }
 
     @objc private func updateTimer() {
