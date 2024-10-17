@@ -24,7 +24,6 @@ final class TimerVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         timerView.setLastWorkModel()
-        print(workModel)
         updateWorkModel(id: workModel.id!, hour: timerView.lastHour!, minute: timerView.lastMinute!, seconds: timerView.lastSeconds!)
     }
 
@@ -99,7 +98,7 @@ final class TimerVC: UIViewController {
     }
 
     @objc private func resetTapped() {
-        timerView.resetTimer()
+        timerView.resetTimer(firstHour: workModel.firstHour!, firstMinute: workModel.firstMinute!)
     }
 }
 

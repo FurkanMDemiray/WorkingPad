@@ -13,5 +13,7 @@ struct WorkModel {
     var hour: Int?
     var minute: Int?
     var seconds: Int?
+    var firstHour: Int?
+    var firstMinute: Int?
     var type: String?
 }

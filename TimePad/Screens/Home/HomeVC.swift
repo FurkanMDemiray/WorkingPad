@@ -68,6 +68,7 @@ final class HomeVC: UIViewController {
     }
 }
 
+//MARK: - TableViewDelegate
 extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.getWorkModels.count
@@ -94,7 +95,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if viewModel.getWorkModels.count >= 4 {
+        if viewModel.getWorkModels.count == 4 {
             return tableView.frame.height / CGFloat(self.tableView(tableView, numberOfRowsInSection: 0))
         } else {
             return tableView.frame.height / 4
@@ -103,7 +104,6 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         navigateToTimerVC(at: indexPath.row)
-        viewModel.getLastClickedWork(lastWork: viewModel.getWorkModels[indexPath.row])
     }
 }
 

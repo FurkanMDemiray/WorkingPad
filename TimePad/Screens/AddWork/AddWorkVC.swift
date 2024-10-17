@@ -25,7 +25,6 @@ final class AddWorkVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
-        viewModel.fetchWorkModels()
         addGestureToImages()
     }
 
@@ -90,6 +89,7 @@ final class AddWorkVC: UIViewController {
         let type = viewModel.getSelectedType
         let model = WorkModel(title: workTitleText.text ?? "", hour: hour, minute: minute, type: type)
         viewModel.didSave(model: model)
+        returnImageToOriginalState()
     }
 }
 

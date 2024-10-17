@@ -44,6 +44,8 @@ final class CoreDataManager {
         work.hour = Int16(hour)
         work.minute = Int16(minute)
         work.seconds = Int16(seconds)
+        work.firstHour = Int16(hour)
+        work.firstMinute = Int16(minute)
         work.type = type
         saveContext()
     }

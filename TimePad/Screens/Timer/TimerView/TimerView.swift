@@ -102,21 +102,25 @@ final class TimerView: UIView {
         }
     }
 
-    func resetTimer() {
+    func resetTimer(firstHour: Int, firstMinute: Int) {
         timer?.invalidate() // Timer'ı tamamen durdur
-        remainingTime = totalTime
+        if firstHour == 0 && firstMinute != 0 {
+            remainingTime = TimeInterval(firstMinute * 60)
+        } else if firstMinute == 0 && firstHour != 0 {
+            remainingTime = TimeInterval(firstHour * 3600)
+        } else {
+            remainingTime = TimeInterval(firstHour * 3600 + firstMinute * 60)
+        }
         timerLabel.text = timeString(from: remainingTime)
         shapeLayer.strokeEnd = 1 // Çemberi sıfırla
+        isPaused = false
         pauseTimer()
     }
 
     func setLastWorkModel() {
-        //lastWorkModelStatus?.hour = Int(remainingTime) / 3600
-        //lastWorkModelStatus?.minute = Int(remainingTime) % 3600 / 60,
         lastHour = Int(remainingTime) / 3600
         lastMinute = Int(remainingTime) % 3600 / 60
         lastSeconds = Int(remainingTime) % 60
-        print(lastHour, lastMinute, lastSeconds)
     }
 
     @objc private func updateTimer() {

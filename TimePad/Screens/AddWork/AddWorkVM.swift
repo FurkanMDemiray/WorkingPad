@@ -14,7 +14,6 @@ protocol AddWorkVMProtocol {
     var getIsTypeSelected: Bool { get set }
 
     func didSave(model: WorkModel)
-    func fetchWorkModels()
 }
 
 protocol AddWorkVMDelegate: AnyObject {
@@ -38,13 +37,15 @@ final class AddWorkVM {
 
         guard let hour = model.hour, let minute = model.minute else { return }
         let id = UUID()
-        print("id: \(id.uuidString)")
-        coreDataManager.createWork(id: id.uuidString, title: title, hour: hour, minute: minute, seconds: 0, type: model.type ?? "Personal")
-    }
-
-    func fetchWorkModels() {
-        let workModels = coreDataManager.fetchWorks()
-        print(workModels)
+        coreDataManager
+            .createWork(
+            id: id.uuidString,
+            title: title,
+            hour: hour,
+            minute: minute,
+            seconds: 0,
+            type: model.type ?? "Personal"
+        )
     }
 
 }
