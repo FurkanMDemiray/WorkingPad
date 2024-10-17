@@ -11,6 +11,7 @@ final class TimerVC: UIViewController {
 
     private var timerView: TimerView!
     var workModel: WorkModel!
+    static let pauseButton = UIButton(type: .system)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,17 +50,16 @@ final class TimerVC: UIViewController {
 
     private func addButtons() {
 
-        let pauseButton = UIButton(type: .system)
-        pauseButton.setTitle("Pause", for: .normal)
-        pauseButton.setTitleColor(.white, for: .normal)
-        pauseButton.backgroundColor = UIColor.hexStringToUIColor(hex: "2de092")
-        pauseButton.layer.cornerRadius = 32
-        pauseButton.layer.masksToBounds = true
-        pauseButton.addTarget(self, action: #selector(pauseTapped), for: .touchUpInside)
-        view.addSubview(pauseButton)
+        TimerVC.pauseButton.setTitle("Pause", for: .normal)
+        TimerVC.pauseButton.setTitleColor(.white, for: .normal)
+        TimerVC.pauseButton.backgroundColor = UIColor.hexStringToUIColor(hex: "2de092")
+        TimerVC.pauseButton.layer.cornerRadius = 32
+        TimerVC.pauseButton.layer.masksToBounds = true
+        TimerVC.pauseButton.addTarget(self, action: #selector(pauseTapped), for: .touchUpInside)
+        view.addSubview(TimerVC.pauseButton)
 
         let quitButton = UIButton(type: .system)
-        quitButton.setTitle("Quit", for: .normal)
+        quitButton.setTitle("Reset", for: .normal)
         quitButton.setTitleColor(.white, for: .normal)
         quitButton.backgroundColor = UIColor.hexStringToUIColor(hex: "3d4aba")
         quitButton.layer.cornerRadius = 32
@@ -67,14 +67,14 @@ final class TimerVC: UIViewController {
         quitButton.addTarget(self, action: #selector(quitTapped), for: .touchUpInside)
         view.addSubview(quitButton)
 
-        pauseButton.translatesAutoresizingMaskIntoConstraints = false
+        TimerVC.pauseButton.translatesAutoresizingMaskIntoConstraints = false
         quitButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            pauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -64),
-            pauseButton.topAnchor.constraint(equalTo: timerView.bottomAnchor, constant: 32),
-            pauseButton.widthAnchor.constraint(equalToConstant: 64),
-            pauseButton.heightAnchor.constraint(equalToConstant: 64),
+            TimerVC.pauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -64),
+            TimerVC.pauseButton.topAnchor.constraint(equalTo: timerView.bottomAnchor, constant: 32),
+            TimerVC.pauseButton.widthAnchor.constraint(equalToConstant: 64),
+            TimerVC.pauseButton.heightAnchor.constraint(equalToConstant: 64),
 
             quitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 64),
             quitButton.topAnchor.constraint(equalTo: timerView.bottomAnchor, constant: 32),

@@ -90,9 +90,11 @@ final class TimerView: UIView {
         if !isPaused {
             timer?.invalidate() // Timer'ı durdur
             isPaused = true
+            TimerVC.pauseButton.setTitle("Resume", for: .normal)
         } else {
             startTimer() // Timer'ı tekrar başlat
             isPaused = false
+            TimerVC.pauseButton.setTitle("Pause", for: .normal)
         }
     }
 
@@ -101,6 +103,7 @@ final class TimerView: UIView {
         remainingTime = totalTime
         timerLabel.text = timeString(from: remainingTime)
         shapeLayer.strokeEnd = 1 // Çemberi sıfırla
+        pauseTimer()
     }
 
     @objc private func updateTimer() {
