@@ -108,7 +108,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension HomeVC: HomeVMDelegate {
-    func updateTablaView() {
+    func updateTableView() {
         tableView.reloadData()
     }
 }

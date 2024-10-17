@@ -77,6 +77,13 @@ final class TimerVC: UIViewController {
         quitButton.addTarget(self, action: #selector(resetTapped), for: .touchUpInside)
         view.addSubview(quitButton)
 
+        let titleLabel = UILabel()
+        titleLabel.text = workModel.title
+        titleLabel.textColor = .white
+        titleLabel.font = UIFont.systemFont(ofSize: 28, weight: .semibold)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(titleLabel)
+
         TimerVC.pauseButton.translatesAutoresizingMaskIntoConstraints = false
         quitButton.translatesAutoresizingMaskIntoConstraints = false
 
@@ -89,7 +96,11 @@ final class TimerVC: UIViewController {
             quitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 64),
             quitButton.topAnchor.constraint(equalTo: timerView.bottomAnchor, constant: 32),
             quitButton.widthAnchor.constraint(equalToConstant: 64),
-            quitButton.heightAnchor.constraint(equalToConstant: 64)
+            quitButton.heightAnchor.constraint(equalToConstant: 64),
+
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: quitButton.bottomAnchor, constant: 64)
+
             ])
     }
 
