@@ -55,11 +55,18 @@ final class HomeVC: UIViewController {
         tableView.register(UINib(nibName: Constants.projectCell, bundle: nil), forCellReuseIdentifier: Constants.projectCell)
     }
 
+    //MARK: Navigate
+    private func navigateToTimerVC(at index: Int)
+    {
+        let timerVC = TimerVC()
+        timerVC.workModel = viewModel.getWorkModels[index]
+        navigationController?.pushViewController(timerVC, animated: true)
+    }
+
     //MARK: - Actions
     @objc private func seeAllTapped() {
         print("See all tapped")
     }
-
 }
 
 extension HomeVC: UITableViewDelegate, UITableViewDataSource {
@@ -93,6 +100,10 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         } else {
             return tableView.frame.height / 4
         }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        navigateToTimerVC(at: indexPath.row)
     }
 }
 

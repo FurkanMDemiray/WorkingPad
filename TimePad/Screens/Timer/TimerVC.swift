@@ -10,6 +10,7 @@ import UIKit
 final class TimerVC: UIViewController {
 
     private var timerView: TimerView!
+    var workModel: WorkModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,10 +20,21 @@ final class TimerVC: UIViewController {
     }
 
     private func addTimer() {
-        timerView = TimerView(frame: CGRect(x: 0, y: 0, width: 300, height: 300), hours: 2, minutes: 5, seconds: 10)
+        guard let hour = workModel.hour, let minute = workModel.minute else { return }
+
+        timerView = TimerView(
+            frame: CGRect(
+                x: 0,
+                y: 0,
+                width: 300,
+                height: 300
+            ),
+            hours: hour,
+            minutes: minute,
+            seconds: 0
+        )
 
         view.addSubview(timerView)
-
         timerView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
