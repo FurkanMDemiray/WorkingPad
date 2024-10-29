@@ -26,13 +26,13 @@ final class HomeVC: UIViewController {
 //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        configureTableView()
+        setupConfigures()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.didFetchWorkModels()
+        viewModel.didFetchLastWork()
     }
 
 //MARK: Configures
@@ -53,6 +53,17 @@ final class HomeVC: UIViewController {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: Constants.projectCell, bundle: nil), forCellReuseIdentifier: Constants.projectCell)
+    }
+
+    private func configureInterOfCardView() {
+        timerLabel.text = viewModel.getLastWorkTime
+        projectLabel.text = viewModel.getLastWork.title
+    }
+
+    private func setupConfigures() {
+        configureUI()
+        configureTableView()
+        configureInterOfCardView()
     }
 
     //MARK: Navigate

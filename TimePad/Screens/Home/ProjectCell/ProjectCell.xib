@@ -96,6 +96,7 @@
                 <outlet property="tagLabel" destination="FKv-GA-yYP" id="cPR-Lz-ikS"/>
                 <outlet property="timeLabel" destination="iKm-T2-uan" id="9p2-Fv-uuV"/>
                 <outlet property="titleLabel" destination="HHS-PN-noF" id="Cxe-69-9z3"/>
+                <outlet property="typeImage" destination="tGd-gl-CNO" id="QUn-sd-flu"/>
             </connections>
             <point key="canvasLocation" x="192.36641221374046" y="24.647887323943664"/>
         </tableViewCell>

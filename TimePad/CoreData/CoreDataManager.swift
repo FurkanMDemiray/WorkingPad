@@ -37,6 +37,17 @@ final class CoreDataManager {
         }
     }
 
+    //MARK: Create
+    func createLastWork(title: String, hour: Int, minute: Int, seconds: Int, type: String) {
+        let lastWork = LastWork(context: context)
+        lastWork.title = title
+        lastWork.hour = Int16(hour)
+        lastWork.minute = Int16(minute)
+        lastWork.seconds = Int16(seconds)
+        lastWork.type = type
+        saveContext()
+    }
+
     func createWork(id: String, title: String, hour: Int, minute: Int, seconds: Int, type: String) {
         let work = Work(context: context)
         work.id = id
@@ -50,6 +61,7 @@ final class CoreDataManager {
         saveContext()
     }
 
+    //MARK: Fetch
     func fetchWorks() -> [Work] {
         let fetchRequest: NSFetchRequest<Work> = Work.fetchRequest()
         do {
@@ -61,6 +73,18 @@ final class CoreDataManager {
         }
     }
 
+    func fetchLastWork() -> LastWork? {
+        let fetchRequest: NSFetchRequest<LastWork> = LastWork.fetchRequest()
+        do {
+            let lastWorks = try context.fetch(fetchRequest)
+            return lastWorks.first
+        } catch let error {
+            print("Fetch error: \(error)")
+            return nil
+        }
+    }
+
+    //MARK: Update
     func updateWork(by id: String, newTitle: String, newHour: Int, newMinute: Int, newSeconds: Int, newType: String) {
         let fetchRequest: NSFetchRequest<Work> = Work.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
@@ -83,8 +107,35 @@ final class CoreDataManager {
         }
     }
 
+    func updateLostWord(newTitle: String, newHour: Int, newMinute: Int, newSeconds: Int, newType: String) {
+        let fetchRequest: NSFetchRequest<LastWork> = LastWork.fetchRequest()
+
+        do {
+            let lastWorks = try context.fetch(fetchRequest)
+            if let lastWorkToUpdate = lastWorks.first {
+                lastWorkToUpdate.title = newTitle
+                lastWorkToUpdate.hour = Int16(newHour)
+                lastWorkToUpdate.minute = Int16(newMinute)
+                lastWorkToUpdate.seconds = Int16(newSeconds)
+                lastWorkToUpdate.type = newType
+                saveContext()
+                print("Last work updated successfully")
+            } else {
+                print("No last work found")
+            }
+        } catch let error {
+            print("Update error: \(error)")
+        }
+    }
+
+    //MARK: Delete
     func deleteWork(work: Work) {
         context.delete(work)
+        saveContext()
+    }
+
+    func deleteLastWork(lastWork: LastWork) {
+        context.delete(lastWork)
         saveContext()
     }
 }
