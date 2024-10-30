@@ -21,6 +21,7 @@ protocol HomeVMProtocol {
 protocol HomeVMDelegate: AnyObject {
     func updateTableView()
     func showEmptyView()
+    func hideEmptyView()
 }
 
 final class HomeVM {
@@ -32,10 +33,8 @@ final class HomeVM {
 
     private func fetchWorkModels() {
         workModels = coreDataManager.fetchWorks().map { WorkModel(id: $0.id, title: $0.title, hour: Int($0.hour), minute: Int($0.minute), seconds: Int($0.seconds), firstHour: Int($0.firstHour), firstMinute: Int($0.firstMinute), type: $0.type) }
+        workModels.isEmpty ? delegate?.showEmptyView() : delegate?.hideEmptyView()
         delegate?.updateTableView()
-        if workModels.isEmpty {
-            delegate?.showEmptyView()
-        }
     }
 }
 

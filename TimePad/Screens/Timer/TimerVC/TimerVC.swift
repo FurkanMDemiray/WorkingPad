@@ -26,15 +26,20 @@ final class TimerVC: UIViewController {
         //timerView.pauseTimer()
         timerView.setLastWorkModel()
         updateWorkModel(id: workModel.id!, hour: timerView.lastHour!, minute: timerView.lastMinute!, seconds: timerView.lastSeconds!)
+        updateLostWordModel()
     }
 
-    deinit{
+    deinit {
         // delete timerView
         timerView.removeFromSuperview()
     }
 
     private func updateWorkModel(id: String, hour: Int, minute: Int, seconds: Int) {
         coreDataManager.updateWork(by: id, newTitle: workModel.title!, newHour: hour, newMinute: minute, newSeconds: seconds, newType: workModel.type!)
+    }
+
+    private func updateLostWordModel() {
+        coreDataManager.updateLastWork(newTitle: workModel.title!, newHour: timerView.lastHour!, newMinute: timerView.lastMinute!, newSeconds: timerView.lastSeconds!, newType: workModel.type!)
     }
 
     private func addTimer() {

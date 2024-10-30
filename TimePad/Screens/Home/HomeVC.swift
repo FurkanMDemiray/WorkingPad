@@ -16,6 +16,7 @@ final class HomeVC: UIViewController {
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var seeAllLabel: UILabel!
     @IBOutlet private weak var playImage: UIImageView!
+    @IBOutlet private weak var emptyDataLabel: UILabel!
 
     var viewModel: HomeVMProtocol! {
         didSet {
@@ -103,6 +104,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
                     viewModel.deleteWordModel(at: indexPath.row)
                 })
         }
+        viewModel.didFetchWorkModels()
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -119,18 +121,13 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension HomeVC: HomeVMDelegate {
+
     func showEmptyView() {
-        let label = UILabel()
-        label.text = "Please add a work"
-        label.textColor = .white
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label)
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
-            ])
+        emptyDataLabel.isHidden = false
+    }
+
+    func hideEmptyView() {
+        emptyDataLabel.isHidden = true
     }
 
     func updateTableView() {

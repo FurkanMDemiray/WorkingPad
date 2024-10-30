@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeVC" customModule="TimePad" customModuleProvider="target">
             <connections>
+                <outlet property="emptyDataLabel" destination="eoJ-JI-rLm" id="tlP-Yp-6E0"/>
                 <outlet property="playImage" destination="Oc0-HP-CMA" id="wPz-PN-hi6"/>
                 <outlet property="projectLabel" destination="y32-sf-HHt" id="El0-Oo-2HP"/>
                 <outlet property="seeAllLabel" destination="tnZ-Xa-n9m" id="yif-WT-EqL"/>
@@ -93,6 +94,12 @@
                     <rect key="frame" x="0.0" y="282.33333333333331" width="393" height="535.66666666666674"/>
                     <color key="backgroundColor" red="0.023529411760000001" green="0.015686274510000001" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please add a work" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eoJ-JI-rLm">
+                    <rect key="frame" x="8" y="536" width="377" height="28.666666666666629"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.023529411764705882" green="0.015686274509803921" blue="0.090196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -102,10 +109,14 @@
                 <constraint firstItem="5sP-W9-1Pf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="DnC-R6-U5s"/>
                 <constraint firstItem="mJU-RA-a1f" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="I7J-vX-SKZ"/>
                 <constraint firstItem="mJU-RA-a1f" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="Ido-15-3Bc"/>
+                <constraint firstItem="eoJ-JI-rLm" firstAttribute="centerY" secondItem="5sP-W9-1Pf" secondAttribute="centerY" id="Mus-rF-2h5"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="5sP-W9-1Pf" secondAttribute="bottom" id="ORG-Vt-kTQ"/>
+                <constraint firstItem="eoJ-JI-rLm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="Z0e-r9-5WS"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="5sP-W9-1Pf" secondAttribute="trailing" id="c4Z-dy-raQ"/>
                 <constraint firstItem="NTp-kF-v3H" firstAttribute="top" secondItem="mJU-RA-a1f" secondAttribute="bottom" constant="16" id="cOY-kb-uNh"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="NTp-kF-v3H" secondAttribute="trailing" constant="8" id="eQB-38-xWA"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="eoJ-JI-rLm" secondAttribute="trailing" constant="8" id="fiV-FZ-7f4"/>
+                <constraint firstItem="eoJ-JI-rLm" firstAttribute="centerX" secondItem="5sP-W9-1Pf" secondAttribute="centerX" id="l8C-DY-csQ"/>
                 <constraint firstItem="5sP-W9-1Pf" firstAttribute="top" secondItem="W0j-zT-XDf" secondAttribute="bottom" constant="16" id="qZy-uB-Lcf"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="W0j-zT-XDf" secondAttribute="trailing" constant="8" id="rEY-CB-JJY"/>
                 <constraint firstItem="W0j-zT-XDf" firstAttribute="top" secondItem="NTp-kF-v3H" secondAttribute="bottom" constant="32" id="yiw-3b-pyo"/>

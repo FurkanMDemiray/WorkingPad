@@ -107,7 +107,7 @@ final class CoreDataManager {
         }
     }
 
-    func updateLostWord(newTitle: String, newHour: Int, newMinute: Int, newSeconds: Int, newType: String) {
+    func updateLastWork(newTitle: String, newHour: Int, newMinute: Int, newSeconds: Int, newType: String) {
         let fetchRequest: NSFetchRequest<LastWork> = LastWork.fetchRequest()
 
         do {
