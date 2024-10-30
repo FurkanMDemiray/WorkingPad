@@ -18,13 +18,19 @@ final class TimerVC: UIViewController {
         super.viewDidLoad()
         addTimer()
         addButtons()
-        view.backgroundColor = UIColor.hexStringToUIColor(hex: "060417")
+        view.backgroundColor = UIColor.hexStringToUIColor(hex: Colors.background)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        //timerView.pauseTimer()
         timerView.setLastWorkModel()
         updateWorkModel(id: workModel.id!, hour: timerView.lastHour!, minute: timerView.lastMinute!, seconds: timerView.lastSeconds!)
+    }
+
+    deinit{
+        // delete timerView
+        timerView.removeFromSuperview()
     }
 
     private func updateWorkModel(id: String, hour: Int, minute: Int, seconds: Int) {
@@ -55,8 +61,9 @@ final class TimerVC: UIViewController {
             timerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             timerView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -view.frame.height / 4)
             ])
-
-        timerView.startTimer()
+        DispatchQueue.main.async {
+            self.timerView.startTimer()
+        }
     }
 
     private func addButtons() {

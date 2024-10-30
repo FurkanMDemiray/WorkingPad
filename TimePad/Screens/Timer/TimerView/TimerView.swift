@@ -16,7 +16,7 @@ final class TimerView: UIView {
     private var timer: Timer?
     private var remainingTime: TimeInterval
     private var totalTime: TimeInterval
-    private var isPaused = false
+    static var isPaused = false
     var lastHour: Int?
     var lastMinute: Int?
     var lastSeconds: Int?
@@ -79,7 +79,6 @@ final class TimerView: UIView {
 
     func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-
         // Animasyonu başlat
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
         basicAnimation.toValue = 0
@@ -90,15 +89,17 @@ final class TimerView: UIView {
     }
 
     func pauseTimer() {
-        if !isPaused {
+        if TimerView.isPaused {
+            startTimer() // Timer'ı tekrar başlat
+            TimerVC.pauseButton.setTitle("Pause", for: .normal)
+            TimerView.isPaused = false
+            print("Resumed \(TimerView.isPaused)")
+        } else {
             setLastWorkModel()
             timer?.invalidate() // Timer'ı durdur
-            isPaused = true
             TimerVC.pauseButton.setTitle("Resume", for: .normal)
-        } else {
-            startTimer() // Timer'ı tekrar başlat
-            isPaused = false
-            TimerVC.pauseButton.setTitle("Pause", for: .normal)
+            TimerView.isPaused = true
+            print("Paused \(TimerView.isPaused)")
         }
     }
 
@@ -113,7 +114,7 @@ final class TimerView: UIView {
         }
         timerLabel.text = timeString(from: remainingTime)
         shapeLayer.strokeEnd = 1 // Çemberi sıfırla
-        isPaused = false
+        TimerView.isPaused = false
         pauseTimer()
     }
 

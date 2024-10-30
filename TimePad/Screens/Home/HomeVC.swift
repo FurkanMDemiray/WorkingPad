@@ -119,6 +119,20 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension HomeVC: HomeVMDelegate {
+    func showEmptyView() {
+        let label = UILabel()
+        label.text = "Please add a work"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label)
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
+            ])
+    }
+
     func updateTableView() {
         tableView.reloadData()
     }

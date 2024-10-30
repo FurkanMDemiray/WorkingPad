@@ -28,6 +28,12 @@ final class AddWorkVC: UIViewController {
         addGestureToImages()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //configureTimePicker()
+    }
+
+    //MARK: Configure
     private func addGestureToImages() {
         for image in [workoutImage, workImage, readingImage, codingImage] {
             let tap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
@@ -37,6 +43,15 @@ final class AddWorkVC: UIViewController {
         }
     }
 
+    private func configureTimePicker() {
+        // set time to 1 hour
+        let calendar = Calendar.current
+        if let defaultDate = calendar.date(bySettingHour: 0, minute: 5, second: 0, of: Date()) {
+            timePicker.date = defaultDate
+        }
+    }
+
+    //MARK: Handling Image Status
     private func deselectOtherImages(image: UIImageView) {
         // clear other images except the selected one
         for img in [workoutImage, workImage, readingImage, codingImage] {
@@ -68,6 +83,7 @@ final class AddWorkVC: UIViewController {
         }
     }
 
+    //MARK: Actions
     @objc private func imageTapped(sender: UITapGestureRecognizer) {
         switch sender.view {
         case workoutImage:
