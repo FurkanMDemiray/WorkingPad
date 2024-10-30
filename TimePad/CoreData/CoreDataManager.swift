@@ -39,13 +39,19 @@ final class CoreDataManager {
 
     //MARK: Create
     func createLastWork(title: String, hour: Int, minute: Int, seconds: Int, type: String) {
-        let lastWork = LastWork(context: context)
-        lastWork.title = title
-        lastWork.hour = Int16(hour)
-        lastWork.minute = Int16(minute)
-        lastWork.seconds = Int16(seconds)
-        lastWork.type = type
-        saveContext()
+        // if there is no last work, create one, otherwise update it
+        if fetchLastWork() == nil {
+            let lastWork = LastWork(context: context)
+            lastWork.title = title
+            lastWork.hour = Int16(hour)
+            lastWork.minute = Int16(minute)
+            lastWork.seconds = Int16(seconds)
+            lastWork.type = type
+            saveContext()
+        }
+        else {
+            updateLastWork(newTitle: title, newHour: hour, newMinute: minute, newSeconds: seconds, newType: type)
+        }
     }
 
     func createWork(id: String, title: String, hour: Int, minute: Int, seconds: Int, type: String) {

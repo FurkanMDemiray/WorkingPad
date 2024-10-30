@@ -34,6 +34,7 @@ final class HomeVC: UIViewController {
         super.viewWillAppear(animated)
         viewModel.didFetchWorkModels()
         viewModel.didFetchLastWork()
+        configureInterOfCardView()
     }
 
 //MARK: Configures
@@ -64,7 +65,6 @@ final class HomeVC: UIViewController {
     private func setupConfigures() {
         configureUI()
         configureTableView()
-        configureInterOfCardView()
     }
 
     //MARK: Navigate

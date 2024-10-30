@@ -15,4 +15,5 @@ enum Colors {
     static let green = "43e487"
     static let gray = "#C0C0C0"
     static let background = "#060417"
+    static let fillColor = "1b143f"
 }

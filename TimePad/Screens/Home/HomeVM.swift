@@ -46,12 +46,13 @@ extension HomeVM: HomeVMProtocol {
         return "\(String(format: "%02d", hour)):\(String(format: "%02d", minute)):\(String(format: "%02d", seconds))"
     }
 
-    var getLastWork: LastWorkModel {
-        lastWork ?? LastWorkModel(title: "No last job in line", hour: 0, minute: 0, seconds: 0, type: "")
-    }
-
     func didFetchLastWork() {
         lastWork = coreDataManager.fetchLastWork().map { LastWorkModel(title: $0.title, hour: Int($0.hour), minute: Int($0.minute), seconds: Int($0.seconds), type: $0.type) }
+        print("Last work: \(lastWork)")
+    }
+
+    func didFetchWorkModels() {
+        fetchWorkModels()
     }
 
     func deleteWordModel(at index: Int) {
@@ -65,7 +66,7 @@ extension HomeVM: HomeVMProtocol {
         workModels
     }
 
-    func didFetchWorkModels() {
-        fetchWorkModels()
+    var getLastWork: LastWorkModel {
+        lastWork ?? LastWorkModel(title: "No last job in line", hour: 0, minute: 0, seconds: 0, type: "")
     }
 }

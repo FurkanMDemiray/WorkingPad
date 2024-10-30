@@ -8,15 +8,21 @@
 import Foundation
 import UIKit
 
+protocol TimerViewDelegate: AnyObject {
+    func pauseButtonTapped()
+    func resumeButtonTapped()
+}
+
 final class TimerView: UIView {
 
+    weak var delegate: TimerViewDelegate?
     private var timerLabel: UILabel!
     private var shapeLayer: CAShapeLayer!
     private var trackLayer: CAShapeLayer!
     private var timer: Timer?
     private var remainingTime: TimeInterval
     private var totalTime: TimeInterval
-    static var isPaused = false
+    private(set) var isPaused = false
     var lastHour: Int?
     var lastMinute: Int?
     var lastSeconds: Int?
@@ -49,9 +55,9 @@ final class TimerView: UIView {
         // Animasyonlu çember (progress bar)
         shapeLayer = CAShapeLayer()
         shapeLayer.path = circularPath.cgPath
-        shapeLayer.strokeColor = UIColor.hexStringToUIColor(hex: "b98ce7").cgColor
+        shapeLayer.strokeColor = UIColor.hexStringToUIColor(hex: Colors.lightPurple).cgColor
         shapeLayer.lineWidth = 10
-        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.fillColor = UIColor.hexStringToUIColor(hex: Colors.fillColor).cgColor
         shapeLayer.lineCap = .round
         shapeLayer.strokeEnd = 1
         layer.addSublayer(shapeLayer)
@@ -88,23 +94,43 @@ final class TimerView: UIView {
         shapeLayer.add(basicAnimation, forKey: "basicAnimation")
     }
 
-    func pauseTimer() {
-        if TimerView.isPaused {
-            startTimer() // Timer'ı tekrar başlat
-            TimerVC.pauseButton.setTitle("Pause", for: .normal)
-            TimerView.isPaused = false
-            print("Resumed \(TimerView.isPaused)")
+    func toggleTimer() {
+        if isPaused {
+            resumeTimer()
         } else {
-            setLastWorkModel()
-            timer?.invalidate() // Timer'ı durdur
-            TimerVC.pauseButton.setTitle("Resume", for: .normal)
-            TimerView.isPaused = true
-            print("Paused \(TimerView.isPaused)")
+            pauseTimer()
         }
     }
 
+    private func pauseTimer() {
+        delegate?.pauseButtonTapped()
+        timer?.invalidate()
+        setLastWorkModel()
+        isPaused = true
+
+        // Animasyonu duraklat
+        let pausedTime = shapeLayer.convertTime(CACurrentMediaTime(), from: nil)
+        shapeLayer.speed = 0.0
+        shapeLayer.timeOffset = pausedTime
+    }
+
+    private func resumeTimer() {
+        delegate?.resumeButtonTapped()
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        isPaused = false
+
+        // Animasyonu devam ettir
+        let pausedTime = shapeLayer.timeOffset
+        shapeLayer.speed = 1.0
+        shapeLayer.timeOffset = 0.0
+        shapeLayer.beginTime = 0.0
+        let timeSincePause = shapeLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        shapeLayer.beginTime = timeSincePause
+    }
+
     func resetTimer(firstHour: Int, firstMinute: Int) {
-        timer?.invalidate() // Timer'ı tamamen durdur
+        timer?.invalidate()
+
         if firstHour == 0 && firstMinute != 0 {
             remainingTime = TimeInterval(firstMinute * 60)
         } else if firstMinute == 0 && firstHour != 0 {
@@ -112,10 +138,21 @@ final class TimerView: UIView {
         } else {
             remainingTime = TimeInterval(firstHour * 3600 + firstMinute * 60)
         }
+
         timerLabel.text = timeString(from: remainingTime)
-        shapeLayer.strokeEnd = 1 // Çemberi sıfırla
-        TimerView.isPaused = false
-        pauseTimer()
+        shapeLayer.removeAllAnimations()
+        shapeLayer.strokeEnd = 1
+        isPaused = true
+
+        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        basicAnimation.toValue = 0
+        basicAnimation.duration = remainingTime
+        basicAnimation.fillMode = .forwards
+        basicAnimation.isRemovedOnCompletion = false
+        shapeLayer.add(basicAnimation, forKey: "basicAnimation")
+
+        // Timer'ı tekrar başlat
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
     }
 
     func setLastWorkModel() {
@@ -127,7 +164,7 @@ final class TimerView: UIView {
     @objc private func updateTimer() {
         if remainingTime > 0 {
             remainingTime -= 1
-            timerLabel.text = timeString(from: remainingTime) // Label'i güncelle
+            timerLabel.text = timeString(from: remainingTime)
         } else {
             timer?.invalidate()
         }
