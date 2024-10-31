@@ -24,17 +24,12 @@ final class TimerVC: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        //timerView.pauseTimer()
         timerView.setLastWorkModel()
         updateWorkModel(id: workModel.id!, hour: timerView.lastHour!, minute: timerView.lastMinute!, seconds: timerView.lastSeconds!)
         createLastWorkModel()
     }
 
-    deinit {
-        // delete timerView
-        timerView.removeFromSuperview()
-    }
-
+//MARK: Coredata
     private func updateWorkModel(id: String, hour: Int, minute: Int, seconds: Int) {
         coreDataManager.updateWork(by: id, newTitle: workModel.title!, newHour: hour, newMinute: minute, newSeconds: seconds, newType: workModel.type!)
     }
@@ -47,6 +42,7 @@ final class TimerVC: UIViewController {
         coreDataManager.createLastWork(title: workModel.title!, hour: workModel.hour!, minute: workModel.minute!, seconds: workModel.seconds!, type: workModel.type!)
     }
 
+//MARK: UI
     private func addTimer() {
         guard let hour = workModel.hour, let minute = workModel.minute else { return }
 
@@ -121,6 +117,7 @@ final class TimerVC: UIViewController {
             ])
     }
 
+//MARK: Actions
     @objc private func pauseTapped() {
         timerView.toggleTimer()
     }
@@ -130,6 +127,7 @@ final class TimerVC: UIViewController {
     }
 }
 
+//MARK: TimerViewDelegate
 extension TimerVC: TimerViewDelegate {
     func pauseButtonTapped() {
         pauseButton.setTitle("Resume", for: .normal)

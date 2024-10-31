@@ -22,6 +22,7 @@ protocol HomeVMDelegate: AnyObject {
     func updateTableView()
     func showEmptyView()
     func hideEmptyView()
+    func updateTimerCard()
 }
 
 final class HomeVM {
@@ -39,16 +40,10 @@ final class HomeVM {
 }
 
 extension HomeVM: HomeVMProtocol {
-    var getLastWorkTime: String {
-        let hour = getLastWork.hour ?? 0
-        let minute = getLastWork.minute ?? 0
-        let seconds = getLastWork.seconds ?? 0
-        return "\(String(format: "%02d", hour)):\(String(format: "%02d", minute)):\(String(format: "%02d", seconds))"
-    }
-
+    //MARK: - Functions
     func didFetchLastWork() {
         lastWork = coreDataManager.fetchLastWork().map { LastWorkModel(title: $0.title, hour: Int($0.hour), minute: Int($0.minute), seconds: Int($0.seconds), type: $0.type) }
-        print("Last work: \(lastWork)")
+        delegate?.updateTimerCard()
     }
 
     func didFetchWorkModels() {
@@ -60,6 +55,14 @@ extension HomeVM: HomeVMProtocol {
         coreDataManager.context.delete(work)
         coreDataManager.saveContext()
         fetchWorkModels()
+    }
+
+    //MARK: Getters
+    var getLastWorkTime: String {
+        let hour = getLastWork.hour ?? 0
+        let minute = getLastWork.minute ?? 0
+        let seconds = getLastWork.seconds ?? 0
+        return "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
     }
 
     var getWorkModels: [WorkModel] {

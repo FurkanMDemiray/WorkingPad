@@ -30,11 +30,10 @@ final class HomeVC: UIViewController {
         setupConfigures()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         viewModel.didFetchWorkModels()
         viewModel.didFetchLastWork()
-        configureInterOfCardView()
     }
 
 //MARK: Configures
@@ -45,9 +44,9 @@ final class HomeVC: UIViewController {
         timerCardView.layer.shadowOpacity = 0.2
         timerCardView.layer.shadowRadius = 2
 
-        let tapMesture = UITapGestureRecognizer(target: self, action: #selector(seeAllTapped))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(seeAllTapped))
         seeAllLabel.isUserInteractionEnabled = true
-        seeAllLabel.addGestureRecognizer(tapMesture)
+        seeAllLabel.addGestureRecognizer(tapGesture)
     }
 
     private func configureTableView() {
@@ -57,9 +56,13 @@ final class HomeVC: UIViewController {
         tableView.register(UINib(nibName: Constants.projectCell, bundle: nil), forCellReuseIdentifier: Constants.projectCell)
     }
 
-    private func configureInterOfCardView() {
+    private func configureInnerOfCardView() {
         timerLabel.text = viewModel.getLastWorkTime
         projectLabel.text = viewModel.getLastWork.title
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(timerCardTapped))
+        timerCardView.isUserInteractionEnabled = true
+        timerCardView.addGestureRecognizer(tapGesture)
     }
 
     private func setupConfigures() {
@@ -77,6 +80,19 @@ final class HomeVC: UIViewController {
     //MARK: - Actions
     @objc private func seeAllTapped() {
         print("See all tapped")
+    }
+
+    @objc private func timerCardTapped() {
+        // Timer card’da gösterilen başlık ve süreye göre model indexini bul
+        guard let lastWorkTitle = projectLabel.text,
+            let lastWorkTime = timerLabel.text else { return }
+
+        // Başlık ve süreye göre eşleşen index’i bul ve navigasyon yap
+        if let index = viewModel.getWorkModels.firstIndex(where: {
+            $0.title == lastWorkTitle && viewModel.getLastWorkTime == lastWorkTime
+        }) {
+            navigateToTimerVC(at: index)
+        }
     }
 }
 
@@ -121,6 +137,9 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension HomeVC: HomeVMDelegate {
+    func updateTimerCard() {
+        configureInnerOfCardView()
+    }
 
     func showEmptyView() {
         emptyDataLabel.isHidden = false
