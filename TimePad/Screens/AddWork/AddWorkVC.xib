@@ -25,7 +25,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter work title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qpC-7a-faz">
-                    <rect key="frame" x="16" y="355" width="361" height="34"/>
+                    <rect key="frame" x="16" y="409" width="361" height="34"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
@@ -33,7 +33,7 @@
                     <rect key="frame" x="8" y="75" width="377" height="216"/>
                 </datePicker>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lKE-6E-cHn">
-                    <rect key="frame" x="166" y="561" width="61" height="34.333333333333371"/>
+                    <rect key="frame" x="166" y="615" width="61" height="34.333333333333371"/>
                     <color key="tintColor" red="0.88235294117647056" green="0.31764705882352939" blue="0.40392156862745099" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" title="Save"/>
@@ -42,7 +42,7 @@
                     </connections>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="mtD-hN-lvV">
-                    <rect key="frame" x="60.666666666666657" y="453" width="272" height="44"/>
+                    <rect key="frame" x="60.666666666666657" y="507" width="272" height="44"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="coding" translatesAutoresizingMaskIntoConstraints="NO" id="rSC-WT-mJe">
                             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
@@ -78,11 +78,11 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.023529411760000001" green="0.015686274510000001" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="qpC-7a-faz" firstAttribute="top" secondItem="ZUP-5V-aMB" secondAttribute="bottom" constant="64" id="0sK-e0-L2L"/>
                 <constraint firstAttribute="trailing" secondItem="ZUP-5V-aMB" secondAttribute="trailing" constant="8" id="2Go-Tg-q83"/>
                 <constraint firstItem="ZUP-5V-aMB" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="4gE-B6-cVe"/>
                 <constraint firstItem="qpC-7a-faz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="E1y-Gv-SC1"/>
                 <constraint firstItem="lKE-6E-cHn" firstAttribute="top" secondItem="mtD-hN-lvV" secondAttribute="bottom" constant="64" id="EWr-R5-icS"/>
+                <constraint firstItem="qpC-7a-faz" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="IK2-2v-MbA"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qpC-7a-faz" secondAttribute="trailing" constant="16" id="Ovv-up-pgs"/>
                 <constraint firstItem="mtD-hN-lvV" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="VoC-0v-dvv"/>
                 <constraint firstItem="lKE-6E-cHn" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="dtf-vv-FAY"/>

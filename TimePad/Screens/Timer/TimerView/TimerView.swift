@@ -46,9 +46,9 @@ final class TimerView: UIView {
         trackLayer = CAShapeLayer()
         let circularPath = UIBezierPath(arcCenter: circularPathCenter, radius: frame.size.width / 2.5, startAngle: -CGFloat.pi / 2, endAngle: 1.5 * CGFloat.pi, clockwise: true)
         trackLayer.path = circularPath.cgPath
-        trackLayer.strokeColor = UIColor.lightGray.cgColor
+        trackLayer.strokeColor = UIColor.hexStringToUIColor(hex: Colors.fillColor).cgColor
         trackLayer.lineWidth = 10
-        trackLayer.fillColor = UIColor.clear.cgColor
+        trackLayer.fillColor = UIColor.hexStringToUIColor(hex: Colors.fillColor).cgColor
         trackLayer.lineCap = .round
         layer.addSublayer(trackLayer)
 
