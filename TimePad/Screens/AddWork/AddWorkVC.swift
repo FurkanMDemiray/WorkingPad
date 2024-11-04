@@ -87,13 +87,13 @@ final class AddWorkVC: UIViewController {
     @objc private func imageTapped(sender: UITapGestureRecognizer) {
         switch sender.view {
         case workoutImage:
-            handleImageSelection(for: Constants.workout, selectedImage: workoutImage)
+            handleImageSelection(for: ConstantsAddWork.workout, selectedImage: workoutImage)
         case workImage:
-            handleImageSelection(for: Constants.work, selectedImage: workImage)
+            handleImageSelection(for: ConstantsAddWork.work, selectedImage: workImage)
         case readingImage:
-            handleImageSelection(for: Constants.reading, selectedImage: readingImage)
+            handleImageSelection(for: ConstantsAddWork.reading, selectedImage: readingImage)
         case codingImage:
-            handleImageSelection(for: Constants.coding, selectedImage: codingImage)
+            handleImageSelection(for: ConstantsAddWork.coding, selectedImage: codingImage)
         default:
             print("default")
         }
@@ -110,22 +110,24 @@ final class AddWorkVC: UIViewController {
 }
 
 extension AddWorkVC: AddWorkVMDelegate {
-
+    func clearTextField() {
+        workTitleText.text = ""
+    }
 
     func showSelectTypeAlert() {
-        self.showAlert(title: Constants.errorTitle, message: Constants.selectTypeErrorMessage, actionTitle: Constants.ok)
+        self.showAlert(title: ConstantsAddWork.errorTitle, message: ConstantsAddWork.selectTypeErrorMessage, actionTitle: ConstantsAddWork.ok)
     }
 
     func showSuccesAlert() {
-        self.showAlert(title: Constants.successTitle, message: Constants.successMessage, actionTitle: Constants.ok)
+        self.showAlert(title: ConstantsAddWork.successTitle, message: ConstantsAddWork.successMessage, actionTitle: ConstantsAddWork.ok)
     }
 
     func showErrorAlert() {
-        self.showAlert(title: Constants.errorTitle, message: Constants.errorMessage, actionTitle: Constants.ok)
+        self.showAlert(title: ConstantsAddWork.errorTitle, message: ConstantsAddWork.errorMessage, actionTitle: ConstantsAddWork.ok)
     }
 }
 
-private enum Constants {
+private enum ConstantsAddWork {
     static let workout = "Workout"
     static let work = "Work"
     static let reading = "Reading"

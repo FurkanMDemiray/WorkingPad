@@ -22,16 +22,10 @@ class ProjectCell: UITableViewCell {
         configurePlayImage()
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-
     private func configureCardView() {
         cardView.layer.cornerRadius = 10
-        cardView.layer.shadowColor = UIColor.black.cgColor
-        cardView.layer.shadowOffset = CGSize(width: 0, height: 1)
-        cardView.layer.shadowOpacity = 0.2
-        cardView.layer.shadowRadius = 2
+        cardView.clipsToBounds = true
+        cardView.backgroundColor = UIColor.hexStringToUIColor(hex: Colors.fillColor)
     }
 
     private func configurePlayImage() {
@@ -56,9 +50,10 @@ class ProjectCell: UITableViewCell {
         } else if model.type == "Reading" {
             typeImage.image = UIImage(named: "reading")
         }
-        cardView.backgroundColor = UIColor(named: "breakColor")
+        //cardView.backgroundColor = UIColor(named: "breakColor")
         timeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
         tagLabel.text = model.type
     }
+
 
 }

@@ -33,7 +33,24 @@ final class HomeVM {
     private var lastWork: LastWorkModel?
 
     private func fetchWorkModels() {
-        workModels = coreDataManager.fetchWorks().map { WorkModel(id: $0.id, title: $0.title, hour: Int($0.hour), minute: Int($0.minute), seconds: Int($0.seconds), firstHour: Int($0.firstHour), firstMinute: Int($0.firstMinute), type: $0.type) }
+        let allWorks = coreDataManager.fetchWorks()
+
+        workModels = allWorks
+            .map { WorkModel(
+            id: $0.id,
+            title: $0.title,
+            hour: Int($0.hour),
+            minute: Int($0.minute),
+            seconds: Int($0.seconds),
+            firstHour: Int($0.firstHour),
+            firstMinute: Int($0.firstMinute),
+            type: $0.type)
+        }
+            .filter { model in
+            // Include only if at least one time value is not zero
+            return model.hour != 0 || model.minute != 0 || model.seconds != 0
+        }
+
         workModels.isEmpty ? delegate?.showEmptyView() : delegate?.hideEmptyView()
         delegate?.updateTableView()
     }
@@ -61,7 +78,7 @@ extension HomeVM: HomeVMProtocol {
     var getLastWorkTime: String {
         let hour = getLastWork.hour ?? 0
         let minute = getLastWork.minute ?? 0
-        let seconds = getLastWork.seconds ?? 0
+        //let seconds = getLastWork.seconds ?? 0
         return "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
     }
 

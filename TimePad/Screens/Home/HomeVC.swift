@@ -56,6 +56,11 @@ final class HomeVC: UIViewController {
         tableView.register(UINib(nibName: Constants.projectCell, bundle: nil), forCellReuseIdentifier: Constants.projectCell)
     }
 
+    private func setInnerOfCardView() {
+        timerLabel.text = viewModel.getLastWorkTime
+        projectLabel.text = viewModel.getLastWork.title
+    }
+
     private func configureInnerOfCardView() {
         timerLabel.text = viewModel.getLastWorkTime
         projectLabel.text = viewModel.getLastWork.title
@@ -123,19 +128,19 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         viewModel.didFetchWorkModels()
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if viewModel.getWorkModels.count == 4 {
-            return tableView.frame.height / CGFloat(self.tableView(tableView, numberOfRowsInSection: 0))
-        } else {
-            return tableView.frame.height / 4
-        }
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if viewModel.getWorkModels.count == 4 {
+//            return tableView.frame.height / CGFloat(self.tableView(tableView, numberOfRowsInSection: 0))
+//        } else {
+//            return tableView.frame.height / 4
+//        }
+//    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         navigateToTimerVC(at: indexPath.row)
     }
 }
-
+//MARK: - HomeVMDelegate
 extension HomeVC: HomeVMDelegate {
     func updateTimerCard() {
         configureInnerOfCardView()
@@ -151,12 +156,7 @@ extension HomeVC: HomeVMDelegate {
 
     func updateTableView() {
         tableView.reloadData()
+        setInnerOfCardView()
     }
 }
 
-private enum Constants {
-    static let projectCell = "ProjectCell"
-    static let areYouSureAlertTitle = "Are you sure?"
-    static let areYouSureAlertMessage = "Do you want to delete this work?"
-    static let areYouSureAlertActionTitle = "Delete"
-}

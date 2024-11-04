@@ -17,7 +17,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="458" height="150"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bnd-2p-W4v">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bnd-2p-W4v">
                         <rect key="frame" x="8" y="8" width="442" height="136"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="yo4-Hg-94h">

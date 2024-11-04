@@ -20,6 +20,7 @@ protocol AddWorkVMDelegate: AnyObject {
     func showErrorAlert()
     func showSuccesAlert()
     func showSelectTypeAlert()
+    func clearTextField()
 }
 
 final class AddWorkVM {
@@ -75,6 +76,7 @@ extension AddWorkVM: AddWorkVMProtocol {
             return
         }
         saveWorkModel(model: model)
+        delegate?.clearTextField()
         delegate?.showSuccesAlert()
     }
 

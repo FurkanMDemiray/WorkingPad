@@ -11,6 +11,7 @@ import UIKit
 protocol TimerViewDelegate: AnyObject {
     func pauseButtonTapped()
     func resumeButtonTapped()
+    func timerDidComplete()
 }
 
 final class TimerView: UIView {
@@ -167,6 +168,8 @@ final class TimerView: UIView {
             timerLabel.text = timeString(from: remainingTime)
         } else {
             timer?.invalidate()
+            timer = nil
+            delegate?.timerDidComplete()
         }
     }
 }

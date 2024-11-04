@@ -125,6 +125,22 @@ final class TimerVC: UIViewController {
     @objc private func resetTapped() {
         timerView.resetTimer(firstHour: workModel.firstHour!, firstMinute: workModel.firstMinute!)
     }
+
+    private func showCompletionAlert() {
+        let alert = UIAlertController(
+            title: "Timer Completed!",
+            message: "Great job! You've completed your task.",
+            preferredStyle: .alert
+        )
+
+        let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            // Dismiss and return to home
+            self?.navigationController?.popViewController(animated: true)
+        }
+
+        alert.addAction(okAction)
+        present(alert, animated: true)
+    }
 }
 
 //MARK: TimerViewDelegate
@@ -137,5 +153,8 @@ extension TimerVC: TimerViewDelegate {
         pauseButton.setTitle("Pause", for: .normal)
     }
 
+    func timerDidComplete() {
+        showCompletionAlert()
+    }
 
 }

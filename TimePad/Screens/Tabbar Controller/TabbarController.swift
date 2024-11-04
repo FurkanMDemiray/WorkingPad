@@ -15,11 +15,15 @@ final class TabbarController: UITabBarController {
 
         let homeVC = HomeVC()
         let homeNav = UINavigationController(rootViewController: homeVC)
-        homeNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
+        homeNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 1)
 
         let addWorkVC = AddWorkVC()
         let addWorkNav = UINavigationController(rootViewController: addWorkVC)
-        addWorkNav.tabBarItem = UITabBarItem(title: "Add Work", image: UIImage(systemName: "plus"), tag: 1)
+        addWorkNav.tabBarItem = UITabBarItem(title: "Add Work", image: UIImage(systemName: "plus"), tag: 0)
+
+        let historyVC = HistoryVC()
+        let historyNav = UINavigationController(rootViewController: historyVC)
+        historyNav.tabBarItem = UITabBarItem(title: "History", image: UIImage(systemName: "clock"), tag: 2)
 
         let homeViewModel = HomeVM()
         homeVC.viewModel = homeViewModel
@@ -27,6 +31,11 @@ final class TabbarController: UITabBarController {
         let addWorkViewModel = AddWorkVM()
         addWorkVC.viewModel = addWorkViewModel
 
-        viewControllers = [homeNav, addWorkNav]
+        let historyViewModel = HistoryVM()
+        historyVC.viewModel = historyViewModel
+
+        viewControllers = [addWorkNav, homeNav, historyNav]
+
+        selectedIndex = 1
     }
 }
