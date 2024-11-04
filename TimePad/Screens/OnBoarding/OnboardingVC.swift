@@ -9,6 +9,7 @@ import UIKit
 
 final class OnboardingVC: UIViewController {
 
+    //MARK: Properties
     private let userDefaults = UserDefaults.standard
     private let hasSeenOnboardingKey = "hasSeenOnboarding"
 
@@ -53,6 +54,7 @@ final class OnboardingVC: UIViewController {
 
     private var slidesViews: [UIView] = []
 
+    //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -64,6 +66,7 @@ final class OnboardingVC: UIViewController {
         setupSlideFrames()
     }
 
+    //MARK: Configures
     private func setupUI() {
         view.backgroundColor = UIColor.hexStringToUIColor(hex: Colors.background)
 
@@ -169,6 +172,7 @@ final class OnboardingVC: UIViewController {
         return slideView
     }
 
+    //MARK: Actions
     @objc private func getStartedTapped() {
         saveOnboardingStatus()
         let tabBarVC = TabbarController()

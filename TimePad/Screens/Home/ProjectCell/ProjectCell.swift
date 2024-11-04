@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProjectCell: UITableViewCell {
+final class ProjectCell: UITableViewCell {
 
     @IBOutlet private weak var cardView: UIView!
     @IBOutlet private weak var playImage: UIImageView!
@@ -54,6 +54,5 @@ class ProjectCell: UITableViewCell {
         timeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute)):\(String(format: "%02d", seconds))"
         tagLabel.text = model.type
     }
-
 
 }

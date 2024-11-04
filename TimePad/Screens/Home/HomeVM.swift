@@ -9,7 +9,7 @@ import Foundation
 
 protocol HomeVMProtocol {
     var delegate: HomeVMDelegate? { get set }
-    var getWorkModels: [WorkModel] { get }
+    var getWorkModels: [WorkModel] { get set }
     var getLastWork: LastWorkModel { get }
     var getLastWorkTime: String { get }
     var getFinishString: String { get }
@@ -92,7 +92,12 @@ extension HomeVM: HomeVMProtocol {
     }
 
     var getWorkModels: [WorkModel] {
-        workModels
+        get {
+            workModels
+        }
+        set {
+            workModels = newValue
+        }
     }
 
     var getLastWork: LastWorkModel {

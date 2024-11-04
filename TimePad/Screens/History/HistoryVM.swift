@@ -9,7 +9,7 @@ import Foundation
 
 protocol HistoryVMProtocol {
     var delegate: HistoryVMDelegate? { get set }
-    var getHistoryModels: [WorkModel] { get }
+    var getHistoryModels: [WorkModel] { get set }
 
     func didFetchHistoryModels()
     func deleteHistoryModel(at index: Int)
@@ -53,7 +53,12 @@ final class HistoryVM {
 //MARK: - Protocol Functions
 extension HistoryVM: HistoryVMProtocol {
     var getHistoryModels: [WorkModel] {
-        historyModels
+        get {
+            historyModels
+        }
+        set {
+            historyModels = newValue
+        }
     }
 
     func didFetchHistoryModels() {

@@ -19,7 +19,7 @@ final class TabbarController: UITabBarController {
 
         let addWorkVC = AddWorkVC()
         let addWorkNav = UINavigationController(rootViewController: addWorkVC)
-        addWorkNav.tabBarItem = UITabBarItem(title: "Add Work", image: UIImage(systemName: "plus"), tag: 0)
+        addWorkNav.tabBarItem = UITabBarItem(title: "Add Task", image: UIImage(systemName: "plus"), tag: 0)
 
         let historyVC = HistoryVC()
         let historyNav = UINavigationController(rootViewController: historyVC)

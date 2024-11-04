@@ -9,8 +9,8 @@ import UIKit
 
 final class HistoryVC: UIViewController {
 
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var emptyLabel: UILabel!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var emptyLabel: UILabel!
 
     var viewModel: HistoryVMProtocol! {
         didSet {
