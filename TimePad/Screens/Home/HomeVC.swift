@@ -34,6 +34,7 @@ final class HomeVC: UIViewController {
         super.viewDidAppear(animated)
         viewModel.didFetchWorkModels()
         viewModel.didFetchLastWork()
+        setInnerOfCardView()
     }
 
 //MARK: Configures
@@ -57,14 +58,16 @@ final class HomeVC: UIViewController {
     }
 
     private func setInnerOfCardView() {
+        if viewModel.getFinishString != "" {
+            projectLabel.text = viewModel.getFinishString
+        } else {
+            projectLabel.text = viewModel.getLastWork.title
+        }
         timerLabel.text = viewModel.getLastWorkTime
-        projectLabel.text = viewModel.getLastWork.title
+
     }
 
     private func configureInnerOfCardView() {
-        timerLabel.text = viewModel.getLastWorkTime
-        projectLabel.text = viewModel.getLastWork.title
-
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(timerCardTapped))
         timerCardView.isUserInteractionEnabled = true
         timerCardView.addGestureRecognizer(tapGesture)
@@ -88,11 +91,11 @@ final class HomeVC: UIViewController {
     }
 
     @objc private func timerCardTapped() {
-        // Timer card’da gösterilen başlık ve süreye göre model indexini bul
+        // Find last work depending on title
         guard let lastWorkTitle = projectLabel.text,
             let lastWorkTime = timerLabel.text else { return }
 
-        // Başlık ve süreye göre eşleşen index’i bul ve navigasyon yap
+        // Find index of last work model depending on title and time
         if let index = viewModel.getWorkModels.firstIndex(where: {
             $0.title == lastWorkTitle && viewModel.getLastWorkTime == lastWorkTime
         }) {

@@ -39,7 +39,7 @@ class ProjectCell: UITableViewCell {
     }
 
     func configure(with model: WorkModel) {
-        guard let hour = model.hour, let minute = model.minute else { return }
+        guard let hour = model.hour, let minute = model.minute, let seconds = model.seconds else { return }
         titleLabel.text = model.title
         if model.type == "Work" {
             typeImage.image = UIImage(named: "work")
@@ -51,7 +51,7 @@ class ProjectCell: UITableViewCell {
             typeImage.image = UIImage(named: "reading")
         }
         //cardView.backgroundColor = UIColor(named: "breakColor")
-        timeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
+        timeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute)):\(String(format: "%02d", seconds))"
         tagLabel.text = model.type
     }
 

@@ -26,7 +26,7 @@ final class TimerVC: UIViewController {
         super.viewDidDisappear(animated)
         timerView.setLastWorkModel()
         updateWorkModel(id: workModel.id!, hour: timerView.lastHour!, minute: timerView.lastMinute!, seconds: timerView.lastSeconds!)
-        createLastWorkModel()
+        createOrUpdateLastWorkModel()
     }
 
 //MARK: Coredata
@@ -34,12 +34,8 @@ final class TimerVC: UIViewController {
         coreDataManager.updateWork(by: id, newTitle: workModel.title!, newHour: hour, newMinute: minute, newSeconds: seconds, newType: workModel.type!)
     }
 
-    private func updateLastWorkModel() {
-        coreDataManager.updateLastWork(newTitle: workModel.title!, newHour: timerView.lastHour!, newMinute: timerView.lastMinute!, newSeconds: timerView.lastSeconds!, newType: workModel.type!)
-    }
-
-    private func createLastWorkModel() {
-        coreDataManager.createLastWork(title: workModel.title!, hour: workModel.hour!, minute: workModel.minute!, seconds: workModel.seconds!, type: workModel.type!)
+    private func createOrUpdateLastWorkModel() {
+        coreDataManager.createOrUpdateLastWork(title: workModel.title!, hour: timerView.lastHour!, minute: timerView.lastMinute!, seconds: timerView.lastSeconds!, type: workModel.type!)
     }
 
 //MARK: UI

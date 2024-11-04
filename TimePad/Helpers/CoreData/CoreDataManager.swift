@@ -38,7 +38,7 @@ final class CoreDataManager {
     }
 
     //MARK: Create
-    func createLastWork(title: String, hour: Int, minute: Int, seconds: Int, type: String) {
+    func createOrUpdateLastWork(title: String, hour: Int, minute: Int, seconds: Int, type: String) {
         // if there is no last work, create one, otherwise update it
         if fetchLastWork() == nil {
             let lastWork = LastWork(context: context)

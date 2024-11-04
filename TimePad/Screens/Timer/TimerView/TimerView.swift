@@ -85,14 +85,29 @@ final class TimerView: UIView {
     }
 
     func startTimer() {
+        // Start the countdown timer
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-        // Animasyonu başlat
+
+        // Setup smooth circular animation
+        setupCircularAnimation(duration: totalTime)
+    }
+
+    private func setupCircularAnimation(duration: TimeInterval) {
+        // Remove any existing animations
+        shapeLayer.removeAllAnimations()
+
+        // Reset to starting position
+        shapeLayer.strokeEnd = 1.0
+
+        // Create smooth animation
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        basicAnimation.toValue = 0
-        basicAnimation.duration = totalTime
+        basicAnimation.fromValue = 1.0
+        basicAnimation.toValue = 0.0
+        basicAnimation.duration = duration
         basicAnimation.fillMode = .forwards
         basicAnimation.isRemovedOnCompletion = false
-        shapeLayer.add(basicAnimation, forKey: "basicAnimation")
+        basicAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
+        shapeLayer.add(basicAnimation, forKey: "strokeAnimation")
     }
 
     func toggleTimer() {
@@ -106,21 +121,24 @@ final class TimerView: UIView {
     private func pauseTimer() {
         delegate?.pauseButtonTapped()
         timer?.invalidate()
+        timer = nil
         setLastWorkModel()
         isPaused = true
 
-        // Animasyonu duraklat
+        // Pause animation
         let pausedTime = shapeLayer.convertTime(CACurrentMediaTime(), from: nil)
         shapeLayer.speed = 0.0
         shapeLayer.timeOffset = pausedTime
     }
 
     private func resumeTimer() {
+        guard isPaused else { return }
+
         delegate?.resumeButtonTapped()
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
         isPaused = false
 
-        // Animasyonu devam ettir
+        // Resume animation from where it was paused
         let pausedTime = shapeLayer.timeOffset
         shapeLayer.speed = 1.0
         shapeLayer.timeOffset = 0.0
@@ -130,30 +148,36 @@ final class TimerView: UIView {
     }
 
     func resetTimer(firstHour: Int, firstMinute: Int) {
+        // Stop current timer
         timer?.invalidate()
+        timer = nil
 
+        // Calculate new duration
+        let newDuration: TimeInterval
         if firstHour == 0 && firstMinute != 0 {
-            remainingTime = TimeInterval(firstMinute * 60)
+            newDuration = TimeInterval(firstMinute * 60)
         } else if firstMinute == 0 && firstHour != 0 {
-            remainingTime = TimeInterval(firstHour * 3600)
+            newDuration = TimeInterval(firstHour * 3600)
         } else {
-            remainingTime = TimeInterval(firstHour * 3600 + firstMinute * 60)
+            newDuration = TimeInterval(firstHour * 3600 + firstMinute * 60)
         }
 
+        // Set remaining time
+        remainingTime = newDuration
+
+        // Update display
         timerLabel.text = timeString(from: remainingTime)
-        shapeLayer.removeAllAnimations()
-        shapeLayer.strokeEnd = 1
+
+        // Setup new animation
+        setupCircularAnimation(duration: newDuration)
+
+        // Pause immediately
+        let pausedTime = shapeLayer.convertTime(CACurrentMediaTime(), from: nil)
+        shapeLayer.speed = 0.0
+        shapeLayer.timeOffset = 0 // Start from beginning
+
         isPaused = true
-
-        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        basicAnimation.toValue = 0
-        basicAnimation.duration = remainingTime
-        basicAnimation.fillMode = .forwards
-        basicAnimation.isRemovedOnCompletion = false
-        shapeLayer.add(basicAnimation, forKey: "basicAnimation")
-
-        // Timer'ı tekrar başlat
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        delegate?.pauseButtonTapped()
     }
 
     func setLastWorkModel() {
