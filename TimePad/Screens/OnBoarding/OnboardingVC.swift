@@ -9,6 +9,9 @@ import UIKit
 
 final class OnboardingVC: UIViewController {
 
+    private let userDefaults = UserDefaults.standard
+    private let hasSeenOnboardingKey = "hasSeenOnboarding"
+
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.isPagingEnabled = true
@@ -167,9 +170,18 @@ final class OnboardingVC: UIViewController {
     }
 
     @objc private func getStartedTapped() {
+        saveOnboardingStatus()
         let tabBarVC = TabbarController()
         tabBarVC.modalPresentationStyle = .fullScreen
         present(tabBarVC, animated: true)
+    }
+
+    private func saveOnboardingStatus() {
+        userDefaults.set(true, forKey: hasSeenOnboardingKey)
+    }
+    // Add this static function to check onboarding status
+    static func shouldShowOnboarding() -> Bool {
+        return !UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
     }
 }
 

@@ -20,9 +20,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
 
-        //let tabbar = TabbarController()
-        let onboardingVC = OnboardingVC()
-        window?.rootViewController = onboardingVC
+        if OnboardingVC.shouldShowOnboarding() {
+            // Show onboarding
+            let onboardingVC = OnboardingVC()
+            window?.rootViewController = onboardingVC
+        } else {
+            // Skip onboarding and show main app interface
+            let tabBarVC = TabbarController()
+            window?.rootViewController = tabBarVC
+        }
         window?.makeKeyAndVisible()
     }
 
