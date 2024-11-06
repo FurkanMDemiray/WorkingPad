@@ -75,16 +75,18 @@ final class TimerVC: UIViewController {
         pauseButton.layer.cornerRadius = 32
         pauseButton.layer.masksToBounds = true
         pauseButton.addTarget(self, action: #selector(pauseTapped), for: .touchUpInside)
+        pauseButton.accessibilityIdentifier = "PauseButton"
         view.addSubview(pauseButton)
 
-        let quitButton = UIButton(type: .system)
-        quitButton.setTitle("Reset", for: .normal)
-        quitButton.setTitleColor(.white, for: .normal)
-        quitButton.backgroundColor = UIColor.hexStringToUIColor(hex: "3d4aba")
-        quitButton.layer.cornerRadius = 32
-        quitButton.layer.masksToBounds = true
-        quitButton.addTarget(self, action: #selector(resetTapped), for: .touchUpInside)
-        view.addSubview(quitButton)
+        let resetButton = UIButton(type: .system)
+        resetButton.setTitle("Reset", for: .normal)
+        resetButton.setTitleColor(.white, for: .normal)
+        resetButton.backgroundColor = UIColor.hexStringToUIColor(hex: "3d4aba")
+        resetButton.layer.cornerRadius = 32
+        resetButton.layer.masksToBounds = true
+        resetButton.addTarget(self, action: #selector(resetTapped), for: .touchUpInside)
+        resetButton.accessibilityIdentifier = "ResetButton"
+        view.addSubview(resetButton)
 
         let titleLabel = UILabel()
         titleLabel.text = workModel.title
@@ -94,7 +96,7 @@ final class TimerVC: UIViewController {
         view.addSubview(titleLabel)
 
         pauseButton.translatesAutoresizingMaskIntoConstraints = false
-        quitButton.translatesAutoresizingMaskIntoConstraints = false
+        resetButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             pauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -64),
@@ -102,13 +104,13 @@ final class TimerVC: UIViewController {
             pauseButton.widthAnchor.constraint(equalToConstant: 64),
             pauseButton.heightAnchor.constraint(equalToConstant: 64),
 
-            quitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 64),
-            quitButton.topAnchor.constraint(equalTo: timerView.bottomAnchor, constant: 32),
-            quitButton.widthAnchor.constraint(equalToConstant: 64),
-            quitButton.heightAnchor.constraint(equalToConstant: 64),
+            resetButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 64),
+            resetButton.topAnchor.constraint(equalTo: timerView.bottomAnchor, constant: 32),
+            resetButton.widthAnchor.constraint(equalToConstant: 64),
+            resetButton.heightAnchor.constraint(equalToConstant: 64),
 
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: quitButton.bottomAnchor, constant: 64)
+            titleLabel.topAnchor.constraint(equalTo: resetButton.bottomAnchor, constant: 64)
 
             ])
     }

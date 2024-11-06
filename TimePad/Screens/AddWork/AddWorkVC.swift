@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AddWorkVC: UIViewController {
+final class AddWorkVC: UIViewController, UITextFieldDelegate {
 
     @IBOutlet private weak var workoutImage: UIImageView!
     @IBOutlet private weak var workImage: UIImageView!
@@ -26,6 +26,8 @@ final class AddWorkVC: UIViewController {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
         addGestureToImages()
+        setAccessibilityIdentifiers()
+        workTitleText.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -34,6 +36,13 @@ final class AddWorkVC: UIViewController {
     }
 
     //MARK: Configure
+    // MARK: - Search Method
+    @objc func textFieldShouldReturn(_ workTitleText: UITextField) -> Bool
+       {
+           workTitleText.resignFirstResponder()
+           return true
+       }
+
     private func addGestureToImages() {
         for image in [workoutImage, workImage, readingImage, codingImage] {
             let tap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
@@ -49,6 +58,16 @@ final class AddWorkVC: UIViewController {
         if let defaultDate = calendar.date(bySettingHour: 0, minute: 5, second: 0, of: Date()) {
             timePicker.date = defaultDate
         }
+    }
+
+    private func setAccessibilityIdentifiers() {
+        workoutImage.accessibilityIdentifier = "workoutImage"
+        workImage.accessibilityIdentifier = "workImage"
+        readingImage.accessibilityIdentifier = "readingImage"
+        codingImage.accessibilityIdentifier = "codingImage"
+        workTitleText.accessibilityIdentifier = "workTitleText"
+        timePicker.accessibilityIdentifier = "timePicker"
+        view.accessibilityIdentifier = "addWorkView"
     }
 
     //MARK: Handling Image Status

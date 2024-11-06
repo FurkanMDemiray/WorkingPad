@@ -33,6 +33,7 @@ final class OnboardingVC: UIViewController {
         pageControl.currentPageIndicatorTintColor = .systemBlue
         pageControl.pageIndicatorTintColor = .systemGray
         pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.accessibilityIdentifier = "pageControl"
         return pageControl
     }()
 
@@ -43,6 +44,7 @@ final class OnboardingVC: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.accessibilityIdentifier = "Get Started"
         return button
     }()
 
@@ -58,6 +60,7 @@ final class OnboardingVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        view.accessibilityIdentifier = "OnboardingScreen"
     }
 
     override func viewDidLayoutSubviews() {
