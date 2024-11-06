@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AddWorkVC: UIViewController, UITextFieldDelegate {
+final class AddWorkVC: UIViewController {
 
     @IBOutlet private weak var workoutImage: UIImageView!
     @IBOutlet private weak var workImage: UIImageView!
@@ -15,6 +15,11 @@ final class AddWorkVC: UIViewController, UITextFieldDelegate {
     @IBOutlet private weak var codingImage: UIImageView!
     @IBOutlet private weak var workTitleText: UITextField!
     @IBOutlet private weak var timePicker: UIDatePicker!
+    @IBOutlet private weak var saveButton: UIButton!
+    @IBOutlet private weak var codingLabel: UILabel!
+    @IBOutlet private weak var readingLabel: UILabel!
+    @IBOutlet private weak var workingLabel: UILabel!
+    @IBOutlet private weak var trainingLabel: UILabel!
 
     var viewModel: AddWorkVMProtocol! {
         didSet {
@@ -27,21 +32,20 @@ final class AddWorkVC: UIViewController, UITextFieldDelegate {
         self.hideKeyboardWhenTappedAround()
         addGestureToImages()
         setAccessibilityIdentifiers()
+        configureSaveButton()
         workTitleText.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //configureTimePicker()
     }
 
     //MARK: Configure
-    // MARK: - Search Method
-    @objc func textFieldShouldReturn(_ workTitleText: UITextField) -> Bool
-       {
-           workTitleText.resignFirstResponder()
-           return true
-       }
+    private func configureSaveButton() {
+        saveButton.layer.cornerRadius = 10
+        saveButton.tintColor = UIColor.hexStringToUIColor(hex: Colors.red)
+
+    }
 
     private func addGestureToImages() {
         for image in [workoutImage, workImage, readingImage, codingImage] {
@@ -49,14 +53,6 @@ final class AddWorkVC: UIViewController, UITextFieldDelegate {
             image?.isUserInteractionEnabled = true
             image?.addGestureRecognizer(tap)
             image?.layer.cornerRadius = 10
-        }
-    }
-
-    private func configureTimePicker() {
-        // set time to 1 hour
-        let calendar = Calendar.current
-        if let defaultDate = calendar.date(bySettingHour: 0, minute: 5, second: 0, of: Date()) {
-            timePicker.date = defaultDate
         }
     }
 
@@ -80,6 +76,15 @@ final class AddWorkVC: UIViewController, UITextFieldDelegate {
                 }
             }
         }
+
+        // clear other labels except the selected one
+        for lbl in [codingLabel, readingLabel, workingLabel, trainingLabel] {
+            if lbl != image {
+                UIView.animate(withDuration: 0.2) {
+                    lbl?.isHidden = true
+                }
+            }
+        }
     }
 
     private func returnImageToOriginalState() {
@@ -88,9 +93,15 @@ final class AddWorkVC: UIViewController, UITextFieldDelegate {
                 img?.isHidden = false
             }
         }
+
+        for lbl in [codingLabel, readingLabel, workingLabel, trainingLabel] {
+            UIView.animate(withDuration: 0.2) {
+                lbl?.isHidden = false
+            }
+        }
     }
 
-    private func handleImageSelection(for type: String, selectedImage: UIImageView) {
+    private func handleImageSelection(for type: String, selectedImage: UIImageView, selectedLabel: UILabel) {
         if viewModel.getIsTypeSelected {
             returnImageToOriginalState()
             viewModel.getSelectedType = nil
@@ -100,19 +111,20 @@ final class AddWorkVC: UIViewController, UITextFieldDelegate {
             viewModel.getSelectedType = type
             viewModel.getIsTypeSelected = true
         }
+        selectedLabel.isHidden = false
     }
 
     //MARK: Actions
     @objc private func imageTapped(sender: UITapGestureRecognizer) {
         switch sender.view {
         case workoutImage:
-            handleImageSelection(for: ConstantsAddWork.workout, selectedImage: workoutImage)
+            handleImageSelection(for: ConstantsAddWork.workout, selectedImage: workoutImage, selectedLabel: trainingLabel)
         case workImage:
-            handleImageSelection(for: ConstantsAddWork.work, selectedImage: workImage)
+            handleImageSelection(for: ConstantsAddWork.work, selectedImage: workImage, selectedLabel: workingLabel)
         case readingImage:
-            handleImageSelection(for: ConstantsAddWork.reading, selectedImage: readingImage)
+            handleImageSelection(for: ConstantsAddWork.reading, selectedImage: readingImage, selectedLabel: readingLabel)
         case codingImage:
-            handleImageSelection(for: ConstantsAddWork.coding, selectedImage: codingImage)
+            handleImageSelection(for: ConstantsAddWork.coding, selectedImage: codingImage, selectedLabel: codingLabel)
         default:
             print("default")
         }
@@ -128,6 +140,7 @@ final class AddWorkVC: UIViewController, UITextFieldDelegate {
     }
 }
 
+//MARK: - AddWorkVMDelegate
 extension AddWorkVC: AddWorkVMDelegate {
     func clearTextField() {
         workTitleText.text = ""
@@ -143,6 +156,15 @@ extension AddWorkVC: AddWorkVMDelegate {
 
     func showErrorAlert() {
         self.showAlert(title: ConstantsAddWork.errorTitle, message: ConstantsAddWork.errorMessage, actionTitle: ConstantsAddWork.ok)
+    }
+}
+
+extension AddWorkVC: UITextFieldDelegate {
+    // MARK: - Search Method
+    @objc func textFieldShouldReturn(_ workTitleText: UITextField) -> Bool
+    {
+        workTitleText.resignFirstResponder()
+        return true
     }
 }
 
