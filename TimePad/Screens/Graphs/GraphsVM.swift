@@ -20,10 +20,10 @@ protocol GraphsVMProtocol {
     var getSumsOfTimes: (coding: String, reading: String, working: String, training: String) { get }
 
     func didFetchWorkModels()
-    func createPieChart()
 }
 
 protocol GraphsVMDelegate: AnyObject {
+    func createPieChart(with segment: [PieChartView.Segment])
 }
 
 final class GraphsVM {
@@ -59,8 +59,8 @@ final class GraphsVM {
             return model.hour != 0 || model.minute != 0 || model.seconds != 0
         }
         //print("WorkModels: \(workModels)")
-        print(calculateTotalTime(for: workModels))
         totalTimes = calculateTotalTime(for: workModels)
+        delegate?.createPieChart(with: setUpSegments())
     }
 
     private func calculateTotalTime(for works: [WorkModel]) -> [String: (hours: Int, minutes: Int, seconds: Int)] {
@@ -98,20 +98,19 @@ final class GraphsVM {
         return totalTimes
     }
 
+    private func setUpSegments() -> [PieChartView.Segment] {
+        let segments: [PieChartView.Segment] = [
+                .init(color: .hexStringToUIColor(hex: Colors.red), value: CGFloat(totalTimes[Constants.coding]!.hours * 60 + totalTimes[Constants.coding]!.minutes), label: Constants.coding),
+                .init(color: .hexStringToUIColor(hex: Colors.purple), value: CGFloat(totalTimes[Constants.reading]!.hours * 60 + totalTimes[Constants.reading]!.minutes), label: Constants.reading),
+                .init(color: .hexStringToUIColor(hex: Colors.green), value: CGFloat(totalTimes[Constants.work]!.hours * 60 + totalTimes[Constants.work]!.minutes), label: Constants.work),
+                .init(color: .hexStringToUIColor(hex: Colors.orange), value: CGFloat(totalTimes[Constants.workout]!.hours * 60 + totalTimes[Constants.workout]!.minutes), label: Constants.workout)
+        ]
+        return segments
+    }
+
 }
 
 extension GraphsVM: GraphsVMProtocol {
-    func createPieChart() {
-        let pieChartView = PieChartView(frame: CGRect(x: 50, y: 150, width: 300, height: 300))
-        let segments: [PieChartView.Segment] = [
-                .init(color: .systemRed, value: CGFloat(totalTimes[Constants.coding]!.hours * 60 + totalTimes[Constants.coding]!.minutes)),
-                .init(color: .systemBlue, value: CGFloat(totalTimes[Constants.reading]!.hours * 60 + totalTimes[Constants.reading]!.minutes)),
-                .init(color: .systemGreen, value: CGFloat(totalTimes[Constants.work]!.hours * 60 + totalTimes[Constants.work]!.minutes)),
-                .init(color: .systemYellow, value: CGFloat(totalTimes[Constants.workout]!.hours * 60 + totalTimes[Constants.workout]!.minutes))
-        ]
-
-        pieChartView.configure(segments: segments)
-    }
 
     var getCellImages: [String] {
         cellImages

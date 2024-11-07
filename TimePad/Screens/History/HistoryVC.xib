@@ -27,13 +27,13 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finished Tasks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCe-B4-UWr">
-                    <rect key="frame" x="8" y="67" width="163.66666666666666" height="27.666666666666671"/>
+                    <rect key="frame" x="8" y="58.999999999999993" width="163.66666666666666" height="27.666666666666664"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Njc-T6-MUn">
-                    <rect key="frame" x="0.0" y="110.66666666666669" width="393" height="707.33333333333326"/>
+                    <rect key="frame" x="0.0" y="102.66666666666669" width="393" height="715.33333333333326"/>
                     <color key="backgroundColor" red="0.023529411760000001" green="0.015686274510000001" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </tableView>
             </subviews>
@@ -45,7 +45,7 @@
                 <constraint firstItem="Njc-T6-MUn" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Ix9-Fh-uMd"/>
                 <constraint firstItem="6Ig-UL-Zta" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="JhA-vd-MXE"/>
                 <constraint firstItem="Njc-T6-MUn" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="OFD-iT-70t"/>
-                <constraint firstItem="fCe-B4-UWr" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="XBT-29-PpZ"/>
+                <constraint firstItem="fCe-B4-UWr" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="XBT-29-PpZ"/>
                 <constraint firstItem="fCe-B4-UWr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="Zmg-rS-LZG"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Njc-T6-MUn" secondAttribute="bottom" id="jxZ-52-A5m"/>
             </constraints>

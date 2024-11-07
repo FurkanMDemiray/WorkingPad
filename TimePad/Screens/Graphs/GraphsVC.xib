@@ -21,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="C1k-jG-Sfj">
-                    <rect key="frame" x="0.0" y="110.66666666666669" width="393" height="360"/>
+                    <rect key="frame" x="0.0" y="95.666666666666686" width="393" height="360"/>
                     <color key="backgroundColor" red="0.023529411760000001" green="0.015686274510000001" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="360" id="j1D-Wm-tip"/>
@@ -34,14 +34,8 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Productivity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sN7-rt-1nw">
-                    <rect key="frame" x="8" y="67" width="175.33333333333334" height="27.666666666666671"/>
+                    <rect key="frame" x="8" y="58.999999999999993" width="175.33333333333334" height="28.666666666666664"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wW9-cu-vsg">
-                    <rect key="frame" x="175" y="478.66666666666669" width="43" height="29"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -49,13 +43,11 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.023529411760000001" green="0.015686274510000001" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="sN7-rt-1nw" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="1C9-pf-8Yb"/>
-                <constraint firstItem="wW9-cu-vsg" firstAttribute="top" secondItem="C1k-jG-Sfj" secondAttribute="bottom" constant="8" id="P9o-f7-9xE"/>
+                <constraint firstItem="sN7-rt-1nw" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="1C9-pf-8Yb"/>
                 <constraint firstItem="sN7-rt-1nw" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="dVf-Zl-LZG"/>
-                <constraint firstItem="C1k-jG-Sfj" firstAttribute="top" secondItem="sN7-rt-1nw" secondAttribute="bottom" constant="16" id="nuT-DF-Frv"/>
+                <constraint firstItem="C1k-jG-Sfj" firstAttribute="top" secondItem="sN7-rt-1nw" secondAttribute="bottom" constant="8" id="nuT-DF-Frv"/>
                 <constraint firstItem="C1k-jG-Sfj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="pLB-n0-Cx7"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="C1k-jG-Sfj" secondAttribute="trailing" id="s0c-j4-stN"/>
-                <constraint firstItem="wW9-cu-vsg" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="xch-ud-edd"/>
             </constraints>
             <point key="canvasLocation" x="90.839694656488547" y="-12.67605633802817"/>
         </view>

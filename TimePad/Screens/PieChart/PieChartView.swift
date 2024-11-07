@@ -7,48 +7,62 @@
 
 import UIKit
 
-class PieChartView: UIView {
+final class PieChartView: UIView {
 
     private var segments: [Segment] = []
 
     struct Segment {
         let color: UIColor
         let value: CGFloat
+        let label: String // Label to display outside the pie chart
     }
 
-    // Configure the chart with an array of segments
     func configure(segments: [Segment]) {
         self.segments = segments
+        layer.sublayers?.forEach { $0.removeFromSuperlayer() } // Clear any previous layers
+        //addLegend() // Add legend labels outside the chart
         setNeedsDisplay()
     }
 
     override func draw(_ rect: CGRect) {
-        // Calculate the total value of all segments
         let total = segments.reduce(0) { $0 + $1.value }
-
-        // Set up start angle
         var startAngle = -CGFloat.pi / 2
 
         for segment in segments {
-            // Calculate end angle for this segment
             let endAngle = startAngle + 2 * .pi * (segment.value / total)
 
-            // Create a path for this segment
+            // Create the segment path
             let path = UIBezierPath()
             path.move(to: center)
             path.addArc(withCenter: center, radius: min(bounds.width, bounds.height) / 2,
-                        startAngle: startAngle, endAngle: endAngle, clockwise: true)
+                startAngle: startAngle, endAngle: endAngle, clockwise: true)
             path.close()
 
-            // Create a shape layer
+            // Segment layer
             let shapeLayer = CAShapeLayer()
             shapeLayer.path = path.cgPath
             shapeLayer.fillColor = segment.color.cgColor
-
-            // Add the shape layer to the view
             layer.addSublayer(shapeLayer)
 
-            // Update start angle for the next segment
+            // Calculate the center of each segment for percentage placement
+            let midAngle = (startAngle + endAngle) / 2
+            let labelRadius = min(bounds.width, bounds.height) / 2 * 0.7 // Adjust distance of percentage from center
+            let labelCenter = CGPoint(x: center.x + labelRadius * cos(midAngle),
+                y: center.y + labelRadius * sin(midAngle))
+
+            // Create the percentage text layer
+            let textLayer = CATextLayer()
+            textLayer.string = "\(Int((segment.value / total) * 100))%" // Display only percentage
+            textLayer.fontSize = 14
+            textLayer.alignmentMode = .center
+            textLayer.foregroundColor = UIColor.black.cgColor
+            textLayer.backgroundColor = UIColor.clear.cgColor
+            textLayer.contentsScale = UIScreen.main.scale
+
+            // Position the percentage label at the calculated center of the segment
+            textLayer.frame = CGRect(x: labelCenter.x - 15, y: labelCenter.y - 10, width: 30, height: 20)
+            layer.addSublayer(textLayer)
+
             startAngle = endAngle
         }
     }

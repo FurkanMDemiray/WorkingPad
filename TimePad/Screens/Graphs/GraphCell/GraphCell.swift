@@ -33,9 +33,9 @@ final class GraphCell: UICollectionViewCell {
             numberTimeLabel.text = times.coding
         case Constants.reading:
             numberTimeLabel.text = times.reading
-        case Constants.work:
+        case "Working":
             numberTimeLabel.text = times.working
-        case Constants.workout:
+        case "Training":
             numberTimeLabel.text = times.training
         case "Total Time":
             numberTimeLabel.text = totalDuration

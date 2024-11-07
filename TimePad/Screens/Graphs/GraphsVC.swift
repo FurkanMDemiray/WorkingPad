@@ -22,7 +22,6 @@ final class GraphsVC: UIViewController {
         super.viewDidLoad()
         configureCollectionView()
         viewModel.didFetchWorkModels()
-        createPieChart()
     }
 
     override func viewDidLayoutSubviews() {
@@ -42,11 +41,6 @@ final class GraphsVC: UIViewController {
     private func updateCollectionViewHeight() {
         heightConstraintCollectionView.constant = collectionView.contentSize.height
     }
-
-    private func createPieChart() {
-        view.addSubview(PieChartView())
-    }
-
 }
 
 extension GraphsVC: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -83,4 +77,43 @@ extension GraphsVC: UICollectionViewDelegateFlowLayout {
 }
 
 extension GraphsVC: GraphsVMDelegate {
+    func createPieChart(with segment: [PieChartView.Segment]) {
+        let chartView = UIView()
+        chartView.translatesAutoresizingMaskIntoConstraints = false
+        chartView.backgroundColor = UIColor.hexStringToUIColor(hex: Colors.background)
+        self.view.addSubview(chartView)
+
+        // Set up Auto Layout constraints
+        NSLayoutConstraint.activate([
+            chartView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+            chartView.heightAnchor.constraint(equalToConstant: 150),
+            chartView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            chartView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 0),
+            chartView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8)
+            ])
+
+        // grafiğin pozisyonu ekranın tam ortasında altından 8 birim yukarda olsun
+        let pieChartView = PieChartView()
+        pieChartView.translatesAutoresizingMaskIntoConstraints = false
+        chartView.addSubview(pieChartView)
+
+        pieChartView.configure(segments: segment)
+
+        //Set up Auto Layout constraints
+        NSLayoutConstraint.activate([
+            pieChartView.widthAnchor.constraint(equalToConstant: 150),
+            pieChartView.heightAnchor.constraint(equalToConstant: 150),
+//            pieChartView.centerXAnchor.constraint(equalTo: view.centerXAnchor,constant: -55)
+            ])
+
+        // if piechart exists print "piechart exists"
+        // else print "piechart does not exist"
+        if view.subviews.contains(pieChartView) {
+            print("piechart exists")
+        } else {
+            print("piechart does not exist")
+        }
+
+    }
+
 }
