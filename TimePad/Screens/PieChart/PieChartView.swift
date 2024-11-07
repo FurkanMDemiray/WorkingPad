@@ -44,24 +44,28 @@ final class PieChartView: UIView {
             shapeLayer.fillColor = segment.color.cgColor
             layer.addSublayer(shapeLayer)
 
-            // Calculate the center of each segment for percentage placement
-            let midAngle = (startAngle + endAngle) / 2
-            let labelRadius = min(bounds.width, bounds.height) / 2 * 0.7 // Adjust distance of percentage from center
-            let labelCenter = CGPoint(x: center.x + labelRadius * cos(midAngle),
-                y: center.y + labelRadius * sin(midAngle))
+            // Calculate the percentage for the segment
+            let percentage = segment.value / total * 100
+            if percentage > 0 { // Only display if percentage is non-zero
+                // Calculate the center of each segment for percentage placement
+                let midAngle = (startAngle + endAngle) / 2
+                let labelRadius = min(bounds.width, bounds.height) / 2 * 0.7 // Adjust distance of percentage from center
+                let labelCenter = CGPoint(x: center.x + labelRadius * cos(midAngle),
+                    y: center.y + labelRadius * sin(midAngle))
 
-            // Create the percentage text layer
-            let textLayer = CATextLayer()
-            textLayer.string = "\(Int((segment.value / total) * 100))%" // Display only percentage
-            textLayer.fontSize = 14
-            textLayer.alignmentMode = .center
-            textLayer.foregroundColor = UIColor.black.cgColor
-            textLayer.backgroundColor = UIColor.clear.cgColor
-            textLayer.contentsScale = UIScreen.main.scale
+                // Create the percentage text layer
+                let textLayer = CATextLayer()
+                textLayer.string = "\(Int(percentage))%" // Display only percentage
+                textLayer.fontSize = 14
+                textLayer.alignmentMode = .center
+                textLayer.foregroundColor = UIColor.black.cgColor
+                textLayer.backgroundColor = UIColor.clear.cgColor
+                textLayer.contentsScale = UIScreen.main.scale
 
-            // Position the percentage label at the calculated center of the segment
-            textLayer.frame = CGRect(x: labelCenter.x - 15, y: labelCenter.y - 10, width: 30, height: 20)
-            layer.addSublayer(textLayer)
+                // Position the percentage label at the calculated center of the segment
+                textLayer.frame = CGRect(x: labelCenter.x - 15, y: labelCenter.y - 10, width: 30, height: 20)
+                layer.addSublayer(textLayer)
+            }
 
             startAngle = endAngle
         }

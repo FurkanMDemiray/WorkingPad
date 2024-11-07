@@ -101,8 +101,8 @@ final class GraphsVM {
     private func setUpSegments() -> [PieChartView.Segment] {
         let segments: [PieChartView.Segment] = [
                 .init(color: .hexStringToUIColor(hex: Colors.red), value: CGFloat(totalTimes[Constants.coding]!.hours * 60 + totalTimes[Constants.coding]!.minutes), label: Constants.coding),
-                .init(color: .hexStringToUIColor(hex: Colors.purple), value: CGFloat(totalTimes[Constants.reading]!.hours * 60 + totalTimes[Constants.reading]!.minutes), label: Constants.reading),
-                .init(color: .hexStringToUIColor(hex: Colors.green), value: CGFloat(totalTimes[Constants.work]!.hours * 60 + totalTimes[Constants.work]!.minutes), label: Constants.work),
+                .init(color: .hexStringToUIColor(hex: Colors.green), value: CGFloat(totalTimes[Constants.reading]!.hours * 60 + totalTimes[Constants.reading]!.minutes), label: Constants.reading),
+                .init(color: .hexStringToUIColor(hex: Colors.purple), value: CGFloat(totalTimes[Constants.work]!.hours * 60 + totalTimes[Constants.work]!.minutes), label: Constants.work),
                 .init(color: .hexStringToUIColor(hex: Colors.orange), value: CGFloat(totalTimes[Constants.workout]!.hours * 60 + totalTimes[Constants.workout]!.minutes), label: Constants.workout)
         ]
         return segments

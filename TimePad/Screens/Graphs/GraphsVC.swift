@@ -24,11 +24,6 @@ final class GraphsVC: UIViewController {
         viewModel.didFetchWorkModels()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        //updateCollectionViewHeight()
-    }
-
     private func configureCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -36,10 +31,6 @@ final class GraphsVC: UIViewController {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.isScrollEnabled = false
         collectionView.register(UINib(nibName: Constants.graphCell, bundle: nil), forCellWithReuseIdentifier: Constants.graphCell)
-    }
-
-    private func updateCollectionViewHeight() {
-        heightConstraintCollectionView.constant = collectionView.contentSize.height
     }
 }
 
@@ -83,37 +74,69 @@ extension GraphsVC: GraphsVMDelegate {
         chartView.backgroundColor = UIColor.hexStringToUIColor(hex: Colors.background)
         self.view.addSubview(chartView)
 
+        let screenHeight = UIScreen.main.bounds.height
+        var height: CGFloat
+
+        if screenHeight <= 667 {
+            height = 150
+        } else {
+            height = 250
+        }
+
         // Set up Auto Layout constraints
         NSLayoutConstraint.activate([
             chartView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-            chartView.heightAnchor.constraint(equalToConstant: 150),
+            chartView.heightAnchor.constraint(equalToConstant: height),
             chartView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            chartView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 0),
+            chartView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 4),
             chartView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8)
             ])
 
-        // grafiğin pozisyonu ekranın tam ortasında altından 8 birim yukarda olsun
         let pieChartView = PieChartView()
         pieChartView.translatesAutoresizingMaskIntoConstraints = false
         chartView.addSubview(pieChartView)
-
         pieChartView.configure(segments: segment)
 
         //Set up Auto Layout constraints
         NSLayoutConstraint.activate([
-            pieChartView.widthAnchor.constraint(equalToConstant: 150),
-            pieChartView.heightAnchor.constraint(equalToConstant: 150),
-//            pieChartView.centerXAnchor.constraint(equalTo: view.centerXAnchor,constant: -55)
+            pieChartView.widthAnchor.constraint(equalToConstant: height),
+            pieChartView.heightAnchor.constraint(equalToConstant: height)
             ])
 
-        // if piechart exists print "piechart exists"
-        // else print "piechart does not exist"
-        if view.subviews.contains(pieChartView) {
-            print("piechart exists")
-        } else {
-            print("piechart does not exist")
-        }
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.attributedText = createMutableString()
+        chartView.addSubview(label)
 
+        // Set up Auto Layout constraints
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: chartView.topAnchor, constant: 8),
+            label.leadingAnchor.constraint(equalTo: pieChartView.trailingAnchor, constant: 8)
+            ])
+    }
+
+    func createMutableString() -> NSMutableAttributedString {
+        let text = NSMutableAttributedString()
+
+        let redText = NSAttributedString(string: "Red: Coding\n", attributes: [.foregroundColor: UIColor.hexStringToUIColor(hex: Colors.red)])
+        text.append(redText)
+
+        let greenText = NSAttributedString(string: "Green: Reading\n", attributes: [.foregroundColor: UIColor.hexStringToUIColor(hex: Colors.green)])
+        text.append(greenText)
+
+        let purpleText = NSAttributedString(string: "Purple: Working\n", attributes: [.foregroundColor: UIColor.hexStringToUIColor(hex: Colors.purple)])
+        text.append(purpleText)
+
+        let orangeText = NSAttributedString(string: "Orange: Training\n\n\n", attributes: [.foregroundColor: UIColor.hexStringToUIColor(hex: Colors.orange)])
+        text.append(orangeText)
+
+        let informationText = NSAttributedString(string: "For more information\nclick any graph.", attributes: [.foregroundColor: UIColor.white])
+        text.append(informationText)
+
+        return text
     }
 
 }
