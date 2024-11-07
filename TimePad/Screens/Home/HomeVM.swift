@@ -46,13 +46,14 @@ final class HomeVM {
             seconds: Int($0.seconds),
             firstHour: Int($0.firstHour),
             firstMinute: Int($0.firstMinute),
-            type: $0.type)
+            type: $0.type,
+            date: $0.date)
         }
             .filter { model in
             // Include only if at least one time value is not zero
             return model.hour != 0 || model.minute != 0 || model.seconds != 0
         }
-
+        //print("WorkModels: \(workModels)")
         workModels.isEmpty ? delegate?.showEmptyView() : delegate?.hideEmptyView()
         delegate?.updateTableView()
     }

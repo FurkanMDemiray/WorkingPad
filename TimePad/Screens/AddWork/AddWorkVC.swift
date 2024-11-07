@@ -118,13 +118,13 @@ final class AddWorkVC: UIViewController {
     @objc private func imageTapped(sender: UITapGestureRecognizer) {
         switch sender.view {
         case workoutImage:
-            handleImageSelection(for: ConstantsAddWork.workout, selectedImage: workoutImage, selectedLabel: trainingLabel)
+            handleImageSelection(for: Constants.workout, selectedImage: workoutImage, selectedLabel: trainingLabel)
         case workImage:
-            handleImageSelection(for: ConstantsAddWork.work, selectedImage: workImage, selectedLabel: workingLabel)
+            handleImageSelection(for: Constants.work, selectedImage: workImage, selectedLabel: workingLabel)
         case readingImage:
-            handleImageSelection(for: ConstantsAddWork.reading, selectedImage: readingImage, selectedLabel: readingLabel)
+            handleImageSelection(for: Constants.reading, selectedImage: readingImage, selectedLabel: readingLabel)
         case codingImage:
-            handleImageSelection(for: ConstantsAddWork.coding, selectedImage: codingImage, selectedLabel: codingLabel)
+            handleImageSelection(for: Constants.coding, selectedImage: codingImage, selectedLabel: codingLabel)
         default:
             print("default")
         }
@@ -169,10 +169,6 @@ extension AddWorkVC: UITextFieldDelegate {
 }
 
 private enum ConstantsAddWork {
-    static let workout = "Workout"
-    static let work = "Work"
-    static let reading = "Reading"
-    static let coding = "Coding"
     static let successTitle = "Success"
     static let errorTitle = "Error"
     static let ok = "OK"

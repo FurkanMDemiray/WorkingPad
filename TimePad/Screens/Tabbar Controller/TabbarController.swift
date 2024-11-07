@@ -25,6 +25,10 @@ final class TabbarController: UITabBarController {
         let historyNav = UINavigationController(rootViewController: historyVC)
         historyNav.tabBarItem = UITabBarItem(title: "History", image: UIImage(systemName: "clock"), tag: 2)
 
+        let graphVC = GraphsVC()
+        let graphNav = UINavigationController(rootViewController: graphVC)
+        graphNav.tabBarItem = UITabBarItem(title: "Graphs", image: UIImage(systemName: "chart.bar"), tag: 3)
+
         let homeViewModel = HomeVM()
         homeVC.viewModel = homeViewModel
 
@@ -34,7 +38,10 @@ final class TabbarController: UITabBarController {
         let historyViewModel = HistoryVM()
         historyVC.viewModel = historyViewModel
 
-        viewControllers = [addWorkNav, homeNav, historyNav]
+        let graphViewModel = GraphsVM()
+        graphVC.viewModel = graphViewModel
+
+        viewControllers = [addWorkNav, homeNav, historyNav, graphNav]
 
         selectedIndex = 1
     }

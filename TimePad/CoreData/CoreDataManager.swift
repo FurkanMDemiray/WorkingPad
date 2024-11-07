@@ -64,6 +64,7 @@ final class CoreDataManager {
         work.firstHour = Int16(hour)
         work.firstMinute = Int16(minute)
         work.type = type
+        work.date = Date.now
         saveContext()
     }
 

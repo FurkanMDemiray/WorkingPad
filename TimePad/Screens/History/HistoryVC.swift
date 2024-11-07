@@ -49,19 +49,19 @@ extension HistoryVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     // delete cell
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            self.showAreYouSureAlert(
-                title: Constants.areYouSureAlertActionTitle,
-                message: Constants.areYouSureAlertMessage,
-                actionTitle: Constants.areYouSureAlertActionTitle,
-                completion: { [weak self] in
-                    guard let self else { return }
-                    viewModel.deleteHistoryModel(at: indexPath.row)
-                })
-        }
-        viewModel.didFetchHistoryModels()
-    }
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            self.showAreYouSureAlert(
+//                title: Constants.areYouSureAlertActionTitle,
+//                message: Constants.areYouSureAlertMessage,
+//                actionTitle: Constants.areYouSureAlertActionTitle,
+//                completion: { [weak self] in
+//                    guard let self else { return }
+//                    viewModel.deleteHistoryModel(at: indexPath.row)
+//                })
+//        }
+//        viewModel.didFetchHistoryModels()
+//    }
 
 }
 //MARK: - HistoryVMDelegate

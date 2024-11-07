@@ -16,4 +16,5 @@ struct WorkModel {
     var firstHour: Int?
     var firstMinute: Int?
     var type: String?
+    var date: Date?
 }
