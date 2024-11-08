@@ -55,6 +55,7 @@ final class HomeVM {
         }
         //print("WorkModels: \(workModels)")
         workModels.isEmpty ? delegate?.showEmptyView() : delegate?.hideEmptyView()
+        workModels.sort(by: { $0.date!.compare($1.date!) == .orderedDescending })
         delegate?.updateTableView()
     }
 }
@@ -78,8 +79,12 @@ extension HomeVM: HomeVMProtocol {
     }
 
     func deleteWordModel(at index: Int) {
-        let work = coreDataManager.fetchWorks()[index]
-        coreDataManager.context.delete(work)
+        let workModel = workModels[index] // Sıralanmış listeden doğru modeli seç
+        guard let work = coreDataManager.fetchWorks().first(where: { $0.id == workModel.id }) else {
+            print("Work not found in CoreData")
+            return
+        }
+        coreDataManager.deleteWork(work: work)
         coreDataManager.saveContext()
         fetchWorkModels()
     }

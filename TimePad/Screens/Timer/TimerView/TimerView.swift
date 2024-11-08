@@ -45,7 +45,7 @@ final class TimerView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+//MARK: - Setup View
     private func setupView() {
         let circularPathCenter = CGPoint(x: bounds.midX, y: bounds.midY)
 
@@ -82,7 +82,7 @@ final class TimerView: UIView {
             timerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
             ])
     }
-
+//MARK: - Timer Functions
     private func timeString(from time: TimeInterval) -> String {
         let hours = Int(time) / 3600
         let minutes = Int(time) % 3600 / 60

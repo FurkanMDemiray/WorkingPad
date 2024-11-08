@@ -40,7 +40,7 @@ final class TimerVC: UIViewController {
 
 //MARK: UI
     private func addTimer() {
-        guard let hour = workModel.hour, let minute = workModel.minute else { return }
+        guard let workModel else { return }
 
         timerView = TimerView(
             frame: CGRect(
