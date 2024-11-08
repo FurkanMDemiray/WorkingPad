@@ -9,8 +9,8 @@ import UIKit
 
 final class GraphsVC: UIViewController {
 
-    @IBOutlet weak var heightConstraintCollectionView: NSLayoutConstraint!
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet private weak var heightConstraintCollectionView: NSLayoutConstraint!
+    @IBOutlet private weak var collectionView: UICollectionView!
 
     var viewModel: GraphsVMProtocol! {
         didSet {

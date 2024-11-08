@@ -49,9 +49,7 @@ final class TimerVC: UIViewController {
                 width: 300,
                 height: 300
             ),
-            hours: hour,
-            minutes: minute,
-            seconds: workModel.seconds ?? 0
+            model: workModel
         )
 
         view.addSubview(timerView)

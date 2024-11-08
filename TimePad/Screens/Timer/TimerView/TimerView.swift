@@ -23,13 +23,19 @@ final class TimerView: UIView {
     private var timer: Timer?
     private var remainingTime: TimeInterval
     private var totalTime: TimeInterval
+    private var fromValue: CGFloat
     private(set) var isPaused = false
     var lastHour: Int?
     var lastMinute: Int?
     var lastSeconds: Int?
 
-    init(frame: CGRect, hours: Int, minutes: Int, seconds: Int) {
+    init(frame: CGRect, model: WorkModel) {
         // Toplam süreyi saniye cinsinden hesapla
+        let hours = model.hour ?? 0, minutes = model.minute ?? 0, seconds = model.seconds ?? 0
+        let firstHour = model.firstHour ?? 0, firstMinute = model.firstMinute ?? 0
+        let fromValue = CGFloat(hours * 3600 + minutes * 60 + seconds) / CGFloat(firstHour * 3600 + firstMinute * 60)
+
+        self.fromValue = fromValue
         self.totalTime = TimeInterval(hours * 3600 + minutes * 60 + seconds)
         self.remainingTime = self.totalTime
         super.init(frame: frame)
@@ -100,8 +106,9 @@ final class TimerView: UIView {
         shapeLayer.strokeEnd = 1.0
 
         // Create smooth animation
+        print("fromValue: \(fromValue)")
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        basicAnimation.fromValue = 1.0
+        basicAnimation.fromValue = fromValue
         basicAnimation.toValue = 0.0
         basicAnimation.duration = duration
         basicAnimation.fillMode = .forwards
@@ -169,10 +176,11 @@ final class TimerView: UIView {
         timerLabel.text = timeString(from: remainingTime)
 
         // Setup new animation
+        fromValue = 1.0
         setupCircularAnimation(duration: newDuration)
 
         // Pause immediately
-        let pausedTime = shapeLayer.convertTime(CACurrentMediaTime(), from: nil)
+        //let pausedTime = shapeLayer.convertTime(CACurrentMediaTime(), from: nil)
         shapeLayer.speed = 0.0
         shapeLayer.timeOffset = 0 // Start from beginning
 
