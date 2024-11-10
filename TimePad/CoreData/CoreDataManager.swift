@@ -145,4 +145,23 @@ final class CoreDataManager {
         context.delete(lastWork)
         saveContext()
     }
+
+    //MARK: GET
+
+    func getWorkModels() -> [WorkModel] {
+        let allWorks = fetchWorks()
+
+        return allWorks
+            .map { WorkModel(
+            id: $0.id,
+            title: $0.title,
+            hour: Int($0.hour),
+            minute: Int($0.minute),
+            seconds: Int($0.seconds),
+            firstHour: Int($0.firstHour),
+            firstMinute: Int($0.firstMinute),
+            type: $0.type,
+            date: $0.date)
+        }
+    }
 }
