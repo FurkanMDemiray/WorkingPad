@@ -7,6 +7,7 @@
 
 import Foundation
 
+//MARK: - Protocols
 protocol GraphsVMProtocol {
     var delegate: GraphsVMDelegate? { get set }
     var getCellTitles: [String] { get }
@@ -24,6 +25,7 @@ protocol GraphsVMProtocol {
 
 protocol GraphsVMDelegate: AnyObject {
     func createPieChart(with segment: [PieChartView.Segment])
+    func updateCollectionView()
 }
 
 final class GraphsVM {
@@ -38,7 +40,7 @@ final class GraphsVM {
     func didFetchWorkModels() {
         fetchWorkModels()
     }
-
+//MARK: - Private Functions
     private func fetchWorkModels() {
         let allWorks = coreDataManager.fetchWorks()
 
@@ -60,6 +62,7 @@ final class GraphsVM {
         }
         //print("WorkModels: \(workModels)")
         totalTimes = calculateTotalTime(for: workModels)
+        delegate?.updateCollectionView()
         delegate?.createPieChart(with: setUpSegments())
     }
 
@@ -73,8 +76,8 @@ final class GraphsVM {
 
         for work in works {
             guard let type = work.type,
-                let hours = work.hour,
-                let minutes = work.minute,
+                let hours = work.firstHour,
+                let minutes = work.firstMinute,
                 let seconds = work.seconds else { continue }
 
             if totalTimes[type] != nil {
@@ -110,6 +113,7 @@ final class GraphsVM {
 
 }
 
+//MARK: - ViewModel Protocol
 extension GraphsVM: GraphsVMProtocol {
 
     var getCellImages: [String] {

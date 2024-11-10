@@ -21,6 +21,10 @@ final class GraphsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         viewModel.didFetchWorkModels()
     }
 
@@ -32,8 +36,16 @@ final class GraphsVC: UIViewController {
         collectionView.isScrollEnabled = false
         collectionView.register(UINib(nibName: Constants.graphCell, bundle: nil), forCellWithReuseIdentifier: Constants.graphCell)
     }
+
+    private func navigateToGraphDetailVC(indexPath: IndexPath) {
+        let vc = GraphDetailVC()
+        let viewModel = GraphDetailVM()
+        vc.viewModel = viewModel
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
+//MARK: - CollectionView Delegate and DataSource
 extension GraphsVC: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 6
@@ -44,8 +56,13 @@ extension GraphsVC: UICollectionViewDataSource, UICollectionViewDelegate {
         cell.configureCell(image: UIImage(named: viewModel.getCellImages[indexPath.row])!, title: viewModel.getCellTitles[indexPath.row], times: viewModel.getSumsOfTimes, totalDuration: viewModel.getTotalDuration, completedTasks: viewModel.getSumOfCompletedTasks)
         return cell
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        navigateToGraphDetailVC(indexPath: indexPath)
+    }
 }
 
+//MARK: - CollectionView FlowLayout
 extension GraphsVC: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -67,8 +84,17 @@ extension GraphsVC: UICollectionViewDelegateFlowLayout {
 
 }
 
+//MARK: - ViewModel Delegate
 extension GraphsVC: GraphsVMDelegate {
+    func updateCollectionView() {
+        collectionView.reloadData()
+    }
+
     func createPieChart(with segment: [PieChartView.Segment]) {
+        if self.view.subviews.contains(where: { $0 is PieChartView }) {
+            self.view.subviews.forEach { if $0 is PieChartView { $0.removeFromSuperview() } }
+        }
+
         let chartView = UIView()
         chartView.translatesAutoresizingMaskIntoConstraints = false
         chartView.backgroundColor = UIColor.hexStringToUIColor(hex: Colors.background)

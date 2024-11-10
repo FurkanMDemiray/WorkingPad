@@ -63,7 +63,7 @@ final class PieChartView: UIView {
                 textLayer.contentsScale = UIScreen.main.scale
 
                 // Position the percentage label at the calculated center of the segment
-                textLayer.frame = CGRect(x: labelCenter.x - 15, y: labelCenter.y - 10, width: 30, height: 20)
+                textLayer.frame = CGRect(x: labelCenter.x - 15, y: labelCenter.y - 10, width: 35, height: 20)
                 layer.addSublayer(textLayer)
             }
 
