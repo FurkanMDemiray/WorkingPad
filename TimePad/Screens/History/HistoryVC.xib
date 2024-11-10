@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HistoryVC" customModule="TimePad" customModuleProvider="target">
             <connections>
-                <outlet property="emptyLabel" destination="6Ig-UL-Zta" id="l8e-qo-3rI"/>
+                <outlet property="emptyLabel" destination="d0A-zc-BPR" id="Z7t-Km-O0d"/>
                 <outlet property="tableView" destination="Njc-T6-MUn" id="nvI-XG-Dnj"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -20,33 +20,33 @@
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There is no recent work" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ig-UL-Zta">
-                    <rect key="frame" x="86.666666666666671" y="414" width="219.66666666666663" height="24"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finished Tasks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCe-B4-UWr">
-                    <rect key="frame" x="8" y="58.999999999999993" width="163.66666666666666" height="27.666666666666664"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finished Tasks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCe-B4-UWr">
+                    <rect key="frame" x="8" y="58.999999999999993" width="163.66666666666666" height="28.666666666666664"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Njc-T6-MUn">
-                    <rect key="frame" x="0.0" y="102.66666666666669" width="393" height="715.33333333333326"/>
+                    <rect key="frame" x="0.0" y="103.66666666666669" width="393" height="714.33333333333326"/>
                     <color key="backgroundColor" red="0.023529411760000001" green="0.015686274510000001" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There is no finished task" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d0A-zc-BPR">
+                    <rect key="frame" x="82.333333333333329" y="414" width="228.33333333333337" height="24"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.023529411760000001" green="0.015686274510000001" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="6Ig-UL-Zta" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="27n-O4-WrE"/>
                 <constraint firstItem="Njc-T6-MUn" firstAttribute="top" secondItem="fCe-B4-UWr" secondAttribute="bottom" constant="16" id="Cpn-1E-uOE"/>
                 <constraint firstItem="Njc-T6-MUn" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Ix9-Fh-uMd"/>
-                <constraint firstItem="6Ig-UL-Zta" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="JhA-vd-MXE"/>
                 <constraint firstItem="Njc-T6-MUn" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="OFD-iT-70t"/>
+                <constraint firstItem="d0A-zc-BPR" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="S0X-4z-0cQ"/>
                 <constraint firstItem="fCe-B4-UWr" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="XBT-29-PpZ"/>
                 <constraint firstItem="fCe-B4-UWr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="Zmg-rS-LZG"/>
+                <constraint firstItem="d0A-zc-BPR" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="gEe-2i-jqd"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Njc-T6-MUn" secondAttribute="bottom" id="jxZ-52-A5m"/>
             </constraints>
             <point key="canvasLocation" x="90.839694656488547" y="-12.67605633802817"/>

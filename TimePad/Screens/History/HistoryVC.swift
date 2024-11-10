@@ -10,8 +10,9 @@ import UIKit
 final class HistoryVC: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
-    @IBOutlet private weak var emptyLabel: UILabel!
-
+ 
+    @IBOutlet weak var emptyLabel: UILabel!
+    
     var viewModel: HistoryVMProtocol! {
         didSet {
             viewModel.delegate = self

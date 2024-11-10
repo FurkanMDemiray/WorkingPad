@@ -26,6 +26,8 @@ protocol GraphsVMProtocol {
 protocol GraphsVMDelegate: AnyObject {
     func createPieChart(with segment: [PieChartView.Segment])
     func updateCollectionView()
+    func showNoDataLabel()
+    func hideNoDataLabel()
 }
 
 final class GraphsVM {
@@ -58,12 +60,13 @@ final class GraphsVM {
         }
             .filter { model in
             // Include only if at least one time value is not zero
-            return model.hour != 0 || model.minute != 0 || model.seconds != 0
+            return model.hour == 0 && model.minute == 0 && model.seconds == 0
         }
         //print("WorkModels: \(workModels)")
         totalTimes = calculateTotalTime(for: workModels)
         delegate?.updateCollectionView()
-        delegate?.createPieChart(with: setUpSegments())
+        workModels.count == 0 ? delegate?.showNoDataLabel() : delegate?.hideNoDataLabel()
+        workModels.count != 0 ? delegate?.createPieChart(with: setUpSegments()) : nil
     }
 
     private func calculateTotalTime(for works: [WorkModel]) -> [String: (hours: Int, minutes: Int, seconds: Int)] {

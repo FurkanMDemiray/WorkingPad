@@ -55,7 +55,8 @@ final class HomeVM {
         }
         //print("WorkModels: \(workModels)")
         workModels.isEmpty ? delegate?.showEmptyView() : delegate?.hideEmptyView()
-        workModels.sort(by: { $0.date!.compare($1.date!) == .orderedDescending })
+        workModels.count > 1 ? workModels.sort(by: { $0.date!.compare($1.date!) == .orderedDescending }) : nil
+
         delegate?.updateTableView()
     }
 }

@@ -46,7 +46,7 @@ final class HistoryVM {
             return model.hour == 0 && model.minute == 0 && model.seconds == 0
         }
 
-        historyModels.isEmpty ? delegate?.showEmptyView() : delegate?.hideEmptyView()
+        historyModels.count == 0 ? delegate?.showEmptyView() : delegate?.hideEmptyView()
         delegate?.updateTableView()
     }
 }
@@ -67,9 +67,8 @@ extension HistoryVM: HistoryVMProtocol {
 
     func deleteHistoryModel(at index: Int) {
         let work = coreDataManager.fetchWorks()[index]
-        coreDataManager.context.delete(work)
+        coreDataManager.deleteWork(work: work)
         coreDataManager.saveContext()
         fetchHistoryModels()
-
     }
 }

@@ -9,6 +9,7 @@ import UIKit
 
 final class GraphsVC: UIViewController {
 
+    @IBOutlet private weak var emptyView: UIView!
     @IBOutlet private weak var heightConstraintCollectionView: NSLayoutConstraint!
     @IBOutlet private weak var collectionView: UICollectionView!
 
@@ -86,6 +87,14 @@ extension GraphsVC: UICollectionViewDelegateFlowLayout {
 
 //MARK: - ViewModel Delegate
 extension GraphsVC: GraphsVMDelegate {
+    func showNoDataLabel() {
+        emptyView.isHidden = false
+    }
+
+    func hideNoDataLabel() {
+        emptyView.isHidden = true
+    }
+
     func updateCollectionView() {
         collectionView.reloadData()
     }
@@ -159,7 +168,7 @@ extension GraphsVC: GraphsVMDelegate {
         let orangeText = NSAttributedString(string: "Orange: Training\n\n\n", attributes: [.foregroundColor: UIColor.hexStringToUIColor(hex: Colors.orange)])
         text.append(orangeText)
 
-        let informationText = NSAttributedString(string: "For more information\nclick any graph.", attributes: [.foregroundColor: UIColor.white])
+        let informationText = NSAttributedString(string: "For more detail\nclick any card.", attributes: [.foregroundColor: UIColor.white])
         text.append(informationText)
 
         return text
