@@ -10,7 +10,7 @@ import UIKit
 final class GraphDetailVC: UIViewController {
 
   var chartView = LineChart()
-  let segmentedControl = UISegmentedControl(items: ["Günlük", "Haftalık", "Aylık", "Yıllık"])
+  let segmentedControl = UISegmentedControl(items: ["Daily", "Weekly", "Monthly", "Yearly"])
 
   var viewModel: GraphDetailVMProtocol! {
     didSet {
@@ -20,15 +20,16 @@ final class GraphDetailVC: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    setupUI()
     configureChartView()
+    setupUI()
     viewModel.fetchWorkModels()
     updateChart(for: .daily)
   }
 
   private func configureChartView() {
-    chartView = LineChart(
-      frame: CGRect(x: 0, y: 30, width: view.bounds.width, height: view.bounds.height))
+    chartView = LineChart()
+    chartView.translatesAutoresizingMaskIntoConstraints = false
+    
     chartView.lineColor = .systemBlue
     chartView.pointColor = .white
     chartView.gridColor = UIColor.hexStringToUIColor(hex: Colors.background).withAlphaComponent(0.3)
@@ -36,27 +37,25 @@ final class GraphDetailVC: UIViewController {
     chartView.backgroundColor = UIColor.hexStringToUIColor(hex: Colors.background)
   }
 
-  func setupUI() {
-    chartView.translatesAutoresizingMaskIntoConstraints = false
+  private func setupUI() {
     segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(chartView)
-    view.addSubview(segmentedControl)
-
-    NSLayoutConstraint.activate([
-      segmentedControl.topAnchor.constraint(
-        equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
-      segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-      chartView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 8),
-      chartView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-      chartView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-      chartView.bottomAnchor.constraint(
-        equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-    ])
-
-    segmentedControl.addTarget(
-      self, action: #selector(segmentedControlChanged(_:)), for: .valueChanged)
     segmentedControl.selectedSegmentIndex = 0
+    segmentedControl.addTarget(self, action: #selector(segmentedControlChanged(_:)), for: .valueChanged)
+    
+    view.addSubview(segmentedControl)
+    view.addSubview(chartView)
+    
+    NSLayoutConstraint.activate([
+        segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+        segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+        segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+        
+        chartView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 16),
+        chartView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+        chartView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+        chartView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+    ])
+    
     view.backgroundColor = UIColor.hexStringToUIColor(hex: Colors.background)
   }
 
@@ -79,21 +78,25 @@ final class GraphDetailVC: UIViewController {
 
 extension GraphDetailVC: GraphDetailVMDelegate {
   func updateData(with data: [DataPoint]) {
-    chartView.updateDataPoints(data)
+    print("updateData called with \(data.count) points")
+    let scope = TimeScope(rawValue: segmentedControl.selectedSegmentIndex) ?? .daily
+    chartView.updateDataPoints(data, scope: scope)
   }
 
   func updateChart(for scope: TimeScope) {
     let filteredData = viewModel.filterData(for: scope)
-    print("Filtered data count: \(filteredData.count) for scope: \(scope)")
-    chartView.updateDataPoints(filteredData)
-    chartView.setNeedsDisplay()
+    print("updateChart called for scope: \(scope) with \(filteredData.count) points")
+    chartView.updateDataPoints(filteredData, scope: scope)
   }
 
   func updateCollectionView() {
-    // update collection view
+    // Not implemented yet
   }
 }
 
-enum TimeScope {
-  case daily, weekly, monthly, yearly
+enum TimeScope: Int {
+  case daily = 0
+  case weekly = 1
+  case monthly = 2
+  case yearly = 3
 }

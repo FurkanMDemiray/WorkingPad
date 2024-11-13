@@ -32,31 +32,68 @@ final class GraphDetailVM {
   private var dataPoints: [DataPoint] = []
 
   private func setupDataPoints() {
-    //dataPoints = workModels.map { DataPoint(date: $0.date!, hour: $0.firstHour ?? 0, minute: $0.firstMinute ?? 0) }
+    /*  // Convert WorkModels to DataPoints
+    var realDataPoints: [DataPoint] = []
 
-    // mock data
-    dataPoints = [
-      DataPoint(date: Date().addingTimeInterval(3600), hour: 10, minute: 30),
-      DataPoint(date: Date().addingTimeInterval(7200), hour: 12, minute: 15),
-      DataPoint(date: Date().addingTimeInterval(-5555), hour: 7, minute: 0),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 8, minute: 15),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 9, minute: 30),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 10, minute: 45),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 11, minute: 0),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 12, minute: 15),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 13, minute: 30),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 14, minute: 45),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 15, minute: 0),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 16, minute: 15),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 17, minute: 30),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 18, minute: 45),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 19, minute: 0),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 20, minute: 15),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 21, minute: 30),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 22, minute: 45),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 23, minute: 0),
-      DataPoint(date: Date().addingTimeInterval(-86400), hour: 24, minute: 0),
-    ]
+    for workModel in workModels {
+      guard let date = workModel.date else { continue }
+
+      let calendar = Calendar.current
+      let components = calendar.dateComponents([.hour, .minute], from: date)
+
+      guard let hour = components.hour,
+        let minute = components.minute
+      else { continue }
+
+      realDataPoints.append(DataPoint(date: date, hour: hour, minute: minute))
+    }
+
+    dataPoints = realDataPoints.sorted { $0.date < $1.date }
+    print("Setup \(dataPoints.count) real data points")
+    delegate?.updateData(with: dataPoints) */
+
+    // create mock data for all time scopes
+    let calendar = Calendar.current
+    let now = Date()
+
+    // Create mock data for daily scope
+    var mockDataPoints: [DataPoint] = []
+
+    // Daily data - Create data points for today at different hours
+    for hour in 8...20 {
+      let date = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: now)!
+      mockDataPoints.append(DataPoint(date: date, hour: hour, minute: 0))
+    }
+
+    // Weekly data - Create data points for past 7 days
+    for dayOffset in 0...6 {
+      if let date = calendar.date(byAdding: .day, value: -dayOffset, to: now) {
+        let hour = Int.random(in: 8...20)
+        let minute = Int.random(in: 0...59)
+        mockDataPoints.append(DataPoint(date: date, hour: hour, minute: minute))
+      }
+    }
+
+    // Monthly data - Create data points for past 30 days
+    for dayOffset in 0...29 {
+      if let date = calendar.date(byAdding: .day, value: -dayOffset, to: now) {
+        let hour = Int.random(in: 8...20)
+        let minute = Int.random(in: 0...59)
+        mockDataPoints.append(DataPoint(date: date, hour: hour, minute: minute))
+      }
+    }
+
+    // Yearly data - Create data points for each month
+    for monthOffset in 0...11 {
+      if let date = calendar.date(byAdding: .month, value: -monthOffset, to: now) {
+        let hour = Int.random(in: 8...20)
+        let minute = Int.random(in: 0...59)
+        mockDataPoints.append(DataPoint(date: date, hour: hour, minute: minute))
+      }
+    }
+
+    dataPoints = mockDataPoints.sorted { $0.date < $1.date }
+    print("Created \(dataPoints.count) mock data points")
     delegate?.updateData(with: dataPoints)
   }
 }
@@ -80,26 +117,35 @@ extension GraphDetailVM: GraphDetailVMProtocol {
   func filterData(for scope: TimeScope) -> [DataPoint] {
     let calendar = Calendar.current
     let now = Date()
-    
+
     let filtered: [DataPoint]
-    
+
     switch scope {
     case .daily:
-        filtered = dataPoints.filter { calendar.isDate($0.date, inSameDayAs: now) }
+      filtered = dataPoints.filter { calendar.isDate($0.date, inSameDayAs: now) }
     case .weekly:
-        guard let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now)) else {
-            return []
-        }
-        let weekEnd = calendar.date(byAdding: .day, value: 7, to: weekStart)!
-        filtered = dataPoints.filter { $0.date >= weekStart && $0.date < weekEnd }
+      guard
+        let weekStart = calendar.date(
+          from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now))
+      else {
+        return []
+      }
+      let weekEnd = calendar.date(byAdding: .day, value: 7, to: weekStart)!
+      filtered = dataPoints.filter { $0.date >= weekStart && $0.date < weekEnd }
     case .monthly:
-        filtered = dataPoints.filter { calendar.isDate($0.date, equalTo: now, toGranularity: .month) }
+      filtered = dataPoints.filter { calendar.isDate($0.date, equalTo: now, toGranularity: .month) }
     case .yearly:
-        filtered = dataPoints.filter { calendar.isDate($0.date, equalTo: now, toGranularity: .year) }
+      filtered = dataPoints.filter { calendar.isDate($0.date, equalTo: now, toGranularity: .year) }
     }
-    
+
     // Debug print
     print("Filtering for scope: \(scope), found \(filtered.count) points")
+
+    // If no data is found, return empty array which will trigger empty state
+    if filtered.isEmpty {
+      print("No data found for scope: \(scope)")
+    }
+
     return filtered.sorted { $0.date < $1.date }
   }
 
