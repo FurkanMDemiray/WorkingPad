@@ -143,7 +143,14 @@ final class LineChart: UIView {
 
     private func drawTimeLabels(in rect: CGRect, context: CGContext) {
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
+        
+        // Determine date format based on number of points
+        if dataPoints.count > 10 {
+            formatter.dateFormat = "MM/dd"
+        } else {
+            formatter.dateFormat = "HH:mm"
+        }
+        
         let xStep = rect.width / CGFloat(dataPoints.count - 1)
 
         for (index, point) in dataPoints.enumerated() {
@@ -344,9 +351,27 @@ final class LineChart: UIView {
 
     // MARK: - Public Methods
     func updateDataPoints(_ dataPoints: [DataPoint]) {
-        self.dataPoints = dataPoints
+        self.dataPoints = dataPoints.sorted { $0.date < $1.date }
         selectedPointIndex = nil
         valueLabel?.isHidden = true
-        setNeedsDisplay()
+        
+        // Debug print
+        print("LineChart received \(dataPoints.count) points")
+        
+        // Force layout update
+        DispatchQueue.main.async {
+            self.setNeedsDisplay()
+        }
+    }
+
+    // Add a method to format values based on time range
+    private func formatValue(_ timeValue: Double) -> String {
+        if timeValue >= 24 {
+            return String(format: "%.1f h", timeValue)
+        } else {
+            let hours = Int(timeValue)
+            let minutes = Int((timeValue - Double(hours)) * 60)
+            return String(format: "%02d:%02d", hours, minutes)
+        }
     }
 }
