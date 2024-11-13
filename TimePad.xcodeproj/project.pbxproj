@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		DD6BEA6F2CE3D782001262E3 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = DD6BEA6E2CE3D782001262E3 /* Inject */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		DDEF1D032CA2C1F700B909CE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD6BEA6F2CE3D782001262E3 /* Inject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,7 @@
 			);
 			name = TimePad;
 			packageProductDependencies = (
+				DD6BEA6E2CE3D782001262E3 /* Inject */,
 			);
 			productName = TimePad;
 			productReference = DDEF1CEC2CA2C1F600B909CE /* TimePad.app */;
@@ -208,6 +214,9 @@
 			);
 			mainGroup = DDEF1CE32CA2C1F600B909CE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				DD6BEA6D2CE3D782001262E3 /* XCRemoteSwiftPackageReference "Inject" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DDEF1CED2CA2C1F600B909CE /* Products */;
 			projectDirPath = "";
@@ -421,6 +430,10 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-interposable",
+				);
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -601,6 +614,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DD6BEA6D2CE3D782001262E3 /* XCRemoteSwiftPackageReference "Inject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzysztofzablocki/Inject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DD6BEA6E2CE3D782001262E3 /* Inject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD6BEA6D2CE3D782001262E3 /* XCRemoteSwiftPackageReference "Inject" */;
+			productName = Inject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DDEF1CE42CA2C1F600B909CE /* Project object */;
 }
