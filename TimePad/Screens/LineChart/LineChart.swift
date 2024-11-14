@@ -28,7 +28,7 @@ final class LineChart: UIView {
   private var valueLabel: UILabel?
 
   // Add empty state label
-  private lazy var emptyLabel: UILabel = {
+  lazy var emptyLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "No data in this time range"
@@ -64,7 +64,7 @@ final class LineChart: UIView {
   private let labelAngle: CGFloat = -45 * .pi / 180
   private let hitTestRadius: CGFloat = 20
 
-  var emptyStateMessage: String = "No data in this time range" {
+  var emptyStateMessage: String = "No data available" {
     didSet {
       emptyLabel.text = emptyStateMessage
     }
@@ -281,7 +281,7 @@ final class LineChart: UIView {
         context.saveGState()
         context.translateBy(x: x, y: rect.maxY + 15)
         context.rotate(by: labelAngle)
-        timeString.draw(at: CGPoint(x: 0, y: 6), withAttributes: attributes)
+        timeString.draw(at: CGPoint(x: 0, y: 12), withAttributes: attributes)
         context.restoreGState()
       }
     }
@@ -505,15 +505,30 @@ final class LineChart: UIView {
 
   // MARK: - Public Methods
   func updateDataPoints(_ dataPoints: [DataPoint], scope: TimeScope = .daily) {
+    // Check for insufficient data points based on scope
+    let insufficientData =
+      (scope == .weekly && dataPoints.count < 2) || (scope == .daily && dataPoints.count < 2)
+
+    if insufficientData {
+      self.dataPoints = []
+      self.currentScope = scope
+      selectedPointIndex = nil
+      valueLabel?.isHidden = true
+
+      // Set appropriate message based on scope
+      let minPoints = scope == .weekly ? "2" : "2"
+      emptyLabel.text = "Not enough data - need at least \(minPoints) data points"
+      emptyLabel.isHidden = false
+      setNeedsDisplay()
+      return
+    }
+
     self.dataPoints = dataPoints.sorted { $0.date < $1.date }
     self.currentScope = scope
     selectedPointIndex = nil
     valueLabel?.isHidden = true
-
-    // Show/hide empty label based on data
     emptyLabel.isHidden = !dataPoints.isEmpty
 
-    // Force layout update
     DispatchQueue.main.async {
       self.setNeedsDisplay()
     }
