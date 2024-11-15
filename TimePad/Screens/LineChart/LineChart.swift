@@ -103,8 +103,9 @@ final class LineChart: UIView {
     valueLabel?.textColor = .white
     valueLabel?.font = .systemFont(ofSize: 12, weight: .medium)
     valueLabel?.textAlignment = .center
-    valueLabel?.layer.cornerRadius = 4
+    valueLabel?.layer.cornerRadius = 8
     valueLabel?.layer.masksToBounds = true
+    valueLabel?.numberOfLines = 0
     valueLabel?.isHidden = true
     if let valueLabel = valueLabel {
       addSubview(valueLabel)
@@ -453,31 +454,40 @@ final class LineChart: UIView {
     }
   }
 
+  // Update the value label with the selected data point
   private func updateValueLabel(for index: Int) {
     guard let valueLabel = valueLabel else { return }
     let dataPoint = dataPoints[index]
 
-    // Format the label text based on scope
     let formatter = DateFormatter()
     formatter.locale = Locale(identifier: "en_US")
 
-    let timeString: String
+    let labelText: String
     switch currentScope {
     case .daily:
-      timeString = dataPoint.formattedTime
+      labelText = String(
+        format: " %@ \nCompleted Time: %.1fH ", dataPoint.formattedTime, dataPoint.timeValue)
     case .weekly:
-      formatter.dateFormat = "EEE HH:mm"
-      timeString = formatter.string(from: dataPoint.date)
+      formatter.dateFormat = "EEE"
+      let dayStr = formatter.string(from: dataPoint.date)
+      labelText = String(format: " %@ \nCompleted Time: %.1fH ", dayStr, dataPoint.timeValue)
     case .monthly:
-      formatter.dateFormat = "dd MMM HH:mm"
-      timeString = formatter.string(from: dataPoint.date)
+      formatter.dateFormat = "d MMM"
+      let dateStr = formatter.string(from: dataPoint.date)
+      labelText = String(format: " %@ \nCompleted Time: %.1fH ", dateStr, dataPoint.timeValue)
     case .yearly:
-      formatter.dateFormat = "dd MMM"
-      timeString = formatter.string(from: dataPoint.date)
+      formatter.dateFormat = "MMM"
+      let monthStr = formatter.string(from: dataPoint.date)
+      labelText = String(format: " %@ \nCompleted Time: %.1fH ", monthStr, dataPoint.timeValue)
     }
 
-    valueLabel.text = " \(timeString) "
+    valueLabel.text = labelText
+
+    // Add padding for the label
+    let padding: CGFloat = 8
     valueLabel.sizeToFit()
+    valueLabel.frame.size.width += padding * 2
+    valueLabel.frame.size.height += padding
 
     let chartRect = bounds.inset(
       by: UIEdgeInsets(
@@ -494,9 +504,19 @@ final class LineChart: UIView {
       - (CGFloat(dataPoint.timeValue) / CGFloat(dataPoints.map { $0.timeValue }.max() ?? 24))
       * chartRect.height
 
+    // Calculate initial position
+    var labelX = x - valueLabel.bounds.width / 2
+    let labelY = y - valueLabel.bounds.height - 10
+
+    // Adjust horizontal position if label would overflow screen edges
+    let minX = leftMargin
+    let maxX = bounds.width - rightMargin - valueLabel.bounds.width
+
+    labelX = max(minX, min(maxX, labelX))
+
     valueLabel.frame = CGRect(
-      x: x - valueLabel.bounds.width / 2,
-      y: y - valueLabel.bounds.height - 10,
+      x: labelX,
+      y: labelY,
       width: valueLabel.bounds.width,
       height: valueLabel.bounds.height
     )
