@@ -289,14 +289,23 @@ final class LineChart: UIView {
   }
 
   private func drawValueLabels(in rect: CGRect) {
-    let maxValue = dataPoints.map { $0.timeValue }.max() ?? 24
-    let yStep = rect.height / CGFloat(numberOfHorizontalLines - 1)
-    let valueStep = maxValue / Double(numberOfHorizontalLines - 1)
+    // Calculate the actual min and max values from the data
+    let values = dataPoints.map { $0.timeValue }
+    let minValue = values.min() ?? 0
+    let maxValue = values.max() ?? 24
 
-    for i in 0...numberOfHorizontalLines - 1 {
+    // Calculate a nice range that includes the min and max values
+    let (adjustedMin, adjustedMax, step) = calculateNiceRange(min: minValue, max: maxValue)
+    let numberOfSteps = Int(ceil((adjustedMax - adjustedMin) / step))
+
+    let yStep = rect.height / CGFloat(numberOfSteps)
+
+    for i in 0...numberOfSteps {
       let y = rect.minY + CGFloat(i) * yStep
-      let value = maxValue - Double(i) * valueStep
-      let valueString = String(format: "%.1f", value)
+      let value = adjustedMax - Double(i) * step
+
+      // Format the value based on its magnitude
+      let valueString = formatAxisValue(value)
 
       let attributes: [NSAttributedString.Key: Any] = [
         .font: UIFont.systemFont(ofSize: 10),
@@ -312,15 +321,54 @@ final class LineChart: UIView {
     }
   }
 
+  private func calculateNiceRange(min: Double, max: Double) -> (
+    min: Double, max: Double, step: Double
+  ) {
+    let range = max - min
+
+    // If the range is 0, create a small range around the value
+    if range == 0 {
+      let value = min
+      return (value - 0.5, value + 0.5, 0.5)
+    }
+
+    // Calculate a nice step size
+    let roughStep = range / Double(numberOfHorizontalLines - 1)
+    let magnitude = floor(log10(roughStep))
+    let niceStep = ceil(roughStep / pow(10, magnitude)) * pow(10, magnitude)
+
+    // Calculate nice min and max values
+    let niceMin = floor(min / niceStep) * niceStep
+    let niceMax = ceil(max / niceStep) * niceStep
+
+    return (niceMin, niceMax, niceStep)
+  }
+
+  private func formatAxisValue(_ value: Double) -> String {
+    if value >= 10 {
+      return String(format: "%.0f", value)
+    } else if value >= 1 {
+      return String(format: "%.1f", value)
+    } else {
+      return String(format: "%.2f", value)
+    }
+  }
+
   private func drawLineAndPoints(in rect: CGRect) {
-    let maxYValue = dataPoints.map { $0.timeValue }.max() ?? 24
+    let values = dataPoints.map { $0.timeValue }
+    let minValue = values.min() ?? 0
+    let maxValue = values.max() ?? 24
+    let (adjustedMin, adjustedMax, _) = calculateNiceRange(min: minValue, max: maxValue)
+    let valueRange = adjustedMax - adjustedMin
+
     let linePath = UIBezierPath()
     var points: [CGPoint] = []
 
     // Create points and line path
     for (index, data) in dataPoints.enumerated() {
       let x = rect.minX + rect.width * CGFloat(index) / CGFloat(dataPoints.count - 1)
-      let y = rect.maxY - (CGFloat(data.timeValue) / CGFloat(maxYValue)) * rect.height
+      let normalizedValue = (data.timeValue - adjustedMin) / valueRange
+      let y = rect.maxY - (CGFloat(normalizedValue) * rect.height)
       let point = CGPoint(x: x, y: y)
       points.append(point)
 
@@ -371,14 +419,19 @@ final class LineChart: UIView {
   }
 
   private func drawGradient(in rect: CGRect, context: CGContext) {
-    // Create gradient path
     let gradientPath = UIBezierPath()
     var points: [CGPoint] = []
-    let maxYValue = dataPoints.map { $0.timeValue }.max() ?? 24
+
+    let values = dataPoints.map { $0.timeValue }
+    let minValue = values.min() ?? 0
+    let maxValue = values.max() ?? 24
+    let (adjustedMin, adjustedMax, _) = calculateNiceRange(min: minValue, max: maxValue)
+    let valueRange = adjustedMax - adjustedMin
 
     for (index, data) in dataPoints.enumerated() {
       let x = rect.minX + rect.width * CGFloat(index) / CGFloat(dataPoints.count - 1)
-      let y = rect.maxY - (CGFloat(data.timeValue) / CGFloat(maxYValue)) * rect.height
+      let normalizedValue = (data.timeValue - adjustedMin) / valueRange
+      let y = rect.maxY - (CGFloat(normalizedValue) * rect.height)
       points.append(CGPoint(x: x, y: y))
     }
 
@@ -425,16 +478,20 @@ final class LineChart: UIView {
         bottom: bottomMargin,
         right: rightMargin))
 
+    let values = dataPoints.map { $0.timeValue }
+    let minValue = values.min() ?? 0
+    let maxValue = values.max() ?? 24
+    let (adjustedMin, adjustedMax, _) = calculateNiceRange(min: minValue, max: maxValue)
+    let valueRange = adjustedMax - adjustedMin
+
     // Find the closest point
     var closestDistance: CGFloat = .infinity
     var closestIndex: Int?
 
     for (index, point) in dataPoints.enumerated() {
       let x = chartRect.minX + chartRect.width * CGFloat(index) / CGFloat(dataPoints.count - 1)
-      let y =
-        chartRect.maxY
-        - (CGFloat(point.timeValue) / CGFloat(dataPoints.map { $0.timeValue }.max() ?? 24))
-        * chartRect.height
+      let normalizedValue = (point.timeValue - adjustedMin) / valueRange
+      let y = chartRect.maxY - (CGFloat(normalizedValue) * chartRect.height)
       let pointLocation = CGPoint(x: x, y: y)
 
       let distance = hypot(location.x - pointLocation.x, location.y - pointLocation.y)
@@ -459,6 +516,7 @@ final class LineChart: UIView {
     guard let valueLabel = valueLabel else { return }
     let dataPoint = dataPoints[index]
 
+    // Format the label text based on scope
     let formatter = DateFormatter()
     formatter.locale = Locale(identifier: "en_US")
 
@@ -498,20 +556,26 @@ final class LineChart: UIView {
       )
     )
 
+    // Calculate x position
     let x = chartRect.minX + chartRect.width * CGFloat(index) / CGFloat(dataPoints.count - 1)
-    let y =
-      chartRect.maxY
-      - (CGFloat(dataPoint.timeValue) / CGFloat(dataPoints.map { $0.timeValue }.max() ?? 24))
-      * chartRect.height
 
-    // Calculate initial position
+    // Calculate y position using the same scaling as in drawLineAndPoints
+    let values = dataPoints.map { $0.timeValue }
+    let minValue = values.min() ?? 0
+    let maxValue = values.max() ?? 24
+    let (adjustedMin, adjustedMax, _) = calculateNiceRange(min: minValue, max: maxValue)
+    let valueRange = adjustedMax - adjustedMin
+
+    let normalizedValue = (dataPoint.timeValue - adjustedMin) / valueRange
+    let y = chartRect.maxY - (CGFloat(normalizedValue) * chartRect.height)
+
+    // Calculate label position
     var labelX = x - valueLabel.bounds.width / 2
-    let labelY = y - valueLabel.bounds.height - 10
+    let labelY = y - valueLabel.bounds.height - 10  // 10 points above the dot
 
     // Adjust horizontal position if label would overflow screen edges
     let minX = leftMargin
     let maxX = bounds.width - rightMargin - valueLabel.bounds.width
-
     labelX = max(minX, min(maxX, labelX))
 
     valueLabel.frame = CGRect(
