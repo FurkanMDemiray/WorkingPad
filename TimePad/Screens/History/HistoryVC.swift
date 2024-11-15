@@ -49,7 +49,7 @@ extension HistoryVC: UITableViewDelegate, UITableViewDataSource {
     let cell =
       tableView.dequeueReusableCell(withIdentifier: Constants.projectCell, for: indexPath)
       as! ProjectCell
-    cell.configure(with: viewModel.getHistoryModels[indexPath.row])
+    cell.configure(with: viewModel.getHistoryModels[indexPath.row], true)
     return cell
   }
 

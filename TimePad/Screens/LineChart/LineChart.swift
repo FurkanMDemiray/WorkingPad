@@ -304,7 +304,7 @@ final class LineChart: UIView {
       let y = rect.minY + CGFloat(i) * yStep
       let value = adjustedMax - Double(i) * step
 
-      // Format the value based on its magnitude
+      // Format the value in HH:mm format
       let valueString = formatAxisValue(value)
 
       let attributes: [NSAttributedString.Key: Any] = [
@@ -329,29 +329,28 @@ final class LineChart: UIView {
     // If the range is 0, create a small range around the value
     if range == 0 {
       let value = min
-      return (value - 0.5, value + 0.5, 0.5)
+      // Use 30-minute steps when range is 0
+      return (floor(value), ceil(value) + 1, 0.5)  // 0.5 represents 30 minutes
     }
 
-    // Calculate a nice step size
+    // Calculate step size in hours (0.5 = 30 minutes, 1 = 1 hour, etc.)
+    let possibleSteps = [0.5, 1.0, 2.0, 3.0, 4.0, 6.0, 12.0, 24.0]
     let roughStep = range / Double(numberOfHorizontalLines - 1)
-    let magnitude = floor(log10(roughStep))
-    let niceStep = ceil(roughStep / pow(10, magnitude)) * pow(10, magnitude)
+
+    let step = possibleSteps.first { $0 >= roughStep } ?? 1.0
 
     // Calculate nice min and max values
-    let niceMin = floor(min / niceStep) * niceStep
-    let niceMax = ceil(max / niceStep) * niceStep
+    let niceMin = floor(min / step) * step
+    let niceMax = ceil(max / step) * step
 
-    return (niceMin, niceMax, niceStep)
+    return (niceMin, niceMax, step)
   }
 
   private func formatAxisValue(_ value: Double) -> String {
-    if value >= 10 {
-      return String(format: "%.0f", value)
-    } else if value >= 1 {
-      return String(format: "%.1f", value)
-    } else {
-      return String(format: "%.2f", value)
-    }
+    // Convert decimal hours to HH:mm format
+    let hours = Int(value)
+    let minutes = Int((value - Double(hours)) * 60)
+    return String(format: "%02d:%02d", hours, minutes)
   }
 
   private func drawLineAndPoints(in rect: CGRect) {
@@ -524,19 +523,19 @@ final class LineChart: UIView {
     switch currentScope {
     case .daily:
       labelText = String(
-        format: " %@ \nCompleted Time: %.1fH ", dataPoint.formattedTime, dataPoint.timeValue)
+        format: "%@ \nCompleted Duration: %.1fH ", dataPoint.formattedTime, dataPoint.timeValue)
     case .weekly:
       formatter.dateFormat = "EEE"
       let dayStr = formatter.string(from: dataPoint.date)
-      labelText = String(format: " %@ \nCompleted Time: %.1fH ", dayStr, dataPoint.timeValue)
+      labelText = String(format: "%@ \nCompleted Duration: %.1fH ", dayStr, dataPoint.timeValue)
     case .monthly:
       formatter.dateFormat = "d MMM"
       let dateStr = formatter.string(from: dataPoint.date)
-      labelText = String(format: " %@ \nCompleted Time: %.1fH ", dateStr, dataPoint.timeValue)
+      labelText = String(format: "%@ \nCompleted Duration: %.1fH ", dateStr, dataPoint.timeValue)
     case .yearly:
       formatter.dateFormat = "MMM"
       let monthStr = formatter.string(from: dataPoint.date)
-      labelText = String(format: " %@ \nCompleted Time: %.1fH ", monthStr, dataPoint.timeValue)
+      labelText = String(format: "%@ \nCompleted Duration: %.1fH ", monthStr, dataPoint.timeValue)
     }
 
     valueLabel.text = labelText
