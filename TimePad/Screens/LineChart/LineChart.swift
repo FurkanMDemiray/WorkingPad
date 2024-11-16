@@ -7,6 +7,7 @@
 
 import UIKit
 
+// MARK: - Data Model
 struct DataPoint {
   let date: Date
   let hour: Int
@@ -21,6 +22,7 @@ struct DataPoint {
   }
 }
 
+// MARK: - LineChart Class
 final class LineChart: UIView {
   // MARK: - Properties
   private var dataPoints: [DataPoint] = []
@@ -40,7 +42,7 @@ final class LineChart: UIView {
     return label
   }()
 
-  // Customization
+  // MARK: - Customization Properties
   var lineColor: UIColor = .systemBlue {
     didSet { setNeedsDisplay() }
   }
@@ -54,7 +56,7 @@ final class LineChart: UIView {
     didSet { setNeedsDisplay() }
   }
 
-  // Layout
+  // MARK: - Layout Properties
   private let topMargin: CGFloat = 40
   private let bottomMargin: CGFloat = 60
   private let leftMargin: CGFloat = 40
@@ -92,6 +94,7 @@ final class LineChart: UIView {
     isOpaque = false
   }
 
+  // MARK: - Setup Methods
   private func setupGestureRecognizers() {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
     addGestureRecognizer(tapGesture)
@@ -123,7 +126,7 @@ final class LineChart: UIView {
     ])
   }
 
-  // MARK: - Drawing
+  // MARK: - Drawing Methods
   override func draw(_ rect: CGRect) {
     if dataPoints.isEmpty {
       emptyLabel.isHidden = false
