@@ -324,6 +324,29 @@ final class LineChart: UIView {
     }
   }
 
+  private func formatAxisValue(_ value: Double) -> String {
+    // If value is less than 1 hour, show in minutes
+    if value < 1.0 {
+      let minutes = Int(value * 60)
+      return String(format: "%dm", minutes)
+    }
+
+    // If value has no minutes component (whole hour)
+    if value.truncatingRemainder(dividingBy: 1.0) == 0 {
+      return String(format: "%dh", Int(value))
+    }
+
+    // If value is less than 10 hours, show hours and minutes
+    if value < 10.0 {
+      let hours = Int(value)
+      let minutes = Int((value - Double(hours)) * 60)
+      return String(format: "%d:%02d", hours, minutes)
+    }
+
+    // For larger values, show with one decimal place
+    return String(format: "%.1fh", value)
+  }
+
   private func calculateNiceRange(min: Double, max: Double) -> (
     min: Double, max: Double, step: Double
   ) {
@@ -332,28 +355,34 @@ final class LineChart: UIView {
     // If the range is 0, create a small range around the value
     if range == 0 {
       let value = min
-      // Use 30-minute steps when range is 0
-      return (floor(value), ceil(value) + 1, 0.5)  // 0.5 represents 30 minutes
+      // If value is less than 1 hour, use 15-minute steps
+      if value < 1.0 {
+        return (0, 1, 0.25)  // 0.25 represents 15 minutes
+      }
+      // Otherwise use 30-minute steps
+      return (floor(value), ceil(value) + 1, 0.5)
     }
 
-    // Calculate step size in hours (0.5 = 30 minutes, 1 = 1 hour, etc.)
-    let possibleSteps = [0.5, 1.0, 2.0, 3.0, 4.0, 6.0, 12.0, 24.0]
-    let roughStep = range / Double(numberOfHorizontalLines - 1)
+    // Calculate step size based on range
+    let possibleSteps: [Double]
+    if range < 1.0 {
+      // For small ranges (< 1 hour), use minute-based steps
+      possibleSteps = [0.25, 0.5]  // 15 and 30 minutes
+    } else if range < 4.0 {
+      // For medium ranges, use half-hour and hour steps
+      possibleSteps = [0.5, 1.0, 2.0]
+    } else {
+      // For larger ranges, use hour-based steps
+      possibleSteps = [1.0, 2.0, 3.0, 4.0, 6.0, 12.0, 24.0]
+    }
 
+    let roughStep = range / Double(numberOfHorizontalLines - 1)
     let step = possibleSteps.first { $0 >= roughStep } ?? 1.0
 
-    // Calculate nice min and max values
     let niceMin = floor(min / step) * step
     let niceMax = ceil(max / step) * step
 
     return (niceMin, niceMax, step)
-  }
-
-  private func formatAxisValue(_ value: Double) -> String {
-    // Convert decimal hours to HH:mm format
-    let hours = Int(value)
-    let minutes = Int((value - Double(hours)) * 60)
-    return String(format: "%02d:%02d", hours, minutes)
   }
 
   private func drawLineAndPoints(in rect: CGRect) {
@@ -526,19 +555,23 @@ final class LineChart: UIView {
     switch currentScope {
     case .daily:
       labelText = String(
-        format: "%@ \nCompleted Duration: %.2fH ", dataPoint.formattedTime, dataPoint.timeValue)
+        format: "Time: %@ \nCompleted Duration: %.2fH ", dataPoint.formattedTime,
+        dataPoint.timeValue)
     case .weekly:
       formatter.dateFormat = "EEE"
       let dayStr = formatter.string(from: dataPoint.date)
-      labelText = String(format: "%@ \nCompleted Duration: %.2fH ", dayStr, dataPoint.timeValue)
+      labelText = String(
+        format: "Day: %@ \nCompleted Duration: %.2fH ", dayStr, dataPoint.timeValue)
     case .monthly:
       formatter.dateFormat = "d MMM"
       let dateStr = formatter.string(from: dataPoint.date)
-      labelText = String(format: "%@ \nCompleted Duration: %.2fH ", dateStr, dataPoint.timeValue)
+      labelText = String(
+        format: "Date: %@ \nCompleted Duration: %.2fH ", dateStr, dataPoint.timeValue)
     case .yearly:
       formatter.dateFormat = "MMM"
       let monthStr = formatter.string(from: dataPoint.date)
-      labelText = String(format: "%@ \nCompleted Duration: %.2fH ", monthStr, dataPoint.timeValue)
+      labelText = String(
+        format: "Date: %@ \nCompleted Duration: %.2fH ", monthStr, dataPoint.timeValue)
     }
 
     valueLabel.text = labelText
