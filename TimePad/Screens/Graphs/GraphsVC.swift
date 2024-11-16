@@ -46,8 +46,22 @@ final class GraphsVC: UIViewController {
   private func navigateToGraphDetailVC(indexPath: IndexPath) {
     let vc = GraphDetailVC()
     let viewModel = GraphDetailVM()
+    let selectedType = getSelectedType(for: indexPath.row)
+    viewModel.selectedType = selectedType
     vc.viewModel = viewModel
     self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  private func getSelectedType(for index: Int) -> String? {
+    switch index {
+    case 0: return Constants.coding
+    case 1: return Constants.reading
+    case 2: return Constants.work
+    case 3: return Constants.workout
+    case 4: return Constants.all  // For Completed cell
+    case 5: return nil    // For Total Time cell
+    default: return nil
+    }
   }
 }
 

@@ -17,4 +17,5 @@ enum Constants {
     static let work = "Work"
     static let reading = "Reading"
     static let coding = "Coding"
+    static let all = "All"
 }

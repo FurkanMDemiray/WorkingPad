@@ -526,19 +526,19 @@ final class LineChart: UIView {
     switch currentScope {
     case .daily:
       labelText = String(
-        format: "%@ \nCompleted Duration: %.1fH ", dataPoint.formattedTime, dataPoint.timeValue)
+        format: "%@ \nCompleted Duration: %.2fH ", dataPoint.formattedTime, dataPoint.timeValue)
     case .weekly:
       formatter.dateFormat = "EEE"
       let dayStr = formatter.string(from: dataPoint.date)
-      labelText = String(format: "%@ \nCompleted Duration: %.1fH ", dayStr, dataPoint.timeValue)
+      labelText = String(format: "%@ \nCompleted Duration: %.2fH ", dayStr, dataPoint.timeValue)
     case .monthly:
       formatter.dateFormat = "d MMM"
       let dateStr = formatter.string(from: dataPoint.date)
-      labelText = String(format: "%@ \nCompleted Duration: %.1fH ", dateStr, dataPoint.timeValue)
+      labelText = String(format: "%@ \nCompleted Duration: %.2fH ", dateStr, dataPoint.timeValue)
     case .yearly:
       formatter.dateFormat = "MMM"
       let monthStr = formatter.string(from: dataPoint.date)
-      labelText = String(format: "%@ \nCompleted Duration: %.1fH ", monthStr, dataPoint.timeValue)
+      labelText = String(format: "%@ \nCompleted Duration: %.2fH ", monthStr, dataPoint.timeValue)
     }
 
     valueLabel.text = labelText

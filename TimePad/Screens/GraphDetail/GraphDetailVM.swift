@@ -29,70 +29,36 @@ final class GraphDetailVM {
   private let coreDataManager = CoreDataManager.shared
   private var workModels: [WorkModel] = []
   private var dataPoints: [DataPoint] = []
+  var selectedType: String?
 
   private func setupDataPoints() {
     // Convert WorkModels to DataPoints
-    /* var realDataPoints: [DataPoint] = []
+    var realDataPoints: [DataPoint] = []
 
-    for workModel in workModels {
-      guard let date = workModel.date else { continue }
+    // Filter workModels based on selectedType
+    let filteredModels: [WorkModel]
+    if let type = selectedType {
+      if type == "all" {
+        filteredModels = workModels
+      } else {
+        filteredModels = workModels.filter { $0.type == type }
+      }
+    } else {
+      // If no type selected (Total Time), return empty array
+      filteredModels = []
+    }
 
-      let calendar = Calendar.current
-      let components = calendar.dateComponents([.hour, .minute], from: date)
-
-      guard let hour = components.hour,
-        let minute = components.minute
+    for workModel in filteredModels {
+      guard let date = workModel.date,
+        let hour = workModel.firstHour,
+        let minute = workModel.firstMinute
       else { continue }
 
       realDataPoints.append(DataPoint(date: date, hour: hour, minute: minute))
     }
 
     dataPoints = realDataPoints.sorted { $0.date < $1.date }
-    print("Setup \(dataPoints.count) real data points")
-    delegate?.updateData(with: dataPoints) */
-
-    // create mock data for all time scopes
-    let calendar = Calendar.current
-    let now = Date()
-
-    // Create mock data for daily scope
-    var mockDataPoints: [DataPoint] = []
-
-    // Daily data - Create data points for today at different hours
-    for hour in 8...20 {
-      let date = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: now)!
-      mockDataPoints.append(DataPoint(date: date, hour: hour, minute: 0))
-    }
-
-    // Weekly data - Create data points for past 7 days
-    for dayOffset in 0...6 {
-      if let date = calendar.date(byAdding: .day, value: -dayOffset, to: now) {
-        let hour = Int.random(in: 8...20)
-        let minute = Int.random(in: 0...59)
-        mockDataPoints.append(DataPoint(date: date, hour: hour, minute: minute))
-      }
-    }
-
-    // Monthly data - Create data points for past 30 days
-    for dayOffset in 0...29 {
-      if let date = calendar.date(byAdding: .day, value: -dayOffset, to: now) {
-        let hour = Int.random(in: 8...20)
-        let minute = Int.random(in: 0...59)
-        mockDataPoints.append(DataPoint(date: date, hour: hour, minute: minute))
-      }
-    }
-
-    // Yearly data - Create data points for each month
-    for monthOffset in 0...11 {
-      if let date = calendar.date(byAdding: .month, value: -monthOffset, to: now) {
-        let hour = Int.random(in: 8...20)
-        let minute = Int.random(in: 0...59)
-        mockDataPoints.append(DataPoint(date: date, hour: hour, minute: minute))
-      }
-    }
-
-    dataPoints = mockDataPoints.sorted { $0.date < $1.date }
-    print("Created \(dataPoints.count) mock data points")
+    print("Setup \(dataPoints.count) real data points for type: \(selectedType ?? "none")")
     delegate?.updateData(with: dataPoints)
   }
 }
