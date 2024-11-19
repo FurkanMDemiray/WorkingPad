@@ -11,8 +11,7 @@ final class GraphDetailVC: UIViewController {
 
   var chartView = LineChart()
   var columnChart = ColumnChart()
-  let segmentedControl = UISegmentedControl(
-    items: SegmentedControlItems.allCases.map { $0.rawValue })
+  let segmentedControl = UISegmentedControl(items: ["Daily", "Weekly", "Monthly", "Yearly"])
 
   var viewModel: GraphDetailVMProtocol! {
     didSet {
@@ -20,9 +19,12 @@ final class GraphDetailVC: UIViewController {
     }
   }
 
+  private var isShowingColumnChart = false
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureChartView()
+    configureColumnChart()
     setupUI()
     viewModel.fetchWorkModels()
     updateChart(for: .daily)
@@ -53,6 +55,8 @@ final class GraphDetailVC: UIViewController {
 
     view.addSubview(segmentedControl)
     view.addSubview(chartView)
+    view.addSubview(columnChart)
+    columnChart.isHidden = true
 
     NSLayoutConstraint.activate([
       segmentedControl.topAnchor.constraint(
@@ -64,6 +68,12 @@ final class GraphDetailVC: UIViewController {
       chartView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
       chartView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
       chartView.bottomAnchor.constraint(
+        equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+
+      columnChart.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 16),
+      columnChart.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+      columnChart.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+      columnChart.bottomAnchor.constraint(
         equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
     ])
 
@@ -85,11 +95,37 @@ final class GraphDetailVC: UIViewController {
     updateChart(for: selectedScope)
   }
 
+  func toggleChartType() {
+    isShowingColumnChart.toggle()
+    chartView.isHidden = isShowingColumnChart
+    columnChart.isHidden = !isShowingColumnChart
+
+    if isShowingColumnChart {
+      viewModel.calculateTotalDurations()
+    }
+  }
+
+  func showTotalTimeChart() {
+    isShowingColumnChart = true
+    chartView.isHidden = true
+    columnChart.isHidden = false
+    viewModel.calculateTotalDurations()
+  }
+
 }
 
 extension GraphDetailVC: GraphDetailVMDelegate {
   func updateData(with data: [DataPoint]) {
     print("updateData called with \(data.count) points")
+    if viewModel.getSelectedType == Constants.totalTime {
+      showTotalTimeChart()
+      return
+    }
+    
+    isShowingColumnChart = false
+    chartView.isHidden = false
+    columnChart.isHidden = true
+    
     let scope = TimeScope(rawValue: segmentedControl.selectedSegmentIndex) ?? .daily
     chartView.updateDataPoints(data, scope: scope)
   }
@@ -103,6 +139,10 @@ extension GraphDetailVC: GraphDetailVMDelegate {
   func updateCollectionView() {
     // Not implemented yet
   }
+
+  func updateColumnChart(with durations: [Int]) {
+    columnChart.updateValues(durations)
+  }
 }
 
 enum TimeScope: Int {
@@ -110,11 +150,4 @@ enum TimeScope: Int {
   case weekly = 1
   case monthly = 2
   case yearly = 3
-}
-
-enum SegmentedControlItems: String {
-  case daily = "Daily"
-  case weekly = "Weekly"
-  case monthly = "Monthly"
-  case yearly = "Yearly"
 }

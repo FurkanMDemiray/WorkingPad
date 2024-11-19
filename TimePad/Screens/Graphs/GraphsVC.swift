@@ -59,7 +59,7 @@ final class GraphsVC: UIViewController {
     case 2: return Constants.work
     case 3: return Constants.workout
     case 4: return Constants.all  // For Completed cell
-    case 5: return Constants.totalTime     // For Total Time cell
+    case 5: return Constants.totalTime  // For Total Time cell
     default: return nil
     }
   }

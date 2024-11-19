@@ -11,9 +11,11 @@ protocol GraphDetailVMProtocol {
   var delegate: GraphDetailVMDelegate? { get set }
   var getWorkModels: [WorkModel] { get }
   var getDataPoints: [DataPoint] { get }
+  var getSelectedType: String? { get }
 
   func fetchWorkModels()
   func filterData(for scope: TimeScope) -> [DataPoint]
+  func calculateTotalDurations()
 
 }
 
@@ -21,6 +23,7 @@ protocol GraphDetailVMDelegate: AnyObject {
   func updateCollectionView()
   func updateChart(for scope: TimeScope)
   func updateData(with dataPoints: [DataPoint])
+  func updateColumnChart(with durations: [Int])
 }
 
 final class GraphDetailVM {
@@ -38,13 +41,16 @@ final class GraphDetailVM {
     // Filter workModels based on selectedType
     let filteredModels: [WorkModel]
     if let type = selectedType {
-      if type == Constants.all || type == Constants.totalTime {
+      if type == Constants.totalTime {
+        // Show column chart for total time
+        filteredModels = workModels
+        calculateTotalDurations()
+      } else if type == Constants.all {
         filteredModels = workModels
       } else {
         filteredModels = workModels.filter { $0.type == type }
       }
     } else {
-      // If no type selected (Total Time), return empty array
       filteredModels = []
     }
 
@@ -64,12 +70,34 @@ final class GraphDetailVM {
 }
 
 extension GraphDetailVM: GraphDetailVMProtocol {
+
   var getDataPoints: [DataPoint] {
     dataPoints
   }
 
   var getWorkModels: [WorkModel] {
     workModels
+  }
+
+  var getSelectedType: String? {
+    selectedType
+  }
+
+  func calculateTotalDurations() {
+    let types = [Constants.work, Constants.workout, Constants.reading, Constants.coding]
+    var durations = [0, 0, 0, 0]
+
+    for (index, type) in types.enumerated() {
+      let typeModels = workModels.filter { $0.type == type }
+      let totalSeconds = typeModels.reduce(0) { total, model in
+        let hours = Int(model.firstHour ?? 0)
+        let minutes = Int(model.firstMinute ?? 0)
+        return total + (hours * 3600 + minutes * 60)
+      }
+      durations[index] = totalSeconds
+    }
+
+    delegate?.updateColumnChart(with: durations)
   }
 
   func fetchWorkModels() {
