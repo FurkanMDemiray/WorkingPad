@@ -91,8 +91,11 @@ final class GraphDetailVC: UIViewController {
       }
     }()
 
-    print("Selected scope: \(selectedScope)")
-    updateChart(for: selectedScope)
+    if isShowingColumnChart {
+      viewModel.calculateTotalDurations(for: selectedScope)
+    } else {
+      updateChart(for: selectedScope)
+    }
   }
 
   func toggleChartType() {
@@ -101,7 +104,8 @@ final class GraphDetailVC: UIViewController {
     columnChart.isHidden = !isShowingColumnChart
 
     if isShowingColumnChart {
-      viewModel.calculateTotalDurations()
+      let selectedScope = TimeScope(rawValue: segmentedControl.selectedSegmentIndex) ?? .daily
+      viewModel.calculateTotalDurations(for: selectedScope)
     }
   }
 
@@ -109,28 +113,36 @@ final class GraphDetailVC: UIViewController {
     isShowingColumnChart = true
     chartView.isHidden = true
     columnChart.isHidden = false
-    viewModel.calculateTotalDurations()
+
+    // Force layout update
+    view.layoutIfNeeded()
+
+    let selectedScope = TimeScope(rawValue: segmentedControl.selectedSegmentIndex) ?? .daily
+    viewModel.calculateTotalDurations(for: selectedScope)
   }
 
 }
 
+//MARK: - GraphDetailVMDelegate
 extension GraphDetailVC: GraphDetailVMDelegate {
+
   func updateData(with data: [DataPoint]) {
     print("updateData called with \(data.count) points")
     if viewModel.getSelectedType == Constants.totalTime {
       showTotalTimeChart()
       return
     }
-    
+
     isShowingColumnChart = false
     chartView.isHidden = false
     columnChart.isHidden = true
-    
+
     let scope = TimeScope(rawValue: segmentedControl.selectedSegmentIndex) ?? .daily
     chartView.updateDataPoints(data, scope: scope)
   }
 
   func updateChart(for scope: TimeScope) {
+    print("updateChart called called")
     let filteredData = viewModel.filterData(for: scope)
     print("updateChart called for scope: \(scope) with \(filteredData.count) points")
     chartView.updateDataPoints(filteredData, scope: scope)
@@ -141,7 +153,18 @@ extension GraphDetailVC: GraphDetailVMDelegate {
   }
 
   func updateColumnChart(with durations: [Int]) {
+    print("Updating column chart with durations: \(durations)")
     columnChart.updateValues(durations)
+
+    // Ensure the column chart is visible and line chart is hidden
+    columnChart.isHidden = false
+    chartView.isHidden = true
+
+    // Force layout update
+    DispatchQueue.main.async {
+      self.columnChart.setNeedsLayout()
+      self.columnChart.layoutIfNeeded()
+    }
   }
 }
 

@@ -40,9 +40,6 @@ class ColumnChart: UIView {
       column.tag = i
       column.isUserInteractionEnabled = true
 
-      let tap = UITapGestureRecognizer(target: self, action: #selector(columnTapped(_:)))
-      column.addGestureRecognizer(tap)
-
       let label = UILabel()
       label.text = types[i]
       label.textAlignment = .center
@@ -105,15 +102,20 @@ class ColumnChart: UIView {
     }
   }
 
-  @objc private func columnTapped(_ sender: UITapGestureRecognizer) {
-    guard let column = sender.view,
-      let index = columns.firstIndex(of: column)
-    else { return }
-  }
-
   func updateValues(_ newValues: [Int]) {
+    print("ColumnChart received new values: \(newValues)")  // Debug print
     values = newValues
+
+    // Update duration labels
+    for i in 0..<durationLabels.count {
+      let hours = values[i] / 3600
+      let minutes = (values[i] % 3600) / 60
+      durationLabels[i].text = "\(hours)h \(minutes)m"
+    }
+
+    // Force layout update
     setNeedsLayout()
+    layoutIfNeeded()
   }
 
 }
