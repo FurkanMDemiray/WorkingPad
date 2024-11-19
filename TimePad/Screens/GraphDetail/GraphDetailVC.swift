@@ -70,7 +70,7 @@ final class GraphDetailVC: UIViewController {
       chartView.bottomAnchor.constraint(
         equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
 
-      columnChart.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 16),
+      columnChart.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 32),
       columnChart.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
       columnChart.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
       columnChart.bottomAnchor.constraint(
