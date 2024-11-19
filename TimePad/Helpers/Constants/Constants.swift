@@ -18,4 +18,5 @@ enum Constants {
     static let reading = "Reading"
     static let coding = "Coding"
     static let all = "All"
+    static let totalTime = "Total Time"
 }

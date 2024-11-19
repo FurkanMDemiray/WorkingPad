@@ -38,7 +38,7 @@ final class GraphDetailVM {
     // Filter workModels based on selectedType
     let filteredModels: [WorkModel]
     if let type = selectedType {
-      if type == "All" {
+      if type == Constants.all || type == Constants.totalTime {
         filteredModels = workModels
       } else {
         filteredModels = workModels.filter { $0.type == type }
