@@ -34,7 +34,7 @@ final class HomeVC: UIViewController {
     super.viewDidAppear(animated)
     viewModel.didFetchWorkModels()
     viewModel.didFetchLastWork()
-    //setInnerOfCardView()
+    setInnerOfCardView()
   }
 
   //MARK: Configures

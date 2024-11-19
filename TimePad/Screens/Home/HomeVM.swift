@@ -39,7 +39,7 @@ final class HomeVM {
     workModels = workModels.filter { $0.hour != 0 || $0.minute != 0 || $0.seconds != 0 }
     //print("WorkModels: \(workModels)")
     workModels.isEmpty ? delegate?.showEmptyView() : delegate?.hideEmptyView()
-    workModels.count > 1
+    workModels.count > 1 && workModels.allSatisfy({ $0.date != nil })
       ? workModels.sort(by: { $0.date!.compare($1.date!) == .orderedDescending }) : nil
 
     delegate?.updateTableView()
