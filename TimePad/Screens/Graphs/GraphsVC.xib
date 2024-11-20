@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="C1k-jG-Sfj">
-                    <rect key="frame" x="0.0" y="95.666666666666686" width="393" height="360"/>
+                    <rect key="frame" x="0.0" y="91" width="393" height="360"/>
                     <color key="backgroundColor" red="0.023529411760000001" green="0.015686274510000001" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="360" id="j1D-Wm-tip"/>
@@ -35,16 +35,16 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Productivity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sN7-rt-1nw">
-                    <rect key="frame" x="8" y="58.999999999999993" width="175.33333333333334" height="28.666666666666664"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                    <rect key="frame" x="8" y="59" width="148" height="24"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e58-yX-WSq">
-                    <rect key="frame" x="0.0" y="455.66666666666674" width="393" height="362.33333333333326"/>
+                    <rect key="frame" x="0.0" y="451" width="393" height="367"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zZR-NE-qXa">
-                            <rect key="frame" x="159" y="169.33333333333331" width="75" height="24"/>
+                            <rect key="frame" x="159" y="171.66666666666663" width="75" height="24"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>

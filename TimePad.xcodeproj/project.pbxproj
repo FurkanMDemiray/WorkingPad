@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DD6BEA6F2CE3D782001262E3 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = DD6BEA6E2CE3D782001262E3 /* Inject */; };
+		DDA28F362CECDAEE003DC47E /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = DDA28F352CECDAEE003DC47E /* FSCalendar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD6BEA6F2CE3D782001262E3 /* Inject in Frameworks */,
+				DDA28F362CECDAEE003DC47E /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,7 @@
 			name = TimePad;
 			packageProductDependencies = (
 				DD6BEA6E2CE3D782001262E3 /* Inject */,
+				DDA28F352CECDAEE003DC47E /* FSCalendar */,
 			);
 			productName = TimePad;
 			productReference = DDEF1CEC2CA2C1F600B909CE /* TimePad.app */;
@@ -216,6 +219,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				DD6BEA6D2CE3D782001262E3 /* XCRemoteSwiftPackageReference "Inject" */,
+				DDA28F342CECDAEE003DC47E /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DDEF1CED2CA2C1F600B909CE /* Products */;
@@ -624,6 +628,14 @@
 				minimumVersion = 1.5.2;
 			};
 		};
+		DDA28F342CECDAEE003DC47E /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -631,6 +643,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DD6BEA6D2CE3D782001262E3 /* XCRemoteSwiftPackageReference "Inject" */;
 			productName = Inject;
+		};
+		DDA28F352CECDAEE003DC47E /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DDA28F342CECDAEE003DC47E /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

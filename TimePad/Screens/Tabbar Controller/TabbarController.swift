@@ -12,6 +12,8 @@ final class TabbarController: UITabBarController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.tabBar.backgroundColor = UIColor.hexStringToUIColor(hex: Colors.background)
+    self.tabBar.tintColor = UIColor.hexStringToUIColor(hex: Colors.purple)
 
     let homeVC = HomeVC()
     let homeNav = UINavigationController(rootViewController: homeVC)
@@ -30,6 +32,11 @@ final class TabbarController: UITabBarController {
     let historyNav = UINavigationController(rootViewController: historyVC)
     historyNav.tabBarItem = UITabBarItem(
       title: "History", image: UIImage(systemName: "clock"), tag: 2)
+
+    let calendVC = CalendarVC()
+    let calendarNav = UINavigationController(rootViewController: calendVC)
+    calendarNav.tabBarItem = UITabBarItem(
+      title: "History", image: UIImage(systemName: "calendar"), tag: 2)
 
     let graphVC = GraphsVC()
     let graphNav = UINavigationController(rootViewController: graphVC)
@@ -53,7 +60,7 @@ final class TabbarController: UITabBarController {
     let graphViewModel = GraphsVM()
     graphVC.viewModel = graphViewModel
 
-    viewControllers = [stopwatchNav, addWorkNav, homeNav, graphNav, historyNav]
+    viewControllers = [stopwatchNav, addWorkNav, homeNav, graphNav, calendarNav]
 
     selectedIndex = 2
   }
