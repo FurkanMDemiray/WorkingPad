@@ -24,11 +24,18 @@ final class GraphsVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureCollectionView()
+    // Show tutorial if it hasn't been shown before
+    if !UserDefaults.standard.bool(forKey: "HasSeenGraphsTutorial") {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+        self?.showTutorial()
+      }
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     viewModel.didFetchWorkModels()
+
   }
 
   //MARK: - Private Methods
@@ -61,6 +68,38 @@ final class GraphsVC: UIViewController {
     case 4: return Constants.all  // For Completed cell
     case 5: return Constants.totalTime  // For Total Time cell
     default: return nil
+    }
+  }
+
+  func showTutorial() {
+    let tutorialView = GraphsTutorialView(frame: view.bounds)
+    view.addSubview(tutorialView)
+
+    // Define tutorial steps
+    let steps: [(title: String, description: String, frame: CGRect)] = [
+      (
+        title: "Activity Cards",
+        description:
+          "These cards show your progress in different activities like coding, reading, working, and training.",
+        frame: collectionView.frame
+      ),
+      (
+        title: "Pie Chart",
+        description:
+          "When you start to add activities, pie chart will visualize the distribution of your time across different activities.",
+        frame: view.subviews.first(where: { $0 is PieChartView })?.frame ?? .zero
+      ),
+      (
+        title: "Detailed Statistics",
+        description:
+          "Tap any card to see detailed statistics and graphs for that specific activity.",
+        frame: collectionView.frame
+      ),
+    ]
+
+    tutorialView.startTutorial(steps: steps) {
+      // Save that tutorial has been shown
+      UserDefaults.standard.set(true, forKey: "HasSeenGraphsTutorial")
     }
   }
 }
