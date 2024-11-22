@@ -72,7 +72,7 @@ final class GraphsVC: UIViewController {
   }
 
   func showTutorial() {
-    let tutorialView = GraphsTutorialView(frame: view.bounds)
+    let tutorialView = TutorialView(frame: view.bounds)
     view.addSubview(tutorialView)
 
     // Define tutorial steps

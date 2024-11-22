@@ -13,12 +13,17 @@ final class CalendarVC: UIViewController {
 
   //MARK: - Properties
   fileprivate weak var calendar: FSCalendar!
+  private var tutorialView: TutorialView?
 
   //MARK: - Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = UIColor.hexStringToUIColor(hex: Colors.background)
     setUpCalendar()
+
+    if !UserDefaults.standard.bool(forKey: "hasSeenCalendarTutorial") {
+      showTutorial()
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -80,6 +85,48 @@ final class CalendarVC: UIViewController {
   private func setUpCalendar() {
     configureCalendar()
     configureCalendarConstraints()
+  }
+
+  private func showTutorial() {
+    tutorialView = TutorialView(frame: view.bounds)
+    guard let tutorialView = tutorialView else { return }
+
+    view.addSubview(tutorialView)
+    tutorialView.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint.activate([
+      tutorialView.topAnchor.constraint(equalTo: view.topAnchor),
+      tutorialView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      tutorialView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      tutorialView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+    ])
+
+    let steps: [(title: String, description: String, frame: CGRect)] = [
+      (
+        title: "Welcome to Calendar",
+        description:
+          "Track your completed tasks and view your productivity history in this beautiful calendar view.",
+        frame: label.frame.insetBy(dx: -100, dy: -200)
+      ),
+      (
+        title: "Task Completion Dates",
+        description:
+          "Green dots indicate days where you've completed tasks. These are automatically marked when you finish a task.",
+        frame: calendar.frame.insetBy(dx: -100, dy: -250)
+      ),
+      (
+        title: "Monthly Overview",
+        description:
+          "Swipe left or right to view different months and track your progress over time.",
+        frame: calendar.frame.insetBy(dx: -100, dy: -400)
+      ),
+    ]
+
+    tutorialView.startTutorial(steps: steps) { [weak self] in
+      UserDefaults.standard.set(true, forKey: "hasSeenCalendarTutorial")
+      self?.tutorialView?.removeFromSuperview()
+      self?.tutorialView = nil
+    }
   }
 
 }

@@ -1,6 +1,6 @@
 import UIKit
 
-final class GraphsTutorialView: UIView {
+final class TutorialView: UIView {
 
   private let cardView: UIView = {
     let view = UIView()

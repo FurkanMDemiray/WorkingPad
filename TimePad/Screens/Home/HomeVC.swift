@@ -24,6 +24,8 @@ final class HomeVC: UIViewController {
     }
   }
 
+  private var tutorialView: TutorialView?
+
   //MARK: Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -35,6 +37,11 @@ final class HomeVC: UIViewController {
     viewModel.didFetchWorkModels()
     viewModel.didFetchLastWork()
     setInnerOfCardView()
+
+    // Show tutorial if it's the first launch
+    if !UserDefaults.standard.bool(forKey: "hasSeenHomeTutorial") {
+      showTutorial()
+    }
   }
 
   //MARK: Configures
@@ -103,6 +110,43 @@ final class HomeVC: UIViewController {
       $0.title == lastWorkTitle && viewModel.getLastWorkTime == lastWorkTime
     }) {
       navigateToTimerVC(at: index)
+    }
+  }
+
+  private func showTutorial() {
+    let tutorialView = TutorialView(frame: view.bounds)
+    view.addSubview(tutorialView)
+    self.tutorialView = tutorialView
+
+    var steps: [(title: String, description: String, frame: CGRect)] = []
+
+    // Timer Card Tutorial
+    steps.append(
+      (
+        title: "Timer Card",
+        description: "Track your current or last work session. Tap to continue where you left off.",
+        frame: tableView.frame.insetBy(dx: -100, dy: -200)
+      ))
+
+    // Projects List Tutorial
+    steps.append(
+      (
+        title: "Your Projects",
+        description: "View all your tracked projects. Swipe left to delete, tap to start timing.",
+        frame: tableView.frame.insetBy(dx: -100, dy: -200)
+      ))
+
+    // See All Tutorial
+    steps.append(
+      (
+        title: "See All Projects",
+        description: "Tap here to view your complete project history.",
+        frame: tableView.frame.insetBy(dx: -100, dy: -200)
+      ))
+
+    tutorialView.startTutorial(steps: steps) { [weak self] in
+      UserDefaults.standard.set(true, forKey: "hasSeenHomeTutorial")
+      self?.tutorialView = nil
     }
   }
 }
