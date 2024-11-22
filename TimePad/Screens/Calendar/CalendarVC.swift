@@ -31,7 +31,7 @@ final class CalendarVC: UIViewController {
     let label = UILabel()
     label.text = "My Task History"
     label.textColor = .white
-    label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+    label.font = UIFont(name: "ArialRoundedMTBold", size: 20)
     label.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(label)
     return label
