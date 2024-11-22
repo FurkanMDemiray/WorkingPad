@@ -8,16 +8,25 @@
 import FSCalendar
 import UIKit
 
+//MARK: - CalendarVC
 final class CalendarVC: UIViewController {
 
+  //MARK: - Properties
   fileprivate weak var calendar: FSCalendar!
 
+  //MARK: - Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = UIColor.hexStringToUIColor(hex: Colors.background)
     setUpCalendar()
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    setCalendarSelectedsDate()
+  }
+
+  //MARK: - UI Elements
   lazy var label: UILabel = {
     let label = UILabel()
     label.text = "My Task History"
@@ -28,6 +37,7 @@ final class CalendarVC: UIViewController {
     return label
   }()
 
+  //MARK: - Private Methods
   private func configureCalendar() {
     let calendar = FSCalendar()
     calendar.delegate = self
@@ -40,10 +50,9 @@ final class CalendarVC: UIViewController {
     calendar.appearance.weekdayTextColor = UIColor.hexStringToUIColor(hex: Colors.red)
     calendar.appearance.todayColor = .clear
     calendar.appearance.selectionColor = .systemGreen
-    calendar.appearance.titleDefaultColor = .white  // Add this line to make day numbers visible
+    calendar.appearance.titleDefaultColor = .white
     calendar.appearance.eventDefaultColor = .systemGreen
     calendar.allowsMultipleSelection = true
-
   }
 
   private func configureCalendarConstraints() {
@@ -62,7 +71,7 @@ final class CalendarVC: UIViewController {
   private func setCalendarSelectedsDate() {
     let tasks = CoreDataManager.shared.fetchWorks()
     let filteredTasks = tasks.filter { $0.hour == 0 && $0.minute == 0 && $0.seconds == 0 }
-    for task in filteredTasks {
+    filteredTasks.forEach { task in
       calendar.select(task.date)
     }
     calendar.allowsSelection = false
@@ -71,11 +80,11 @@ final class CalendarVC: UIViewController {
   private func setUpCalendar() {
     configureCalendar()
     configureCalendarConstraints()
-    setCalendarSelectedsDate()
   }
 
 }
 
+//MARK: - FSCalendar Delegate & DataSource
 extension CalendarVC: FSCalendarDelegate, FSCalendarDataSource {
 
   func calendar(
