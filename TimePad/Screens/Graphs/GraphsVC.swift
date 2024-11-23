@@ -193,7 +193,7 @@ extension GraphsVC: GraphsVMDelegate {
     case 668...844:  // iPhone X/XS/11 Pro/12 mini/13 mini
       height = 200
     case 845...926:  // iPhone XR/XS Max/11/11 Pro Max/12/12 Pro/13/13 Pro/15/16
-      height = 250
+      height = 275
     case 927...932:  // iPhone 12 Pro Max/13 Pro Max/15 Pro/16 Pro
       height = 275
     default:  // Larger devices
@@ -207,6 +207,7 @@ extension GraphsVC: GraphsVMDelegate {
       chartView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
       chartView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 4),
       chartView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8),
+      chartView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8),
     ])
 
     let pieChartView = PieChartView()

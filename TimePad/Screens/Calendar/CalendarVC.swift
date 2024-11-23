@@ -74,6 +74,7 @@ final class CalendarVC: UIViewController {
   }
 
   private func setCalendarSelectedsDate() {
+    calendar.allowsSelection = true
     let tasks = CoreDataManager.shared.fetchWorks()
     let filteredTasks = tasks.filter { $0.hour == 0 && $0.minute == 0 && $0.seconds == 0 }
     filteredTasks.forEach { task in
