@@ -5,7 +5,6 @@
 //  Created by Melik Demiray on 24.09.2024.
 //
 
-import Inject
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -29,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       window?.rootViewController = onboardingVC
     } else {
       // Skip onboarding and show main app interface
-      let tabBarVC = Inject.ViewControllerHost(TabbarController())
+      let tabBarVC = TabbarController()
       window?.rootViewController = tabBarVC
     }
     window?.makeKeyAndVisible()

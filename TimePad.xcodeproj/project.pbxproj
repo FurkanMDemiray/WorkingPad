@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DD6BEA6F2CE3D782001262E3 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = DD6BEA6E2CE3D782001262E3 /* Inject */; };
 		DDA28F362CECDAEE003DC47E /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = DDA28F352CECDAEE003DC47E /* FSCalendar */; };
 /* End PBXBuildFile section */
 
@@ -70,7 +69,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD6BEA6F2CE3D782001262E3 /* Inject in Frameworks */,
 				DDA28F362CECDAEE003DC47E /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -132,7 +130,6 @@
 			);
 			name = TimePad;
 			packageProductDependencies = (
-				DD6BEA6E2CE3D782001262E3 /* Inject */,
 				DDA28F352CECDAEE003DC47E /* FSCalendar */,
 			);
 			productName = TimePad;
@@ -218,7 +215,6 @@
 			mainGroup = DDEF1CE32CA2C1F600B909CE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				DD6BEA6D2CE3D782001262E3 /* XCRemoteSwiftPackageReference "Inject" */,
 				DDA28F342CECDAEE003DC47E /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -620,14 +616,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		DD6BEA6D2CE3D782001262E3 /* XCRemoteSwiftPackageReference "Inject" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/krzysztofzablocki/Inject";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.2;
-			};
-		};
 		DDA28F342CECDAEE003DC47E /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
@@ -639,11 +627,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		DD6BEA6E2CE3D782001262E3 /* Inject */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DD6BEA6D2CE3D782001262E3 /* XCRemoteSwiftPackageReference "Inject" */;
-			productName = Inject;
-		};
 		DDA28F352CECDAEE003DC47E /* FSCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DDA28F342CECDAEE003DC47E /* XCRemoteSwiftPackageReference "FSCalendar" */;
